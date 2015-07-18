@@ -8,11 +8,11 @@ class AdresInline(admin.TabularInline):
 
 class PersoonAdmin(admin.ModelAdmin):
 	fieldsets = [
-		(None,         {'fields': ['voornaam', 'achternaam', 'rhetorica', 'email', 'oudid', 'wijziging']}),
-		('Personalia', {'fields': ['geboortedatum', 'sterfdatum'], 'classes': ['collapse']}),
+		(None,         {'fields': ['voornaam', 'achternaam', 'rhetorica', 'email', 'oudid']}),
+		('Personalia', {'fields': ['geslacht', 'overleden', 'geboortedatum', 'geboorteplaats', 'sterfdatum', 'sterfplaats'], 'classes': ['collapse']}),
 	]
 	inlines = [AdresInline]
-	list_display = ('voornaam', 'achternaam', 'rhetorica', 'wijziging')
+	list_display = ('voornaam', 'achternaam', 'rhetorica', 'leeftijd', 'wijziging')
 	list_filter = ['wijziging']
 	search_fields = ['voornaam', 'achternaam']
 	
