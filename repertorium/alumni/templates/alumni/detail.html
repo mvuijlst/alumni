@@ -3,9 +3,33 @@
 <html><head><title>{{ persoon.voornaam }} {{ persoon.achternaam }} | detail</title></head>
 <body>
 
-<h1>{{ persoon.voornaam }} {{ persoon.achternaam }} 
-	({{ persoon.rhetorica.jaar }} {{ persoon.rhetorica.richting }})
-</h1>
+<h1>{{ persoon.voornaam }} {{ persoon.achternaam }} </h1>
+
+<p>Rethorica: 
+	<a href="{% url 'klaslijst' persoon.rhetorica.klas.id %}">
+		{{ persoon.rhetorica.jaar }} {{ persoon.rhetorica.richting }}</a>
+	{% if persoon.rhetorica.klas.titularis %}
+		({{ persoon.rhetorica.klas.titularis }})
+	{% endif %}
+</p>
+
+{% if persoon.leeftijd or persoon.sterfdatum or persoon.gestorven %}
+	<p>
+		{% if persoon.geboortedatum %}
+			° {% if persoon.geboorteplaats %}{{ persoon.geboorteplaats }}, {% endif %}
+			{{ persoon.geboortedatum }}
+			{% if persoon.gestorven or persoon.sterfdatum %}<br />{% endif %}
+		{% endif %}
+		{% if persoon.sterfdatum %}
+			&dagger; {% if persoon.sterfplaats %}{{ persoon.sterfplaats }}, {% endif %}
+			{{ persoon.sterfdatum }}
+		{% endif %}
+		{% if persoon.leeftijd %}
+			({{ persoon.leeftijd }} jaar)
+		{% endif %}
+	</p>
+{% endif %}
+
 <p>Laaste wijziging: {{ persoon.wijziging|naturaltime }}</p>
 </body>
 </html>

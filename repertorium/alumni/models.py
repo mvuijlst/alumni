@@ -51,6 +51,16 @@ class Persoon(models.Model):
     wijziging = models.DateTimeField(auto_now=True)
     
     def leeftijd(self):
+        if self.geboortedatum:
+            if self.sterfdatum:
+                return self.sterfdatum.year - self.geboortedatum.year - ((self.sterfdatum.month, self.sterfdatum.day) < (self.geboortedatum.month, self.geboortedatum.day))
+            else:
+                nu = datetime.date.today()
+                return nu.year - self.geboortedatum.year - ((nu.month, nu.day) < (self.geboortedatum.month, self.geboortedatum.day))
+        else:
+            return ''
+        
+    def levendofdood(self):
         if self.sterfdatum:
             return '†' + str(self.sterfdatum.year)
         elif self.overleden:

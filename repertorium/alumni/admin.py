@@ -38,7 +38,7 @@ class PersoonAdmin(admin.ModelAdmin):
 		),
 	]
 	inlines = [AdresInline,ContactInline,BeroepInline]
-	list_display = ('achternaam', 'voornaam', 'rhetorica', 'leeftijd', 'wijziging')
+	list_display = ('achternaam', 'voornaam', 'rhetorica', 'levendofdood', 'wijziging')
 	list_display_links = ('voornaam', 'achternaam')
 	list_filter = ['wijziging']
 	search_fields = ['voornaam', 'achternaam', 'rhetorica__jaar', 'rhetorica__richting']
