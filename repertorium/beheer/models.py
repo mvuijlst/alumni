@@ -9,6 +9,8 @@ class Klas(models.Model):
     titularis = models.CharField(max_length=200,null=True,blank=True)
     def __str__(self):
         return str(self.jaar) + ' ' + self.klasnaam + ' (' + self.titularis + ')'
+    class Meta:
+        verbose_name_plural = 'Klassen'
 
 class Rhetorica(models.Model):
     klas = models.ForeignKey(Klas,null=True,blank=True)
@@ -16,6 +18,8 @@ class Rhetorica(models.Model):
     richting = models.CharField(max_length=16)
     def __str__(self):
         return str(self.jaar) + ' ' + self.richting
+    class Meta:
+        verbose_name_plural = 'Rhetorica\'s'
 
 class Persoon(models.Model):
     voornaam = models.CharField(max_length=200)
@@ -45,6 +49,7 @@ class Persoon(models.Model):
     opmerkingen = models.TextField(null=True,blank=True)
     
     wijziging = models.DateTimeField(auto_now=True)
+    
     def leeftijd(self):
         if self.sterfdatum:
             return '†' + str(self.sterfdatum.year)
@@ -55,8 +60,12 @@ class Persoon(models.Model):
             return nu.year - self.geboortedatum.year - ((nu.month, nu.day) < (self.geboortedatum.month, self.geboortedatum.day))
         else:
             return ''
+    
     def __str__(self):
         return self.voornaam + ' ' + self.achternaam
+    
+    class Meta:
+        verbose_name_plural = 'Personen'
 
 class Adres(models.Model):
     persoon = models.ForeignKey(Persoon)
@@ -67,6 +76,8 @@ class Adres(models.Model):
     wijziging = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.adres
+    class Meta:
+        verbose_name_plural = 'Adressen'
 
 class Contact(models.Model):
     persoon = models.ForeignKey(Persoon)
@@ -84,6 +95,8 @@ class Contact(models.Model):
     wijziging = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.contacttype + ' ' + self.contactdata
+    class Meta:
+        verbose_name_plural = 'Contactmiddelen'
 
 class Beroep(models.Model):
     persoon = models.ForeignKey(Persoon)
@@ -94,7 +107,11 @@ class Beroep(models.Model):
     wijziging = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.beroepsgegevens
+    class Meta:
+        verbose_name_plural = 'Beroepen'
 
 class Klasfoto(models.Model):
     klas = models.ForeignKey(Klas)
     foto = models.ImageField(upload_to='klasfoto')
+    class Meta:
+        verbose_name_plural = 'Klasfoto\'s'
