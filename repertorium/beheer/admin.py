@@ -12,7 +12,18 @@ class ContactInline(admin.TabularInline):
 
 class PersoonAdmin(admin.ModelAdmin):
 	fieldsets = [
-		(None,         {'fields': ['voornaam', 'achternaam', 'rhetorica', 'email', 'oudid']}),
+		(None,
+			{'fields': 
+				['voornaam', 'achternaam', 'rhetorica', 
+					'klasvertegenwoordiger','email']
+			}
+		),
+		('Repertorium',
+			{'fields':
+				['oudid', 'publiek', 'contacteren', 'opmerkingen'],
+				'classes': ['collapse']
+			}
+		),
 		('Personalia', 
 			{'fields': 
 				['geslacht', 'overleden', 
@@ -23,7 +34,8 @@ class PersoonAdmin(admin.ModelAdmin):
 		),
 	]
 	inlines = [AdresInline,ContactInline]
-	list_display = ('voornaam', 'achternaam', 'rhetorica', 'leeftijd', 'wijziging')
+	list_display = ('achternaam', 'voornaam', 'rhetorica', 'leeftijd', 'wijziging')
+	list_display_links = ('voornaam', 'achternaam')
 	list_filter = ['wijziging']
 	search_fields = ['voornaam', 'achternaam']
 	

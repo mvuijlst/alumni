@@ -42,11 +42,19 @@ class Persoon(models.Model):
     klasvertegenwoordiger = models.BooleanField(default=False)
     publiek = models.BooleanField('mag online verschijnen?', default=True)
     contacteren = models.BooleanField('mag gecontacteerd worden?', default=True)
+    opmerkingen = models.TextField(null=True,blank=True)
     
     wijziging = models.DateTimeField(auto_now=True)
     def leeftijd(self):
-        nu = datetime.date.today()
-        return nu.year - self.geboortedatum.year - ((nu.month, nu.day) < (self.geboortedatum.month, self.geboortedatum.day))
+        if self.sterfdatum:
+            return '†' + str(self.sterfdatum.year)
+        elif self.overleden:
+            return '†'
+        elif self.geboortedatum:
+            nu = datetime.date.today()
+            return nu.year - self.geboortedatum.year - ((nu.month, nu.day) < (self.geboortedatum.month, self.geboortedatum.day))
+        else:
+            return ''
     def __str__(self):
         return self.voornaam + ' ' + self.achternaam
 
