@@ -2,8 +2,10 @@
 <body>
 	
 	<h1>{{ klas.jaar }} {{ klas.klasnaam }}</h1>
-	<h2>{{ klas.titularis }}</h2>
-
+	{% if klas.titularis %}
+		<h2>{{ klas.titularis }}</h2>
+	{% endif %}
+	
 	{% regroup personen by richting as persoonlijst %}
 	{% for persoon in persoonlijst %}
 		{% if aantal_klassen > 1 %}

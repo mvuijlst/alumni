@@ -11,7 +11,9 @@
 				{{ klas.jaar }}
 				{{ klas.klasnaam }}
 			</a>
-			({{ klas.titularis }})
+			{% if klas.titularis %}
+				({{ klas.titularis }})>
+			{% endif %}
 		</li>
 	{% endfor %}
 	</ul>
