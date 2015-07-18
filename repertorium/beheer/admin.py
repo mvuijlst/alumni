@@ -46,4 +46,3 @@ class PersoonAdmin(admin.ModelAdmin):
 admin.site.register(Persoon, PersoonAdmin)
 
 admin.site.register(Rhetorica)
-admin.site.register(Beroep)
