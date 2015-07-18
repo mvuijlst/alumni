@@ -112,7 +112,7 @@ class Beroep(models.Model):
 
 class Klasfoto(models.Model):
     klas = models.ForeignKey(Klas)
-    datum = models.DateTimeField(null=True,blank=True)
+    datum = models.DateField(null=True,blank=True)
     foto = models.ImageField(upload_to='klasfoto')
     class Meta:
         verbose_name_plural = 'Klasfoto\'s'
