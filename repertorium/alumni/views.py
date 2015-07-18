@@ -28,4 +28,8 @@ def klaslijst(request, klas_id):
 	return render(request, 'alumni/klaslijst.html', context)
 
 def persoondetail(request, persoon_id):
-	return HttpResponse("Detail voor persoon %s." % persoon_id)
+	try:
+		persoon = Persoon.objects.get(pk=persoon_id)
+	except Persoon.DoesNotExist:
+		raise Http404("Persoon niet gevonden.")
+	return render(request, 'alumni/detail.html', {'persoon': persoon})

@@ -1,0 +1,11 @@
+{% load humanize %}
+
+<html><head><title>{{ persoon.voornaam }} {{ persoon.achternaam }} | detail</title></head>
+<body>
+
+<h1>{{ persoon.voornaam }} {{ persoon.achternaam }} 
+	({{ persoon.rhetorica.jaar }} {{ persoon.rhetorica.richting }})
+</h1>
+<p>Laaste wijziging: {{ persoon.wijziging|naturaltime }}</p>
+</body>
+</html>
