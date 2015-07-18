@@ -1,0 +1,23 @@
+<html><head><title>{{ klas.jaar }} {{ klas.klasnaam }} | klaslijst</title></head>
+<body>
+	
+	<h1>{{ klas.jaar }} {{ klas.klasnaam }}</h1>
+	<h2>{{ klas.titularis }}</h2>
+
+	{% regroup personen by richting as persoonlijst %}
+	{% for persoon in persoonlijst %}
+		{% if aantal_klassen > 1 %}
+			<h3>{{ persoon.grouper }}</h3>
+		{% endif %}
+		<ol>
+			{% for leerling in persoon.list %}
+				<li><a href="{% url 'detail' leerling.id %}">
+						{{ leerling.voornaam }}
+						{{ leerling.achternaam }}
+					</a>
+				</li>
+			{% endfor %}
+		</ol>
+	{% endfor %}
+</body>
+</html>
