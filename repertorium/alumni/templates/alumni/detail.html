@@ -1,7 +1,9 @@
+{% extends 'alumni/base.html' %}
 {% load humanize %}
 
-<html><head><title>{{ persoon.voornaam }} {{ persoon.achternaam }} | detail</title></head>
-<body>
+{% block title %}{{ persoon.voornaam }} {{ persoon.achternaam }}{% endblock %}
+
+{% block main %}
 
 <h1>{{ persoon.voornaam }} {{ persoon.achternaam }} </h1>
 
@@ -102,5 +104,5 @@
 {% endif %}
 
 <p>Laatste wijziging: {{ persoon.wijziging }} ({{ persoon.wijziging|naturaltime }})</p>
-</body>
-</html>
+
+{% endblock %}

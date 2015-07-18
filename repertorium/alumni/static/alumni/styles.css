@@ -1,0 +1,26 @@
+* {
+	font-family: 'Roboto', sans-serif;
+	color: #333;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Roboto Slab', serif;
+	color: #222
+ }
+
+body {
+	margin: 0 10px;
+	line-height: 1.5em;
+	background-color: #fffffa;
+}
+
+a {
+	color: #000;
+	text-decoration: none;
+	border-bottom: 1px dotted #227;
+}
+
+a:hover {
+	border: none;
+	background-color: #ff0;
+}

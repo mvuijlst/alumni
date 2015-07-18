@@ -1,42 +1,42 @@
+{% extends 'alumni/base.html' %}
 {% load humanize %}
 
-<html><head><title>Repertorium, test, test</title></head>
-<body>
-	
-{% if recent_klassen %}
-	<p>Recente klassen:</p>
-	<ul>
-	{% for klas in recent_klassen %}
-		<li><a href="{% url 'klaslijst' klas.id %}">
-				{{ klas.jaar }}
-				{{ klas.klasnaam }}
-			</a>
-			{% if klas.titularis %}
-				({{ klas.titularis }})>
-			{% endif %}
-		</li>
-	{% endfor %}
-	</ul>
-{% else %}
-	<p>Geen recente klassen.</p>
-{% endif %}	
- 
- 
-{% if recent_modifications %}
-	<p>Recent gewijzigd:</p>
-	<ul>
-	{% for persoon in recent_modifications %}
-		<li><a href="{% url 'detail' persoon.id %}">
-				{{ persoon.voornaam }}
-				{{ persoon.achternaam }}
-			</a>
-			({{ persoon.wijziging|naturaltime }})
-		</li>
-	{% endfor %}
-	</ul>
-{% else %}
-	<p>Geen recent gewijzigde personen.</p>
-{% endif %}	
+{% block title %}Welgekomen{% endblock %}
 
-</body>
-</html>
+{% block main %}
+	{% if recent_klassen %}
+		<p>Recente klassen:</p>
+		<ul>
+		{% for klas in recent_klassen %}
+			<li><a href="{% url 'klaslijst' klas.id %}">
+					{{ klas.jaar }}
+					{{ klas.klasnaam }}
+				</a>
+				{% if klas.titularis %}
+					({{ klas.titularis }})
+				{% endif %}
+			</li>
+		{% endfor %}
+		</ul>
+	{% else %}
+		<p>Geen recente klassen.</p>
+	{% endif %}	
+ 
+ 
+	{% if recent_modifications %}
+		<p>Recent gewijzigd:</p>
+		<ul>
+		{% for persoon in recent_modifications %}
+			<li><a href="{% url 'detail' persoon.id %}">
+					{{ persoon.voornaam }}
+					{{ persoon.achternaam }}
+				</a>
+				({{ persoon.wijziging|naturaltime }})
+			</li>
+		{% endfor %}
+		</ul>
+	{% else %}
+		<p>Geen recent gewijzigde personen.</p>
+	{% endif %}	
+
+{% endblock %}

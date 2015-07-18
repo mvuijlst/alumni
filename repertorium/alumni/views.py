@@ -5,7 +5,7 @@ from .models import Klas, Rhetorica, Persoon, Contact, Beroep, Adres
 
 def index(request):
 	recent_modifications = Persoon.objects.order_by('-wijziging')[:15]
-	recent_klassen = Klas.objects.order_by('jaar')[:10]
+	recent_klassen = Klas.objects.order_by('-jaar')
 	
 	context = {
 		'recent_modifications': recent_modifications,

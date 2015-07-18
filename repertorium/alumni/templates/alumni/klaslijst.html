@@ -1,5 +1,9 @@
-<html><head><title>{{ klas.jaar }} {{ klas.klasnaam }} | klaslijst</title></head>
-<body>
+{% extends 'alumni/base.html' %}
+{% load humanize %}
+
+{% block title %}{{ klas.jaar }} {{ klas.klasnaam }}{% endblock %}
+
+{% block main %}
 	
 	<h1>{{ klas.jaar }} {{ klas.klasnaam }}</h1>
 	{% if klas.titularis %}
@@ -21,5 +25,5 @@
 			{% endfor %}
 		</ol>
 	{% endfor %}
-</body>
-</html>
+
+{% endblock %}
