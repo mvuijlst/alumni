@@ -87,7 +87,7 @@ class Contact(models.Model):
 
 class Beroep(models.Model):
     persoon = models.ForeignKey(Persoon)
-    beroepsgegevens = models.TextField()
+    beroepsgegevens = models.CharField(max_length=500)
     van = models.DateField(null=True,blank=True)
     tot = models.DateField(null=True,blank=True)
     featured = models.BooleanField(default=False)
