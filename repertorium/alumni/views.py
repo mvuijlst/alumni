@@ -1,7 +1,7 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404, render
 
-from .models import Klas, Rhetorica, Persoon
+from .models import Klas, Rhetorica, Persoon, Contact, Beroep, Adres
 
 def index(request):
 	recent_modifications = Persoon.objects.order_by('-wijziging')[:15]
@@ -32,4 +32,18 @@ def persoondetail(request, persoon_id):
 		persoon = Persoon.objects.get(pk=persoon_id)
 	except Persoon.DoesNotExist:
 		raise Http404("Persoon niet gevonden.")
-	return render(request, 'alumni/detail.html', {'persoon': persoon})
+	
+	contacten = Contact.objects.filter(persoon=persoon_id).filter(geldig=True).order_by('contacttype', '-van', '-tot')
+	beroepen = Beroep.objects.filter(persoon=persoon_id).order_by('-featured', '-van', '-tot')
+	adressen = Adres.objects.filter(persoon=persoon_id).order_by('-van', '-tot')
+	
+	context = {
+		'persoon': persoon,
+		'contacten': contacten,
+		'beroepen': beroepen,
+		'adressen': adressen,
+		'aantal_contacten': len(contacten),
+		'aantal_beroepen': len(beroepen),
+		'aantal_adressen': len(adressen)		
+	}
+	return render(request, 'alumni/detail.html', context)

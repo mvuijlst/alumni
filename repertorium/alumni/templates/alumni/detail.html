@@ -30,6 +30,77 @@
 	</p>
 {% endif %}
 
-<p>Laaste wijziging: {{ persoon.wijziging|naturaltime }}</p>
+{% if aantal_beroepen > 0 %}
+	<h3>Beroepsinformatie</h3>
+	<ul>
+		{% for beroep in beroepen %}
+			<li{% if beroep.featured %} class="featured"{% endif %}>
+				{% if beroep.van and beroep.tot %}
+					{{ beroep.van }} - {{ beroep.tot }}: 
+				{% elif beroep.van %}
+					{% if persoon.gestorven or persoon.sterfdatum %} 
+						vanaf 
+					{% else %}
+						sinds
+					{% endif %}
+					{{ beroep.van }}: 
+				{% elif beroep.tot %} 
+					tot {{ beroep.tot }}:  
+				{% endif %}
+				{{ beroep.beroepsgegevens }}
+			</li>
+		{% endfor %}
+	</ul>
+{% endif %}
+
+{% if aantal_contacten > 0 %}
+	<h3>Contactinformatie</h3>
+	<ul>
+		{% for contact in contacten %}
+			<li>
+				{% if contact.contacttype = "gsm" %}
+					GSM {{ contact.contactdata }}
+				{% elif contact.contacttype = "linkedin" %}
+					<a href="{{ contact.contactdata }}">LinkedIn</a>
+				{% elif contact.contacttype = "twitter" %}
+					<a href="http://twitter.com/{{ contact.contactdata }}">@{{ contact.contactdata }}</a>
+				{% elif contact.contacttype = "website" %}
+					<a href="{{ contact.contactdata }}">{{ contact.contactdata }}</a>
+				{% elif contact.contacttype = "telefoon" %}
+					Tel. {{ contact.contactdata }}
+				{% else %}
+					{{ contact.contacttype }}: {{ contact.contactdata }}
+				{% endif %}
+			</li>
+		{% endfor %}
+	</ul>
+{% endif %}
+
+{% if aantal_adressen > 0 %}
+	<h3>Adresgegevens</h3>
+	<ul>
+		{% for adres in adressen %}
+			<li{% if adres.tot %} class="voorbij"{% endif %}>
+				{{ adres.adres|linebreaksbr }} 
+				<span class="addresinfo">
+					{% if adres.van and adres.tot %}
+						({{ adres.van }} - {{ adres.tot }}) 
+					{% elif adres.van %}
+						{% if persoon.gestorven or persoon.sterfdatum %} 
+							(vanaf 
+						{% else %}
+							(sinds 
+						{% endif %}
+						{{ adres.van }}{% if not adres.tot %}){% endif %}
+					{% elif adres.tot %} 
+						{% if not adres.van %}({% endif %}tot {{ adres.tot }})
+					{% endif %}
+				</span>	
+			</li>
+		{% endfor %}
+	</ul>
+{% endif %}
+
+<p>Laatste wijziging: {{ persoon.wijziging }} ({{ persoon.wijziging|naturaltime }})</p>
 </body>
 </html>

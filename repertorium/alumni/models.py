@@ -76,7 +76,7 @@ class Persoon(models.Model):
             return self.rhetorica.richting
         else:
             return ''
-            
+                    
     def __str__(self):
         return self.voornaam + ' ' + self.achternaam
     
