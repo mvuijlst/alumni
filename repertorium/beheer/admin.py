@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Persoon, Rhetorica, Adres, Contact
+from .models import Persoon, Rhetorica, Adres, Contact, Beroep
 
 class AdresInline(admin.TabularInline):
 	model = Adres
@@ -8,6 +8,10 @@ class AdresInline(admin.TabularInline):
 
 class ContactInline(admin.TabularInline):
 	model = Contact
+	extra = 0
+
+class BeroepInline(admin.TabularInline):
+	model = Beroep
 	extra = 0
 
 class PersoonAdmin(admin.ModelAdmin):
@@ -33,7 +37,7 @@ class PersoonAdmin(admin.ModelAdmin):
 			}
 		),
 	]
-	inlines = [AdresInline,ContactInline]
+	inlines = [AdresInline,ContactInline,BeroepInline]
 	list_display = ('achternaam', 'voornaam', 'rhetorica', 'leeftijd', 'wijziging')
 	list_display_links = ('voornaam', 'achternaam')
 	list_filter = ['wijziging']

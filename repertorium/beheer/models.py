@@ -86,6 +86,7 @@ class Contact(models.Model):
         return self.contacttype + ' ' + self.contactdata
 
 class Beroep(models.Model):
+    persoon = models.ForeignKey(Persoon)
     beroepsgegevens = models.TextField()
     van = models.DateField(null=True,blank=True)
     tot = models.DateField(null=True,blank=True)
