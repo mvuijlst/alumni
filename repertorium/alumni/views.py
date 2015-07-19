@@ -12,7 +12,10 @@ def index(request):
 		'recent_klassen': recent_klassen
 	}
 	return render(request, 'alumni/index.html', context)
-	
+
+def info(request):
+	return render(request, 'alumni/info.html')
+		
 def klaslijst(request, klas_id):
 	try:
 		klas = Klas.objects.get(pk=klas_id)

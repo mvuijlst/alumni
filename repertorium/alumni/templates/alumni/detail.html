@@ -5,7 +5,11 @@
 
 {% block main %}
 
-<h1>{{ persoon.voornaam }} {{ persoon.achternaam }} </h1>
+<h1>{{ persoon.voornaam }} {{ persoon.achternaam }}
+	{% if user.is_authenticated %}
+		<span class="editpersoon">[<a href="/admin/alumni/persoon/{{ persoon.id }}/">wijzig</a>]</span>
+	{% endif %}
+</h1>
 
 <p>Rethorica: 
 	<a href="{% url 'klaslijst' persoon.rhetorica.klas.id %}">

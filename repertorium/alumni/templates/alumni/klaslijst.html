@@ -17,10 +17,10 @@
 		{% endif %}
 		<ol>
 			{% for leerling in persoon.list %}
-				<li><a href="{% url 'detail' leerling.id %}">
-						{{ leerling.voornaam }}
-						{{ leerling.achternaam }}
-					</a>
+				<li><a href="{% url 'detail' leerling.id %}">{{ leerling.voornaam }} {{ leerling.achternaam }}</a>
+					{% if leerling.klasvertegenwoordiger %} 
+						<span class="klasvertegenwoordiger">[klasafgevaardigde]</span>
+					{% endif %}
 				</li>
 			{% endfor %}
 		</ol>
