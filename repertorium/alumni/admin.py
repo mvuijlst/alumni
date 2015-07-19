@@ -42,9 +42,9 @@ class PersoonAdmin(admin.ModelAdmin):
 		),
 	]
 	inlines = [AdresInline,ContactInline,BeroepInline,BetalingInline]
-	list_display = ('achternaam', 'voornaam', 'rhetorica', 'levendofdood', 'wijziging')
+	list_display = ('achternaam', 'voornaam', 'rhetorica', 'ouderdom', 'wijziging')
 	list_display_links = ('voornaam', 'achternaam')
-	list_filter = ['wijziging']
+	list_filter = ['wijziging','betaling__betalingsjaar']
 	search_fields = ['voornaam', 'achternaam', 'rhetorica__jaar', 'rhetorica__richting']
 	
 admin.site.register(Persoon, PersoonAdmin)

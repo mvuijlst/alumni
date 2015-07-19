@@ -107,6 +107,29 @@
 	</ul>
 {% endif %}
 
+{% if aantal_betalingen > 0 %}
+	{% if user.is_authenticated %}
+		<h3>Betalingen en lidgelden</h3>
+		<table class="betaling">
+			<tr><th>Datum</th>
+				<th>Type</th>
+				<th>Bedrag</th>
+				<th>Betalingsjaar</th>
+				<th>Opmerkingen</th>
+			</tr>
+			{% for betaling in betalingen %}
+				<tr class="{% cycle 'oneven' 'even' %}">
+					<td>{% if betaling.datum %}{{ betaling.datum }}{% else %}--{% endif %}</td>
+					<td>{% if betaling.soortbetaling %}{{ betaling.soortbetaling }}{% else %}--{% endif %}</td>
+					<td>{% if betaling.bedrag %}{{ betaling.bedrag }}{% else %}--{% endif %}</td>
+					<td>{% if betaling.betalingsjaar %}{{ betaling.betalingsjaar }}{% else %}--{% endif %}</td>
+					<td>{% if betaling.opmerking %}{{ betaling.opmerking }}{% else %}--{% endif %}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% endif %}
+{% endif %}
+
 <p>Laatste wijziging: {{ persoon.wijziging }} ({{ persoon.wijziging|naturaltime }})</p>
 
 {% endblock %}

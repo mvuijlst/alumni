@@ -63,7 +63,7 @@ class Persoon(models.Model):
         else:
             return ''
         
-    def levendofdood(self):
+    def ouderdom(self):
         if self.sterfdatum:
             return '†' + str(self.sterfdatum.year)
         elif self.overleden:

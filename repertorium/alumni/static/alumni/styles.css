@@ -86,3 +86,25 @@ a:hover {
 .voorbij {
 	color: #999;
 }
+
+table.betaling {
+	border-collapse: collapse;
+	font-size: 0.9em;
+}
+
+table.betaling, table.betaling td, table.betaling th {
+	border: 1px solid #bbb;
+}
+
+table.betaling td, table.betaling th {
+	padding: 2px 10px;
+}
+
+table.betaling th {
+	background-color: #ddd;
+	color: #333;
+}
+
+table.betaling tr.even {
+	background-color: #f0f0f0;
+}
