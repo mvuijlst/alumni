@@ -1,10 +1,13 @@
-import datetime
+from datetime import datetime
 
 from django.db import models
 from django.utils import timezone
+
+def ditjaar():
+    return datetime.now().year
     
 class Klas(models.Model):
-    jaar = models.SmallIntegerField(default=datetime.datetime.now().year)
+    jaar = models.SmallIntegerField(default=ditjaar)
     klasnaam = models.CharField(max_length=50,null=True,blank=True)
     titularis = models.CharField(max_length=200,null=True,blank=True)
     def __str__(self):
@@ -14,7 +17,7 @@ class Klas(models.Model):
 
 class Rhetorica(models.Model):
     klas = models.ForeignKey(Klas,null=True,blank=True)
-    jaar = models.SmallIntegerField(default=datetime.datetime.now().year)
+    jaar = models.SmallIntegerField(default=ditjaar)
     richting = models.CharField(max_length=16)
     def __str__(self):
         return str(self.jaar) + ' ' + self.richting
@@ -55,7 +58,7 @@ class Persoon(models.Model):
             if self.sterfdatum:
                 return self.sterfdatum.year - self.geboortedatum.year - ((self.sterfdatum.month, self.sterfdatum.day) < (self.geboortedatum.month, self.geboortedatum.day))
             else:
-                nu = datetime.date.today()
+                nu = datetime.now()
                 return nu.year - self.geboortedatum.year - ((nu.month, nu.day) < (self.geboortedatum.month, self.geboortedatum.day))
         else:
             return ''
@@ -66,7 +69,7 @@ class Persoon(models.Model):
         elif self.overleden:
             return '†'
         elif self.geboortedatum:
-            nu = datetime.date.today()
+            nu = datetime.now()
             return nu.year - self.geboortedatum.year - ((nu.month, nu.day) < (self.geboortedatum.month, self.geboortedatum.day))
         else:
             return ''
@@ -132,3 +135,22 @@ class Klasfoto(models.Model):
     foto = models.ImageField(upload_to='klasfoto')
     class Meta:
         verbose_name_plural = 'Klasfoto\'s'
+
+class Soortbetaling(models.Model):
+    omschrijving = models.CharField(max_length=50)
+    actief = models.BooleanField(default=True)
+    def __str__(self):
+        return self.omschrijving
+    class Meta:
+        verbose_name_plural = "Soorten betaling"
+
+class Betaling(models.Model):
+    persoon = models.ForeignKey(Persoon)
+    soortbetaling = models.ForeignKey(Soortbetaling)
+    betalingsjaar = models.IntegerField(default=ditjaar, null=True,blank=True)
+    bedrag = models.IntegerField(null=True,blank=True)
+    opmerking = models.CharField(max_length=200,null=True,blank=True)
+    datum = models.DateField(null=True,blank=True)
+    class Meta:
+        verbose_name_plural = "Betalingen"
+    
