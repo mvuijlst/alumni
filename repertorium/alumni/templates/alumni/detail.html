@@ -88,6 +88,9 @@
 				{% else %}
 					{{ contact.contacttype }}: {{ contact.contactdata }}
 				{% endif %}
+				{% if contact.opmerking %}
+					({{ contact.opmerking }})
+				{% endif %}
 			</li>
 		{% endfor %}
 	</ul>

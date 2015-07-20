@@ -108,6 +108,7 @@ class Contact(models.Model):
     CONTACTEN = {(CONTACT_GSM, 'GSM'), (CONTACT_EMAIL, 'E-mail'), (CONTACT_TELEFOON, 'Telefoon'), (CONTACT_WEBSITE, 'Website'), (CONTACT_LINKEDIN, 'LinkedIn'), (CONTACT_TWITTER, 'Twitter')}
     contacttype = models.CharField(max_length=10, choices=CONTACTEN, default=CONTACT_GSM)
     contactdata = models.CharField(max_length=200)
+    opmerking = models.CharField(max_length=100,null=True,blank=True)
     van = models.DateField(null=True,blank=True)
     tot = models.DateField(null=True,blank=True)
     geldig = models.BooleanField(default=True)

@@ -1,8 +1,10 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404, render
+from django.contrib.auth.decorators import login_required
 
 from .models import Klas, Rhetorica, Persoon, Contact, Beroep, Adres, Betaling, Gebeurtenis
 
+@login_required
 def index(request):
 	recent_modifications = Persoon.objects.order_by('-wijziging')[:15]
 	recent_klassen = Klas.objects.order_by('-jaar')
@@ -16,6 +18,7 @@ def index(request):
 def info(request):
 	return render(request, 'alumni/info.html')
 		
+@login_required
 def klaslijst(request, klas_id):
 	try:
 		klas = Klas.objects.get(pk=klas_id)
@@ -30,6 +33,7 @@ def klaslijst(request, klas_id):
 	}
 	return render(request, 'alumni/klaslijst.html', context)
 
+@login_required
 def persoondetail(request, persoon_id):
 	try:
 		persoon = Persoon.objects.get(pk=persoon_id)

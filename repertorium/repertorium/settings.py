@@ -23,10 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'c^35y+j6(8qz4h9f0vc3ln1@w)^fvsxz%#(58!6fhe*&!-q57('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1']
-
 
 # Application definition
 
@@ -59,7 +58,7 @@ ROOT_URLCONF = 'repertorium.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,9 +70,8 @@ TEMPLATES = [
         },
     },
 ]
-
+        
 WSGI_APPLICATION = 'repertorium.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
@@ -109,10 +107,38 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
-
 # For Django Suit admin
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 
 TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'django.core.context_processors.request',
 )
+
+SUIT_CONFIG = {
+    # header
+    'ADMIN_NAME': 'Alumni: beheer',
+    'HEADER_DATE_FORMAT': 'l j F Y',
+    'HEADER_TIME_FORMAT': 'H:i',
+
+    # forms
+    'SHOW_REQUIRED_ASTERISK': True,  # Default True
+    'CONFIRM_UNSAVED_CHANGES': True, # Default True
+
+    # menu
+    'SEARCH_URL': '/admin/alumni/persoon/',
+    'MENU_ICONS': {
+       'sites': 'icon-leaf',
+       'alumni': 'icon-edit',
+    },
+    'MENU_OPEN_FIRST_CHILD': True, # Default True
+    # 'MENU_EXCLUDE': ('auth.group',),
+    'MENU': (
+        'sites',
+        {'app': 'alumni', 'models': ('persoon', 'klas', 'soortbetaling')},
+        {'app': 'auth', 'icon':'icon-lock', 'models': ('user', 'group')},
+        {'label': 'Settings', 'icon':'icon-cog', 'models': ('auth.user', 'auth.group')},
+    ),
+
+    # misc
+    'LIST_PER_PAGE': 15
+}
