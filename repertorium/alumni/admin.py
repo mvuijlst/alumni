@@ -28,7 +28,7 @@ class PersoonAdmin(admin.ModelAdmin):
 		(None,
 			{'fields': 
 				['voornaam', 'achternaam', 'rhetorica', 
-					'klasvertegenwoordiger','email']
+					'klasvertegenwoordiger']
 			}
 		),
 		('Repertorium',
