@@ -36,6 +36,16 @@
 	</p>
 {% endif %}
 
+{% if aantal_gebeurtenissen > 0 %}
+	<h3>Personalia</h3>
+	<ul>{% for gebeurtenis in gebeurtenissen %}
+			<li>{{ gebeurtenis.gebeurtenistype|title }}{% if gebeurtenis.datum %}
+					({{ gebeurtenis.datum }}){% endif %}: 
+					{{ gebeurtenis.omschrijving }}</li>
+		{% endfor %}
+	</ul>
+{% endif %}
+
 {% if aantal_beroepen > 0 %}
 	<h3>Beroepsinformatie</h3>
 	<ul>

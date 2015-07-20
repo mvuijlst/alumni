@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import Persoon, Rhetorica, Adres, Contact, Beroep, Klas, Klasfoto, Betaling, Soortbetaling
+from .models import Persoon, Rhetorica, Adres, Contact, Beroep
+from .models import Klas, Klasfoto, Betaling, Soortbetaling, Gebeurtenis
 
 class AdresInline(admin.TabularInline):
 	model = Adres
@@ -16,6 +17,10 @@ class BeroepInline(admin.TabularInline):
 
 class BetalingInline(admin.TabularInline):
 	model = Betaling
+	extra = 0
+	
+class GebeurtenisInline(admin.TabularInline):
+	model = Gebeurtenis
 	extra = 0
 
 class PersoonAdmin(admin.ModelAdmin):
@@ -41,7 +46,7 @@ class PersoonAdmin(admin.ModelAdmin):
 			}
 		),
 	]
-	inlines = [AdresInline,ContactInline,BeroepInline,BetalingInline]
+	inlines = [AdresInline,ContactInline,BeroepInline,GebeurtenisInline,BetalingInline]
 	list_display = ('achternaam', 'voornaam', 'rhetorica', 'ouderdom', 'wijziging')
 	list_display_links = ('voornaam', 'achternaam')
 	list_filter = ['wijziging','betaling__betalingsjaar']
@@ -66,7 +71,7 @@ class KlasAdmin(admin.ModelAdmin):
 		)
 	]
 	inlines = [RhetoricaInline, KlasfotoInline]
-	search_fields = ['jaar', 'klasnaam', 'rhetorica__richting²']
+	search_fields = ['jaar', 'klasnaam', 'rhetorica__richting']
 	
 admin.site.register(Klas, KlasAdmin)
 

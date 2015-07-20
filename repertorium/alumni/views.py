@@ -1,7 +1,7 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404, render
 
-from .models import Klas, Rhetorica, Persoon, Contact, Beroep, Adres, Betaling
+from .models import Klas, Rhetorica, Persoon, Contact, Beroep, Adres, Betaling, Gebeurtenis
 
 def index(request):
 	recent_modifications = Persoon.objects.order_by('-wijziging')[:15]
@@ -40,16 +40,19 @@ def persoondetail(request, persoon_id):
 	beroepen = Beroep.objects.filter(persoon=persoon_id).order_by('-featured', '-van', '-tot')
 	adressen = Adres.objects.filter(persoon=persoon_id).order_by('-van', '-tot')
 	betalingen = Betaling.objects.filter(persoon=persoon_id).order_by('-betalingsjaar', '-datum')
+	gebeurtenissen = Gebeurtenis.objects.filter(persoon=persoon_id).order_by('-datum')
 	
 	context = {
 		'persoon': persoon,
 		'contacten': contacten,
 		'beroepen': beroepen,
 		'adressen': adressen,
+		'gebeurtenissen' : gebeurtenissen,
 		'betalingen': betalingen,
 		'aantal_contacten': len(contacten),
 		'aantal_beroepen': len(beroepen),
 		'aantal_adressen': len(adressen),
+		'aantal_gebeurtenissen' : len(gebeurtenissen),
 		'aantal_betalingen': len(betalingen)		
 	}
 	return render(request, 'alumni/detail.html', context)

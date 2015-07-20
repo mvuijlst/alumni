@@ -117,6 +117,23 @@ class Contact(models.Model):
     class Meta:
         verbose_name_plural = 'Contactmiddelen'
 
+class Gebeurtenis(models.Model):
+    persoon = models.ForeignKey(Persoon)
+    GEBEURTENIS_GEBOORTE = 'geboorte'
+    GEBEURTENIS_HUWELIJK = 'huwelijk'
+    GEBEURTENIS_OVERLIJDEN = 'overlijden'
+    GEBEURTENIS_OVERIGE = 'overige'
+    GEBEURTENISTYPES = {(GEBEURTENIS_GEBOORTE, 'Geboorte'), (GEBEURTENIS_HUWELIJK, 'Huwelijk'), 
+        (GEBEURTENIS_OVERLIJDEN, 'Overlijden'), (GEBEURTENIS_OVERIGE, 'Overige')}
+    gebeurtenistype = models.CharField(max_length=10, choices=GEBEURTENISTYPES, default=GEBEURTENIS_GEBOORTE)
+    datum = models.DateField(null=True,blank=True)
+    omschrijving = models.TextField()
+    wijziging = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return str(self.datum) + ' ' + self.omschrijving
+    class Meta:
+        verbose_name_plural = 'Gebeurtenissen'
+
 class Beroep(models.Model):
     persoon = models.ForeignKey(Persoon)
     beroepsgegevens = models.CharField(max_length=500)
