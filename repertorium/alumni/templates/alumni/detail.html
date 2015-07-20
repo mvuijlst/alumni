@@ -69,9 +69,11 @@
 	</ul>
 {% endif %}
 
-{% if aantal_contacten > 0 %}
+{% if aantal_contacten > 0 or persoon.email %}
 	<h3>Contactinformatie</h3>
-	<ul>
+	<ul>{% if persoon.email %}
+			<li><a href="mailto:{{ persoon.email }}">{{ persoon.email }}</a>
+		{% endif %}
 		{% for contact in contacten %}
 			<li>
 				{% if contact.contacttype = "gsm" %}
