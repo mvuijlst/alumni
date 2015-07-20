@@ -42,16 +42,16 @@
 		{% for beroep in beroepen %}
 			<li{% if beroep.featured %} class="featured"{% endif %}>
 				{% if beroep.van and beroep.tot %}
-					{{ beroep.van }} - {{ beroep.tot }}: 
+					{{ beroep.van.year }} - {{ beroep.tot.year }}: 
 				{% elif beroep.van %}
 					{% if persoon.gestorven or persoon.sterfdatum %} 
 						vanaf 
 					{% else %}
 						sinds
 					{% endif %}
-					{{ beroep.van }}: 
+					{{ beroep.van.year }}: 
 				{% elif beroep.tot %} 
-					tot {{ beroep.tot }}:  
+					tot {{ beroep.tot.year }}:  
 				{% endif %}
 				{{ beroep.beroepsgegevens }}
 			</li>
@@ -90,16 +90,16 @@
 				{{ adres.adres|linebreaksbr }} 
 				<span class="addresinfo">
 					{% if adres.van and adres.tot %}
-						({{ adres.van }} - {{ adres.tot }}) 
+						({{ adres.van.year }} - {{ adres.tot.year }}) 
 					{% elif adres.van %}
 						{% if persoon.gestorven or persoon.sterfdatum %} 
 							(vanaf 
 						{% else %}
 							(sinds 
 						{% endif %}
-						{{ adres.van }}{% if not adres.tot %}){% endif %}
+						{{ adres.van.year }}{% if not adres.tot %}){% endif %}
 					{% elif adres.tot %} 
-						{% if not adres.van %}({% endif %}tot {{ adres.tot }})
+						{% if not adres.van %}({% endif %}tot {{ adres.tot.year }})
 					{% endif %}
 				</span>	
 			</li>
