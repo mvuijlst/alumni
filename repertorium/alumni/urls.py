@@ -10,4 +10,7 @@ urlpatterns = [
     url(r'^p/(?P<persoon_id>[0-9]+)$', views.persoondetail, name='detail'),
     # bv: /repertorium/info
     url(r'^info$', views.info, name='info'),
+    # rapporten
+    url(r'^moetbetalen$', views.moetbetalen, name='moetbetalen'),
+    url(r'^vroegerbetaald$', views.vroegerbetaald, name='vroegerbetaald'),
 ]

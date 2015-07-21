@@ -1,6 +1,8 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from datetime import datetime
 
 from .models import Klas, Rhetorica, Persoon, Contact, Beroep, Adres, Betaling, Gebeurtenis
 
@@ -60,3 +62,67 @@ def persoondetail(request, persoon_id):
 		'aantal_betalingen': len(betalingen)		
 	}
 	return render(request, 'alumni/detail.html', context)
+
+@login_required
+def moetbetalen(request):
+	ditjaarbetaald = Betaling.objects.exclude(
+		betalingsjaar=datetime.now().year
+	).exclude(
+		soortbetaling=2
+	).order_by(
+		'persoon_id'
+	).values_list(
+		'persoon_id', flat=True
+	).distinct()
+	
+	personen = Persoon.objects.filter(
+		overleden=0
+	).filter(
+		rhetorica__jaar__lt=datetime.now().year
+	).exclude(
+		id__in=ditjaarbetaald
+	).filter(
+		contacteren=1
+	).order_by(
+		'rhetorica__jaar', 'achternaam', 'voornaam'
+	)
+
+	#personen = Persoon.objects.filter(overleden=0).filter(id__in=vroegerbetaald)
+
+	context = {
+		'personen': personen
+	}
+	
+	return render(request, 'alumni/moetbetalen.html', context)
+
+@login_required
+def vroegerbetaald(request):
+	vroegerbetaald = Betaling.objects.exclude(
+		betalingsjaar=datetime.now().year
+	).exclude(
+		soortbetaling=2
+	).filter(
+		Q(betalingsjaar=datetime.now().year-1)|Q(betalingsjaar=datetime.now().year-2)|Q(betalingsjaar=datetime.now().year-3)
+	).order_by(
+		'persoon_id'
+	).values(
+		'persoon_id'
+	).distinct()
+	
+	personen = Persoon.objects.filter(
+		overleden=0
+	).filter(
+		rhetorica__jaar__lt=datetime.now().year
+	).filter(
+		id__in=vroegerbetaald
+	).filter(
+		contacteren=1
+	).order_by(
+		'rhetorica__jaar', 'achternaam', 'voornaam'
+	)
+	
+	context = {
+		'personen': personen
+	}
+	
+	return render(request, 'alumni/vroegerbetaald.html', context)

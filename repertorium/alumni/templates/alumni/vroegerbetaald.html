@@ -1,0 +1,26 @@
+{% extends 'alumni/base.html' %}
+{% load humanize %}
+
+{% block title %}Alumni die vroeger hebben betaald{% endblock %}
+
+{% block main %}
+	
+	<h1>Alumni die vroeger hebben betaald</h1>
+	
+	<p>Lijst van mensen die </p>
+	<ol><li>zouden moeten betalen (afgestudeerd meer dan een jaar geleden)</li>
+		<li>nog niet betaald hebben voor dit jaar</li>
+		<li>niet overleden zijn</li>
+		<li>niet gezegd hebben dat ze niet meer willen gecontacteerd worden</li>
+		<li>lidgeld betaald hebben vorig jaar, of het jaar daarvoor, of het jaar daarvoor</li>
+	</ol>
+	
+	<ol>
+		{% for persoon in personen %}
+			<li>{{ persoon.voornaam }} {{ persoon.achternaam }}
+				({{ persoon.rhetorica }})
+			</li>
+		{% endfor %}
+	</ol>
+	
+{% endblock %}
