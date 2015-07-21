@@ -6,6 +6,9 @@
 {% block main %}
 
 <h1>{{ persoon.voornaam }} {{ persoon.achternaam }}
+	{% if persoon.overleden or persoon.sterfdatum %}
+		&dagger;
+	{% endif %}
 	{% if user.is_authenticated %}
 		<span class="editpersoon">[<a href="/admin/alumni/persoon/{{ persoon.id }}/">wijzig</a>]</span>
 	{% endif %}
