@@ -108,3 +108,13 @@ table.betaling th {
 table.betaling tr.even {
 	background-color: #f0f0f0;
 }
+
+table.loginform td {
+	padding: 5px 10px 5px 0;
+}
+
+.error {
+	border: 1px solid #f00;
+	background-color: #fcc;
+	padding: 5px;
+}
