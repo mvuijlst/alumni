@@ -62,16 +62,21 @@ class Persoon(models.Model):
         else:
             return ''
         
-    def ouderdom(self):
+    def ouderdom(self):        
         if self.sterfdatum:
-            return '†' + str(self.sterfdatum.year)
+            temp = '†' + str(self.sterfdatum.year)
+            if self.geboortedatum:
+                return temp + ' (' + str(self.sterfdatum.year - self.geboortedatum.year - ((self.sterfdatum.month, self.sterfdatum.day) < (self.geboortedatum.month, self.geboortedatum.day))) + ' jaar)'
+            else:
+                return temp + ' (ca. ' + str(self.sterfdatum.year - self.rhetorica.jaar + 18) + ' jaar)'
         elif self.overleden:
             return '†'
         elif self.geboortedatum:
             nu = datetime.now()
-            return nu.year - self.geboortedatum.year - ((nu.month, nu.day) < (self.geboortedatum.month, self.geboortedatum.day))
+            temp = nu.year - self.geboortedatum.year - ((nu.month, nu.day) < (self.geboortedatum.month, self.geboortedatum.day))
+            return str(temp) + ' jaar'
         else:
-            return ''
+            return 'ca. ' + str(datetime.now().year - self.rhetorica.jaar + 18) + ' jaar'
     
     def richting(self):
         if self.rhetorica:
