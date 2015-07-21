@@ -1,5 +1,6 @@
 {% extends 'alumni/base.html' %}
 {% load humanize %}
+{% load app_filters %} 
 
 {% block title %}{{ persoon.voornaam }} {{ persoon.achternaam }}{% endblock %}
 
@@ -9,7 +10,7 @@
 	{% if persoon.overleden or persoon.sterfdatum %}
 		&dagger;
 	{% endif %}
-	{% if user.is_authenticated %}
+	{% if request.user|has_group:"beheer" %}
 		<span class="editpersoon">[<a href="/admin/alumni/persoon/{{ persoon.id }}/">wijzig</a>]</span>
 	{% endif %}
 </h1>
@@ -125,7 +126,7 @@
 {% endif %}
 
 {% if aantal_betalingen > 0 %}
-	{% if user.is_authenticated %}
+	{% if request.user|has_group:"beheer" %}
 		<h3>Betalingen en lidgelden</h3>
 		<table class="betaling">
 			<tr><th>Datum</th>
