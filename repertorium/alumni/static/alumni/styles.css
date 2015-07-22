@@ -118,3 +118,12 @@ table.loginform td {
 	background-color: #fcc;
 	padding: 5px;
 }
+
+table.jaarnav {
+	font-size: 0.9em;
+	margin-left: 20px;
+}
+
+table.jaarnav td, table.jaarnav th {
+	padding: 5px;
+}

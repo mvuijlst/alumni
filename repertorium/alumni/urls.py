@@ -4,6 +4,8 @@ from . import views
 urlpatterns = [
 	# bv: /repertorium/
     url(r'^$', views.index, name='index'),
+    # bv: /repertorium/decennium/1980
+    url(r'^dec/(?P<decennium>[0-9]{4})$', views.decennium, name='decennium'),
     # bv: /repertorium/klas/123
     url(r'^klas/(?P<klas_id>[0-9]+)$', views.klaslijst, name='klaslijst'),
     # bv: /repertorium/p/6677

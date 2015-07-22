@@ -4,27 +4,22 @@
 {% block title %}Welgekomen{% endblock %}
 
 {% block main %}
-	{% if recent_klassen %}
-		<p>Recente klassen:</p>
-		<ul>
-		{% for klas in recent_klassen %}
-			<li><a href="{% url 'klaslijst' klas.id %}">
-					{{ klas.jaar }}
-					{{ klas.klasnaam }}
-				</a>
-				{% if klas.titularis %}
-					({{ klas.titularis }})
-				{% endif %}
-			</li>
-		{% endfor %}
-		</ul>
-	{% else %}
-		<p>Geen recente klassen.</p>
-	{% endif %}	
- 
- 
+	<h1>Repertorium Alumni Sint-Barbaracollege Gent</h1>
+
+	<p>Welkom op het repertorium van de Alumnivereniging van het Sint-Barbaracollege. 
+		Hier vindt u alle leerlingen die sinds 1837 afstudeerden: per decennium een overzicht
+		van alle klassen, en per klas een lijst van alle leerlingen.
+	</p>
+	
+	<table class="jaarnav">
+		<tr><th>19de eeuw</strong></td><td></td><td></td><td></td><td><a href="dec/1830">1830</a></td><td><a href="dec/1840">1840</a></td><td><a href="dec/1850">1850</a></td><td><a href="dec/1860">1860</a></td><td><a href="dec/1870">1870</a></td><td><a href="dec/1880">1880</a></td><td><a href="dec/1890">1890</a></td></tr><tr><td><strong style="font-size: 1.1em">20ste eeuw</strong></td><td><a href="dec/1900">1900</a></td><td><a href="dec/1910">1910</a></td><td><a href="dec/1920">1920</a></td><td><a href="dec/1930">1930</a></td><td><a href="dec/1940">1940</a></td><td><a href="dec/1950">1950</a></td><td><a href="dec/1960">1960</a></td><td><a href="dec/1970">1970</a></td><td><a href="dec/1980">1980</a></td><td><a href="dec/1990">1990</a></td></tr><tr><td><strong style="font-size: 1.1em">21ste eeuw</strong></td><td><a href="dec/2000">2000</a></td><td><a href="dec/2010">2010</a></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+	</table>
+	
+	<p>We proberen ook telkens beroepsinfo te geven, en contactmogelijkheden (inclusief oude adressen, wat handig kan zijn als het meest recente adres niet meer zou kloppen).</p>
+	<p>Ziet u ergens een fout of wilt u iets aanvullen? Laat het ons weten op <a href="mailto:alumni@sint-barbara.be">alumni@sint-barbara.be</a>!</p>
+	
 	{% if recent_modifications %}
-		<p>Recent gewijzigd:</p>
+		<h3>Recent gewijzigd</h3>
 		<ul>
 		{% for persoon in recent_modifications %}
 			<li><a href="{% url 'detail' persoon.id %}">

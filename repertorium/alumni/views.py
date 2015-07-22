@@ -9,17 +9,28 @@ from .models import Klas, Rhetorica, Persoon, Contact, Beroep, Adres, Betaling, 
 @login_required
 def index(request):
 	recent_modifications = Persoon.objects.order_by('-wijziging')[:15]
-	recent_klassen = Klas.objects.order_by('-jaar')
 	
 	context = {
 		'recent_modifications': recent_modifications,
-		'recent_klassen': recent_klassen
 	}
 	return render(request, 'alumni/index.html', context)
 
 def info(request):
 	return render(request, 'alumni/info.html')
-		
+
+@login_required
+def decennium(request,decennium):
+	dec=int(decennium[:3])
+	try:
+		klassen=Klas.objects.filter(jaar__startswith=dec).order_by('jaar', 'klasnaam')
+	except Klas.DoesNotExist:
+		raise Http404("Geen klassen gevonden.")
+	context = { 
+		'klassen': klassen,
+		'decennium': decennium
+	}
+	return render(request, 'alumni/decennium.html',context)
+
 @login_required
 def klaslijst(request, klas_id):
 	try:

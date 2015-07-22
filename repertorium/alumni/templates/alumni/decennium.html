@@ -1,0 +1,23 @@
+{% extends 'alumni/base.html' %}
+{% load humanize %}
+
+{% block title %}decennium{% endblock %}
+
+{% block main %}
+	
+	<h1>Klassen in de jaren {{ decennium }}</h1>
+	
+	{% regroup klassen by jaar as klaslijst %}
+	{% for klasjaar in klaslijst %}
+		<h2>{{ klasjaar.grouper }}</h2>
+		<ul>
+			{% for klas in klasjaar.list %}
+				<li><a href="{% url 'klaslijst' klas.id %}">
+						{{ klas.jaar }} {{ klas.klasnaam }}</a>
+					{% if klas.titularis %} ({{ klas.titularis }}){% endif %}
+				</li>
+			{% endfor %}
+		</ul>
+	{% endfor %}
+	
+{% endblock %}
