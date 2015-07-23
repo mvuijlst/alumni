@@ -131,3 +131,13 @@ table.jaarnav {
 table.jaarnav td, table.jaarnav th {
 	padding: 5px;
 }
+
+.klasfoto a, .klasfoto a:hover {
+	background-color: #fffffa;
+	border: none;
+}
+
+.klasfoto img {
+	padding: 5px;
+	border: 1px solid #ccc;
+}

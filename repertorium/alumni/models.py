@@ -3,6 +3,8 @@ from datetime import datetime
 from django.db import models
 from django.utils import timezone
 
+from sorl.thumbnail import ImageField
+
 def ditjaar():
     return datetime.now().year
     
