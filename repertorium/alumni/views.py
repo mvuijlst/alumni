@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from datetime import datetime
 
-from .models import Klas, Rhetorica, Persoon, Contact, Beroep, Adres, Betaling, Gebeurtenis
+from .models import Klas, Rhetorica, Persoon, Contact, Beroep, Adres, Betaling, Gebeurtenis, Klasfoto
 
 @login_required
 def index(request):
@@ -38,10 +38,12 @@ def klaslijst(request, klas_id):
 	except Klas.DoesNotExist:
 		raise Http404("Klas niet gevonden.")
 	personen = Persoon.objects.filter(rhetorica__klas=klas_id).order_by('rhetorica__richting', 'achternaam', 'voornaam')
+	klasfotos = Klasfoto.objects.filter(klas=klas_id).order_by('datum')
 	aantal_klassen = Rhetorica.objects.filter(klas=klas_id).count()
 	context = {
 		'klas': klas,
 		'personen': personen,
+		'klasfotos': klasfotos,
 		'aantal_klassen': aantal_klassen
 	}
 	return render(request, 'alumni/klaslijst.html', context)
@@ -65,12 +67,7 @@ def persoondetail(request, persoon_id):
 		'beroepen': beroepen,
 		'adressen': adressen,
 		'gebeurtenissen' : gebeurtenissen,
-		'betalingen': betalingen,
-		'aantal_contacten': len(contacten),
-		'aantal_beroepen': len(beroepen),
-		'aantal_adressen': len(adressen),
-		'aantal_gebeurtenissen' : len(gebeurtenissen),
-		'aantal_betalingen': len(betalingen)		
+		'betalingen': betalingen	
 	}
 	return render(request, 'alumni/detail.html', context)
 

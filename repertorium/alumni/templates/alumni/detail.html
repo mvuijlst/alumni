@@ -40,7 +40,7 @@
 	</p>
 {% endif %}
 
-{% if aantal_gebeurtenissen > 0 %}
+{% if gebeurtenissen.count > 0 %}
 	<h3>Personalia</h3>
 	<ul>{% for gebeurtenis in gebeurtenissen %}
 			<li>{{ gebeurtenis.gebeurtenistype|title }}{% if gebeurtenis.datum %}
@@ -50,7 +50,7 @@
 	</ul>
 {% endif %}
 
-{% if aantal_beroepen > 0 %}
+{% if beroepen.count > 0 %}
 	<h3>Beroepsinformatie</h3>
 	<ul>
 		{% for beroep in beroepen %}
@@ -73,7 +73,7 @@
 	</ul>
 {% endif %}
 
-{% if aantal_contacten > 0  %}
+{% if contacten.count > 0  %}
 	<h3>Contactinformatie</h3>
 	<ul>{% for contact in contacten %}
 			<li>
@@ -100,7 +100,7 @@
 	</ul>
 {% endif %}
 
-{% if aantal_adressen > 0 %}
+{% if adressen.count > 0 %}
 	<h3>Adresgegevens</h3>
 	<ul>
 		{% for adres in adressen %}
@@ -125,7 +125,7 @@
 	</ul>
 {% endif %}
 
-{% if aantal_betalingen > 0 %}
+{% if betalingen.count > 0 %}
 	{% if request.user|has_group:"beheer" %}
 		<h3>Betalingen en lidgelden</h3>
 		<table class="betaling">
