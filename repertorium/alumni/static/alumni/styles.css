@@ -18,6 +18,10 @@ body {
 	background-color: #fffffa;
 }
 
+#main {
+	max-width: 800px;
+}
+
 a {
 	color: #000;
 	text-decoration: none;
