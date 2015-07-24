@@ -58,7 +58,7 @@ a:hover {
 }
 
 #main {
-	margin: 60px 10px 40px 10px;
+	margin: 70px 10px 40px 10px;
 }
 
 #footer {
@@ -140,4 +140,16 @@ table.jaarnav td, table.jaarnav th {
 .klasfoto img {
 	padding: 5px;
 	border: 1px solid #ccc;
+}
+
+.reunie {
+	float: left;
+	width: 210px;
+}
+
+.klasfoto .jaar {
+	text-align: center;
+	font-size: 0.8em;
+	margin-top: 0;
+	line-height: 10px;
 }

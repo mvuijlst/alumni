@@ -13,7 +13,10 @@ class Klas(models.Model):
     klasnaam = models.CharField(max_length=50,null=True,blank=True)
     titularis = models.CharField(max_length=200,null=True,blank=True)
     def __str__(self):
-        return str(self.jaar) + ' ' + self.klasnaam + ' (' + self.titularis + ')'
+        ret = str(self.jaar) + ' ' + self.klasnaam
+        if self.titularis:    
+            ret += ' (' + self.titularis + ')'
+        return ret 
     class Meta:
         verbose_name_plural = 'Klassen'
 
@@ -158,6 +161,7 @@ class Klasfoto(models.Model):
     klas = models.ForeignKey(Klas)
     datum = models.DateField(null=True,blank=True)
     foto = models.ImageField(upload_to='klasfoto')
+    legende = models.TextField(null=True,blank=True)
     class Meta:
         verbose_name_plural = 'Klasfoto\'s'
 

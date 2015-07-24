@@ -13,14 +13,27 @@
 	
 	{% if klasfotos.count %}
 		{% for klasfoto in klasfotos %}
-			<div class="klasfoto">
-				<a href="{{ klasfoto.foto.url }}">
-					{% thumbnail klasfoto.foto "640" as im %}
-    					<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
-					{% endthumbnail %}
-				</a>
-			</div>
+			{% if klasfoto.datum.year = klas.jaar %}
+				<div class="klasfoto">
+					<a href="{{ klasfoto.foto.url }}">
+						{% thumbnail klasfoto.foto "640" as im %}
+    						<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+						{% endthumbnail %}
+					</a>
+				</div>
+			{% else %}
+				<div class="klasfoto reunie">
+					<a href="{{ klasfoto.foto.url }}">
+						{% thumbnail klasfoto.foto "200" as im %}
+    						<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+						{% endthumbnail %}
+					</a>
+					<!-- <div class="legende">{{ klasfoto.legende }}</div> -->
+					<div class="jaar">{{ klasfoto.datum }}</div>
+				</div>
+			{% endif %}
 		{% endfor %}
+		<br style="clear: both" />
 	{% endif %}
 
 	{% regroup personen by richting as persoonlijst %}
