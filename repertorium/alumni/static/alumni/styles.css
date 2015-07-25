@@ -91,25 +91,25 @@ a:hover {
 	color: #999;
 }
 
-table.betaling {
+table.stripe {
 	border-collapse: collapse;
 	font-size: 0.9em;
 }
 
-table.betaling, table.betaling td, table.betaling th {
+table.stripe, table.stripe td, table.stripe th {
 	border: 1px solid #bbb;
 }
 
-table.betaling td, table.betaling th {
+table.stripe td, table.stripe th {
 	padding: 2px 10px;
 }
 
-table.betaling th {
+table.stripe th {
 	background-color: #ddd;
 	color: #333;
 }
 
-table.betaling tr.even {
+table.stripe tr.even {
 	background-color: #f0f0f0;
 }
 

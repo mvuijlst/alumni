@@ -128,7 +128,7 @@
 {% if betalingen.count > 0 %}
 	{% if request.user|has_group:"beheer" %}
 		<h3>Betalingen en lidgelden</h3>
-		<table class="betaling">
+		<table class="stripe">
 			<tr><th>Datum</th>
 				<th>Type</th>
 				<th>Bedrag</th>

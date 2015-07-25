@@ -1,0 +1,24 @@
+{% extends 'alumni/base.html' %}
+{% load humanize %}
+
+{% block title %}{{ titel }}{% endblock %}
+
+{% block main %}
+	
+	<h1>{{ titel }}</h1>
+	
+	{{ uitleg|safe }}
+	
+	<table class="stripe">
+		{% for persoon in personen %}
+			<tr class="{% cycle 'oneven' 'even' %}">
+				<td>{{ forloop.counter }}</td>
+				<td>{{ persoon.voornaam }} {{ persoon.achternaam }}</td>
+				<td>{{ persoon.rhetorica }}</td>
+				<td>[<a href="/admin/alumni/persoon/{{ persoon.id }}/">wijzig</a>]</td>
+			</tr>
+		{% endfor %}
+	</table>
+	
+	
+{% endblock %}

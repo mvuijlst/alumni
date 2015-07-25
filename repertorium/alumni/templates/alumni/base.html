@@ -24,13 +24,14 @@
 <body>
     
     <div id="header">
-        <h1><a href="/repertorium">Repertorium</a></h1>
+        <h1><a href="{% url 'index' %}">Repertorium</a></h1>
         <p id="utility">
-            <a href="/repertorium/info">over ons</a>
+            <a href="{% url 'info' %}">over ons</a>
             {% if user.is_authenticated %}
                 {% for group in user.groups.all %}
                     {% if group.name == 'beheer' %}
                         | <a href="/admin">admin</a>
+                        | <a href="{% url 'rapport' %}">rapporten</a>
                     {% endif %}
                 {% endfor %}
                 | <a href="/logout?next=/repertorium/info">logout</a>

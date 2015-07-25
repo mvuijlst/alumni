@@ -80,8 +80,10 @@ class Persoon(models.Model):
             nu = datetime.now()
             temp = nu.year - self.geboortedatum.year - ((nu.month, nu.day) < (self.geboortedatum.month, self.geboortedatum.day))
             return str(temp) + ' jaar'
-        else:
+        elif self.rhetorica:
             return 'ca. ' + str(datetime.now().year - self.rhetorica.jaar + 18) + ' jaar'
+        else:
+            return ''
     
     def richting(self):
         if self.rhetorica:

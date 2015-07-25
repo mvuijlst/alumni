@@ -74,9 +74,19 @@ def persoondetail(request, persoon_id):
 	return render(request, 'alumni/detail.html', context)
 
 @login_required
+def rapport(request):
+	return render(request, 'alumni/rapport.html')
+	
+@login_required
 def moetbetalen(request):
+	
+	if datetime.now().month<7:
+		schooljaar = datetime.now().year-1
+	else:
+		schooljaar = datetime.now().year
+		
 	ditjaarbetaald = Betaling.objects.exclude(
-		betalingsjaar=datetime.now().year
+		betalingsjaar=schooljaar
 	).exclude(
 		soortbetaling=2
 	).order_by(
@@ -88,31 +98,44 @@ def moetbetalen(request):
 	personen = Persoon.objects.filter(
 		overleden=0
 	).filter(
-		rhetorica__jaar__lt=datetime.now().year
+		rhetorica__jaar__lt=schooljaar
 	).exclude(
 		id__in=ditjaarbetaald
 	).filter(
 		contacteren=1
 	).order_by(
-		'rhetorica__jaar', 'achternaam', 'voornaam'
+		'-rhetorica__jaar', 'rhetorica__richting' ,'achternaam', 'voornaam'
 	)
 
 	#personen = Persoon.objects.filter(overleden=0).filter(id__in=vroegerbetaald)
 
 	context = {
-		'personen': personen
+		'titel': 'Moeten betalen',
+		'personen': personen,
+		'uitleg': """<p>Lijst van mensen die </p>
+			<ol><li>zouden moeten betalen (afgestudeerd meer dan een jaar geleden)</li>
+			<li>nog niet betaald hebben voor dit jaar</li>
+			<li>niet overleden zijn</li>
+			<li>niet gezegd hebben dat ze niet meer willen gecontacteerd worden</li>
+		</ol>"""
 	}
 	
-	return render(request, 'alumni/moetbetalen.html', context)
+	return render(request, 'alumni/adreslijst.html', context)
 
 @login_required
 def vroegerbetaald(request):
-	vroegerbetaald = Betaling.objects.exclude(
-		betalingsjaar=datetime.now().year
+	
+	if datetime.now().month<7:
+		schooljaar = datetime.now().year-1
+	else:
+		schooljaar = datetime.now().year
+		
+	vroegerbetaald = Betaling.objects.filter(
+		Q(betalingsjaar=schooljaar-1)|Q(betalingsjaar=schooljaar-2)|Q(betalingsjaar=schooljaar-3)
+	).exclude(
+		betalingsjaar=2015
 	).exclude(
 		soortbetaling=2
-	).filter(
-		Q(betalingsjaar=datetime.now().year-1)|Q(betalingsjaar=datetime.now().year-2)|Q(betalingsjaar=datetime.now().year-3)
 	).order_by(
 		'persoon_id'
 	).values(
@@ -122,17 +145,70 @@ def vroegerbetaald(request):
 	personen = Persoon.objects.filter(
 		overleden=0
 	).filter(
-		rhetorica__jaar__lt=datetime.now().year
+		rhetorica__jaar__lt=schooljaar
 	).filter(
 		id__in=vroegerbetaald
 	).filter(
 		contacteren=1
 	).order_by(
-		'rhetorica__jaar', 'achternaam', 'voornaam'
+		'-rhetorica__jaar', 'rhetorica__richting', 'achternaam', 'voornaam'
 	)
 	
 	context = {
-		'personen': personen
+		'titel': 'Recente ex-leden',
+		'personen': personen,
+		'uitleg': """<p>Lijst van mensen die </p>
+			<ol><li>zouden moeten betalen (afgestudeerd meer dan een jaar geleden)</li>
+			<li>nog niet betaald hebben voor dit jaar</li>
+			<li>niet overleden zijn</li>
+			<li>niet gezegd hebben dat ze niet meer willen gecontacteerd worden</li>
+			<li>lidgeld betaald hebben vorig jaar, of het jaar daarvoor, of het jaar daarvoor</li>
+		</ol>"""
 	}
 	
-	return render(request, 'alumni/vroegerbetaald.html', context)
+	return render(request, 'alumni/adreslijst.html', context)
+	
+@login_required
+def moetABkrijgen(request):
+	
+	if datetime.now().month<7:
+		schooljaar = datetime.now().year-1
+	else:
+		schooljaar = datetime.now().year
+	
+	lid = Betaling.objects.filter(
+		Q(betalingsjaar__exact=schooljaar)|Q(soortbetaling__exact=2)
+	).order_by(
+		'persoon_id'
+	).values(
+		'persoon_id'
+	).distinct()
+	
+	personen = Persoon.objects.filter(
+		overleden=0
+	).filter(
+		Q(rhetorica__klas__jaar__exact=schooljaar)|Q(id__in=lid)
+	).filter(
+		contacteren=1
+	).order_by(
+		'-rhetorica__jaar', 'rhetorica__richting', 'achternaam', 'voornaam'
+	)
+	
+	adressen = Adres.objects.filter(
+		Q(persoon__id__in=lid)|Q(persoon__rhetorica__jaar__exact=schooljaar)
+	).filter(
+		geldig=1
+	)
+	
+	context = {
+		'personen': personen,
+		'adressen': adressen,
+		'titel': 'Moet AB krijgen',
+		'uitleg': """ <p>Lijst van mensen die </p>
+			<ol><li>lid zijn, of vorig schooljaar afgestudeerd</li>
+				<li>niet overleden zijn</li>
+				<li>niet gezegd hebben dat ze niet meer willen gecontacteerd worden</li>
+			</ol>"""
+	}
+	
+	return render(request, 'alumni/adreslijst.html', context)

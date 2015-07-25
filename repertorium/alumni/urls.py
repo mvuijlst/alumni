@@ -14,6 +14,8 @@ urlpatterns = [
     # bv: /repertorium/info
     url(r'^info$', views.info, name='info'),
     # rapporten
-    url(r'^moetbetalen$', views.moetbetalen, name='moetbetalen'),
-    url(r'^vroegerbetaald$', views.vroegerbetaald, name='vroegerbetaald'),
+    url(r'^rapport$', views.rapport, name='rapport'),
+    url(r'^rapport/moetbetalen$', views.moetbetalen, name='moetbetalen'),
+    url(r'^rapport/vroegerbetaald$', views.vroegerbetaald, name='vroegerbetaald'),
+    url(r'^rapport/ab$', views.moetABkrijgen, name='moetABkrijgen'),
 ]
