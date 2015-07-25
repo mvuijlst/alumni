@@ -84,30 +84,23 @@ def moetbetalen(request):
 		schooljaar = datetime.now().year-1
 	else:
 		schooljaar = datetime.now().year
-		
-	ditjaarbetaald = Betaling.objects.exclude(
-		betalingsjaar=schooljaar
-	).exclude(
-		soortbetaling=2
-	).order_by(
-		'persoon_id'
-	).values_list(
-		'persoon_id', flat=True
-	).distinct()
-	
-	personen = Persoon.objects.filter(
-		overleden=0
-	).filter(
-		rhetorica__jaar__lt=schooljaar
-	).exclude(
-		id__in=ditjaarbetaald
-	).filter(
-		contacteren=1
-	).order_by(
-		'-rhetorica__jaar', 'rhetorica__richting' ,'achternaam', 'voornaam'
-	)
 
-	#personen = Persoon.objects.filter(overleden=0).filter(id__in=vroegerbetaald)
+	personen = Persoon.objects.raw("""
+		SELECT p.id, p.voornaam, p.achternaam, r.jaar, r.richting, a.adres, c.contactdata email
+		FROM alumni_persoon p 
+			inner join alumni_rhetorica r on p.rhetorica_id=r.id
+			left outer join alumni_adres a on p.id=a.persoon_id
+			left outer join alumni_contact c on p.id=c.persoon_id
+		WHERE
+			r.jaar < {0} and  
+			p.overleden=0 and
+			p.contacteren=1 and
+			(a.geldig=1 or a.id is null) and 
+			(c.contacttype='email' or c.id is null) and
+			p.id not in (select persoon_id from alumni_betaling 
+		                 where betalingsjaar={0} or soortbetaling_id<>2)
+		GROUP BY p.id
+		ORDER BY r.jaar, r.richting, p.achternaam""".format(schooljaar))
 
 	context = {
 		'titel': 'Moeten betalen',
@@ -130,29 +123,24 @@ def vroegerbetaald(request):
 	else:
 		schooljaar = datetime.now().year
 		
-	vroegerbetaald = Betaling.objects.filter(
-		Q(betalingsjaar=schooljaar-1)|Q(betalingsjaar=schooljaar-2)|Q(betalingsjaar=schooljaar-3)
-	).exclude(
-		betalingsjaar=2015
-	).exclude(
-		soortbetaling=2
-	).order_by(
-		'persoon_id'
-	).values(
-		'persoon_id'
-	).distinct()
-	
-	personen = Persoon.objects.filter(
-		overleden=0
-	).filter(
-		rhetorica__jaar__lt=schooljaar
-	).filter(
-		id__in=vroegerbetaald
-	).filter(
-		contacteren=1
-	).order_by(
-		'-rhetorica__jaar', 'rhetorica__richting', 'achternaam', 'voornaam'
-	)
+	personen = Persoon.objects.raw("""
+		SELECT p.id, p.voornaam, p.achternaam, r.jaar, r.richting, a.adres, c.contactdata email
+		FROM alumni_persoon p 
+			inner join alumni_rhetorica r on p.rhetorica_id=r.id
+			inner join alumni_betaling b on p.id=b.persoon_id
+			left outer join alumni_adres a on p.id=a.persoon_id
+			left outer join alumni_contact c on p.id=c.persoon_id
+		WHERE
+			r.jaar < {0} and 
+			b.betalingsjaar in ({1},{2},{3}) and
+			p.overleden=0 and
+			p.contacteren=1 and
+			(a.geldig=1 or a.id is null) and 
+			(c.contacttype='email' or c.id is null) and 
+			p.id not in (select persoon_id from alumni_betaling 
+						 where betalingsjaar=2015 or soortbetaling_id=2)
+		GROUP BY p.id
+		ORDER BY r.jaar, r.richting, p.achternaam""".format(schooljaar,schooljaar-1,schooljaar-2,schooljaar-3))
 	
 	context = {
 		'titel': 'Recente ex-leden',
@@ -176,38 +164,31 @@ def moetABkrijgen(request):
 	else:
 		schooljaar = datetime.now().year
 	
-	lid = Betaling.objects.filter(
-		Q(betalingsjaar__exact=schooljaar)|Q(soortbetaling__exact=2)
-	).order_by(
-		'persoon_id'
-	).values(
-		'persoon_id'
-	).distinct()
-	
-	personen = Persoon.objects.filter(
-		overleden=0
-	).filter(
-		Q(rhetorica__klas__jaar__exact=schooljaar)|Q(id__in=lid)
-	).filter(
-		contacteren=1
-	).order_by(
-		'-rhetorica__jaar', 'rhetorica__richting', 'achternaam', 'voornaam'
-	)
-	
-	adressen = Adres.objects.filter(
-		Q(persoon__id__in=lid)|Q(persoon__rhetorica__jaar__exact=schooljaar)
-	).filter(
-		geldig=1
-	)
+	personen = Persoon.objects.raw("""
+		SELECT p.id, p.voornaam, p.achternaam, r.jaar, r.richting, a.adres, c.contactdata email
+		FROM alumni_persoon p 
+			inner join alumni_rhetorica r on p.rhetorica_id=r.id
+			left outer join alumni_betaling b on p.id=b.persoon_id
+			left outer join alumni_adres a on p.id=a.persoon_id
+			left outer join alumni_contact c on p.id=c.persoon_id
+		WHERE
+			(r.jaar = {0} or b.betalingsjaar={0} or b.soortbetaling_id=2) and
+			p.overleden=0 and
+			p.contacteren=1 and
+			(a.geldig=1 or a.id is null) and 
+			(c.contacttype='email' or c.id is null)
+		GROUP BY p.id
+		ORDER BY r.jaar, r.richting, p.achternaam
+		""".format(schooljaar))
 	
 	context = {
 		'personen': personen,
-		'adressen': adressen,
 		'titel': 'Moet AB krijgen',
 		'uitleg': """ <p>Lijst van mensen die </p>
 			<ol><li>lid zijn, of vorig schooljaar afgestudeerd</li>
 				<li>niet overleden zijn</li>
 				<li>niet gezegd hebben dat ze niet meer willen gecontacteerd worden</li>
+				<li>en die een geldig adres hebben</li>
 			</ol>"""
 	}
 	

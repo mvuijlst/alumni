@@ -19,7 +19,7 @@ body {
 }
 
 #main {
-	max-width: 800px;
+	max-width: 960px;
 }
 
 a {
@@ -111,6 +111,10 @@ table.stripe th {
 
 table.stripe tr.even {
 	background-color: #f0f0f0;
+}
+
+table.topalign td, table.topalign th {
+	vertical-align: top;
 }
 
 table.loginform td {

@@ -5,9 +5,9 @@
 {% block main %}
 	<h1>Rapporten</h1>
 	
-	<ol><li><a href="{% url 'moetbetalen' %}">Mensen die nog zouden moeten betalen dit jaar</a></li>
+	<ol><li><a href="{% url 'moetABkrijgen' %}">Moeten Allegro Barbaro krijgen</a></li>
+		<li><a href="{% url 'moetbetalen' %}">Mensen die nog zouden moeten betalen dit jaar</a></li>
 		<li><a href="{% url 'vroegerbetaald' %}">Recent betaald, maar niet dit jaar</a></li>
-		<li><a href="{% url 'moetABkrijgen' %}">Moeten Allegro Barbaro krijgen</a></li>
 	</ol>
 
 {% endblock %}
