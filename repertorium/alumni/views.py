@@ -38,11 +38,13 @@ def klaslijst(request, klas_id):
 	except Klas.DoesNotExist:
 		raise Http404("Klas niet gevonden.")
 	personen = Persoon.objects.filter(rhetorica__klas=klas_id).order_by('rhetorica__richting', 'achternaam', 'voornaam')
+	adressen = Adres.objects.filter(persoon__rhetorica__klas_id=klas_id).filter(persoon__overleden=0).filter(geldig=1)
 	klasfotos = Klasfoto.objects.filter(klas=klas_id).order_by('datum')
 	aantal_klassen = Rhetorica.objects.filter(klas=klas_id).count()
 	context = {
 		'klas': klas,
 		'personen': personen,
+		'adressen' : adressen,
 		'klasfotos': klasfotos,
 		'aantal_klassen': aantal_klassen
 	}

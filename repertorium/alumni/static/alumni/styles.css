@@ -153,3 +153,7 @@ table.jaarnav td, table.jaarnav th {
 	margin-top: 0;
 	line-height: 10px;
 }
+
+.klaslijst li {
+	margin-bottom: 0.5em;
+}
