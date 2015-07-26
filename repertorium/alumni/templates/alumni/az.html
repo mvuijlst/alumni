@@ -1,0 +1,32 @@
+{% extends 'alumni/base.html' %}
+{% load humanize %}
+
+{% block title %}Alumni: {{ letter }}{% endblock %}
+
+{% block main %}
+	
+	<ul class="alfabetlijst">
+		{% for ltr in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' %}
+			<li>
+				<a href="{% url 'az' ltr %}">{{ ltr }}</a>
+				{% if not forloop.last %}
+					|
+				{% endif %}
+			</li>
+		{% endfor %}
+	</ul>
+	
+	<h1>Alumni: {{ letter }}</h1>
+		
+	<ul>
+		{% for persoon in personen %}	
+			<li><a href="{% url 'detail' persoon.id %}">
+					{{ persoon.voornaam }} <strong>{{ persoon.achternaam }}</strong>
+				</a>
+				({{ persoon.rhetorica }})
+			</li>
+		{% endfor %}
+	</ul>
+	
+	
+{% endblock %}

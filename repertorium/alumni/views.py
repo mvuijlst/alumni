@@ -74,6 +74,26 @@ def persoondetail(request, persoon_id):
 	return render(request, 'alumni/detail.html', context)
 
 @login_required
+def az(request, letter):
+	
+	if letter:
+		letter = letter[0].upper()
+	else:
+		letter = "A"
+	
+	try:
+		personen = Persoon.objects.filter(achternaam__startswith=letter).order_by('achternaam', 'voornaam')
+	except Persoon.DoesNotExist:
+		raise Http404("Geen alumni gevonden.")
+	
+	context = {
+		'personen': personen,
+		'letter': letter
+	}
+	
+	return render(request, 'alumni/az.html', context)
+
+@login_required
 def rapport(request):
 	return render(request, 'alumni/rapport.html')
 	

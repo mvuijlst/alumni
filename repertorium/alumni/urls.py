@@ -11,6 +11,8 @@ urlpatterns = [
     url(r'^klas/(?P<klas_id>[0-9]+)$', views.klaslijst, name='klaslijst'),
     # bv: /repertorium/p/6677
     url(r'^p/(?P<persoon_id>[0-9]+)$', views.persoondetail, name='detail'),
+    # bv: /repertorium/p/6677
+    url(r'^az/(?P<letter>[a-zA-Z])$', views.az, name='az'),
     # bv: /repertorium/info
     url(r'^info$', views.info, name='info'),
     # rapporten

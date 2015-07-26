@@ -161,3 +161,20 @@ table.jaarnav td, table.jaarnav th {
 .klaslijst li {
 	margin-bottom: 0.5em;
 }
+
+.alfabetlijst {
+	list-style-type: none;
+	list-style-position:inside;
+	margin:0;
+	padding:0;
+}
+
+.alfabetlijst li {
+	display: inline;
+	color: #999;
+}
+
+.alfabetlijst a {
+	padding: 0 3px;
+	color: #000;
+}

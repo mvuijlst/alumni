@@ -26,8 +26,12 @@
     <div id="header">
         <h1><a href="{% url 'index' %}">Repertorium</a></h1>
         <p id="utility">
-            <a href="{% url 'info' %}">over ons</a>
             {% if user.is_authenticated %}
+                <a href="{% url 'index' %}">home</a>
+            {% endif %}
+            | <a href="{% url 'info' %}">over ons</a>
+            {% if user.is_authenticated %}
+                | <a href="{% url 'az' 'A' %}">alumni A-Z</a>
                 {% for group in user.groups.all %}
                     {% if group.name == 'beheer' %}
                         | <a href="/admin">admin</a>
