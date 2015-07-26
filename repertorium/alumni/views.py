@@ -82,7 +82,7 @@ def az(request, letter):
 		letter = "A"
 	
 	try:
-		personen = Persoon.objects.filter(achternaam__startswith=letter).order_by('achternaam', 'voornaam')
+		personen = Persoon.objects.filter(achternaam__startswith=letter).exclude(rhetorica__exact=None).order_by('achternaam', 'voornaam')
 	except Persoon.DoesNotExist:
 		raise Http404("Geen alumni gevonden.")
 	
