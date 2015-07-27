@@ -15,6 +15,9 @@
 					<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
 				{% endthumbnail %}
 			</a>
+			{% if persoonfoto.datum %}
+				<div class="datum">{{ persoonfoto.datum }}</div>
+			{% endif %}
 			{% if persoonfoto.legende %}
 				<div class="fotolegende">{{ persoonfoto.legende }}</div>
 			{% endif %}

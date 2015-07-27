@@ -90,6 +90,12 @@ a:hover {
 .persoonfoto {
 	float: right;
 }
+.persoonfoto .datum {
+	font-size: 0.7em;
+	text-align: right;
+	margin-top: -0.5em;
+	color: #ccc;
+}
 
 .voorbij {
 	color: #999;
