@@ -3,7 +3,7 @@
 }
 
 
-p, li, li, th, td, dd {
+p, li, li, th, td, dd, div {
 	font-family: 'Roboto', sans-serif;
 	color: #333;
 }
@@ -95,6 +95,13 @@ a:hover {
 	text-align: right;
 	margin-top: -0.5em;
 	color: #ccc;
+}
+
+.fotolegende {
+	font-size: 0.8em;
+	color: #999;
+	text-align: center;	
+	margin-top: -0.5em;
 }
 
 .voorbij {
