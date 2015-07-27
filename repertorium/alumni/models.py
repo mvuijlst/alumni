@@ -61,6 +61,8 @@ class Persoon(models.Model):
         if self.geboortedatum:
             if self.sterfdatum:
                 return self.sterfdatum.year - self.geboortedatum.year - ((self.sterfdatum.month, self.sterfdatum.day) < (self.geboortedatum.month, self.geboortedatum.day))
+            elif self.overleden:
+                return '?'
             else:
                 nu = datetime.now()
                 return nu.year - self.geboortedatum.year - ((nu.month, nu.day) < (self.geboortedatum.month, self.geboortedatum.day))
