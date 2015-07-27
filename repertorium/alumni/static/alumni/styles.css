@@ -3,7 +3,7 @@
 }
 
 
-p, li, li, th, td {
+p, li, li, th, td, dd, dt {
 	font-family: 'Roboto', sans-serif;
 	color: #333;
 }
@@ -177,4 +177,8 @@ table.jaarnav td, table.jaarnav th {
 .alfabetlijst a {
 	padding: 0 3px;
 	color: #000;
+}
+
+dt {
+	font-weight: bold;
 }

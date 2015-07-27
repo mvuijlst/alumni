@@ -17,16 +17,18 @@
 	</ul>
 	
 	<h1>Alumni: {{ letter }}</h1>
-		
-	<ul>
-		{% for persoon in personen %}	
-			<li><a href="{% url 'detail' persoon.id %}">
-					{{ persoon.voornaam }} <strong>{{ persoon.achternaam }}</strong>
-				</a>
-				({{ persoon.rhetorica }})
-			</li>
+	
+	{% regroup personen by achternaam as persoon_lijst %}
+	<dl>
+		{% for alumni in persoon_lijst %}
+			<dt>{{ alumni.grouper }}</dt>
+			<dd>{% for persoon in alumni.list %}
+					<a href="{% url 'detail' persoon.id %}">{{ persoon.voornaam }}</a>
+					({{ persoon.rhetorica }}){% if not forloop.last %}, {% endif %}
+				{% endfor %}
+			</dd>
 		{% endfor %}
-	</ul>
+	</dl>
 	
 	
 {% endblock %}
