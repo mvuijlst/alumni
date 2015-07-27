@@ -86,7 +86,7 @@ def az(request, letter):
 	try:
 		personen = Persoon.objects.filter(achternaam__startswith=letter
 			).exclude(rhetorica__exact=None
-			).extra(select={'anaam': 'lower(achternaam)'}
+			).extra(select={'anaam': """replace(replace(lower(achternaam),'ù','u'),'ú','u')"""}
 			).order_by('anaam', 'voornaam')
 	except Persoon.DoesNotExist:
 		raise Http404("Geen alumni gevonden.")
