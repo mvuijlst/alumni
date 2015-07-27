@@ -10,7 +10,16 @@
 {% if persoonfotos.count %}
 	<div class="persoonfoto">
 		{% for persoonfoto in persoonfotos %}
-			<a href="{{ persoonfoto.foto.url }}">
+			<a href="{{ persoonfoto.foto.url }}" 
+						class="lytebox"
+						data-lyte-options="group:persoonfoto"
+						{% if persoonfoto.legende %}
+							data-description="{{ persoonfoto.legende }}"
+						{% endif %}
+						{% if persoonfoto.datum %}
+							data-title="{{ persoonfoto.datum }}"
+						{% endif %}
+						>
 				{% thumbnail persoonfoto.foto "200" as im %}
 					<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
 				{% endthumbnail %}
