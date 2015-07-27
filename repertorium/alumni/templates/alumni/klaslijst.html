@@ -15,7 +15,13 @@
 		{% for klasfoto in klasfotos %}
 			{% if klasfoto.datum.year = klas.jaar %}
 				<div class="klasfoto">
-					<a href="{{ klasfoto.foto.url }}">
+					<a href="{{ klasfoto.foto.url }}" 
+						class="lytebox"
+						data-lyte-options="group:klasfoto"
+						{% if klasfoto.legende %}
+							data-description="{{ klasfoto.legende }}"
+						{% endif %}
+						data-title="Klasfoto ({{ klasfoto.datum.year }})">
 						{% thumbnail klasfoto.foto "640" as im %}
     						<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
 						{% endthumbnail %}
@@ -23,12 +29,17 @@
 				</div>
 			{% else %}
 				<div class="klasfoto reunie">
-					<a href="{{ klasfoto.foto.url }}">
+					<a href="{{ klasfoto.foto.url }}" 
+						class="lytebox"
+						data-lyte-options="group:klasfoto"
+						{% if klasfoto.legende %}
+							data-description="{{ klasfoto.legende }}"
+						{% endif %}
+						data-title="{{ klasfoto.datum.year }}">
 						{% thumbnail klasfoto.foto "200" as im %}
-    						<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+    						<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ klasfoto.legende }}">
 						{% endthumbnail %}
 					</a>
-					<!-- <div class="legende">{{ klasfoto.legende }}</div> -->
 					<div class="jaar">{{ klasfoto.datum }}</div>
 				</div>
 			{% endif %}
