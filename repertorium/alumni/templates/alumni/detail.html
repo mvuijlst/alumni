@@ -132,7 +132,7 @@
 	<h3>Adresgegevens</h3>
 	<ul>
 		{% for adres in adressen %}
-			<li{% if adres.tot %} class="voorbij"{% endif %}>
+			<li{% if adres.tot or not adres.geldig %} class="voorbij"{% endif %}>
 				{{ adres.adres|linebreaksbr }} 
 				<span class="addresinfo">
 					{% if adres.van and adres.tot %}
