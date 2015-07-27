@@ -18,7 +18,7 @@
 	
 	<h1>Alumni: {{ letter }}</h1>
 	
-	{% regroup personen by achternaam as persoon_lijst %}
+	{% regroup personen by anaam as persoon_lijst %}
 	<dl>
 		{% for alumni in persoon_lijst %}
 			<dt>{{ alumni.grouper }}</dt>

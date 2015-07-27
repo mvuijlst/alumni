@@ -3,12 +3,12 @@
 }
 
 
-p, li, li, th, td, dd, dt {
+p, li, li, th, td, dd {
 	font-family: 'Roboto', sans-serif;
 	color: #333;
 }
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4, dt {
     font-family: 'Roboto Slab', serif;
 	color: #222
  }
@@ -181,4 +181,10 @@ table.jaarnav td, table.jaarnav th {
 
 dt {
 	font-weight: bold;
+	font-size: .8em;
+	text-transform: uppercase;
+}
+
+dd {
+	margin-bottom: 0.5em;
 }
