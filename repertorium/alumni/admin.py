@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import Persoon, Rhetorica, Adres, Contact, Beroep
-from .models import Klas, Klasfoto, Betaling, Soortbetaling, Gebeurtenis
+from .models import Klas, Klasfoto, Persoonfoto, Betaling, Soortbetaling, Gebeurtenis
 
 class AdresInline(admin.TabularInline):
 	model = Adres
@@ -23,6 +23,10 @@ class GebeurtenisInline(admin.TabularInline):
 	model = Gebeurtenis
 	extra = 0
 
+class PersoonfotoInline(admin.TabularInline):
+	model = Persoonfoto
+	extra = 0
+	
 class PersoonAdmin(admin.ModelAdmin):
 	fieldsets = [
 		(None,
@@ -46,7 +50,7 @@ class PersoonAdmin(admin.ModelAdmin):
 			}
 		),
 	]
-	inlines = [AdresInline,ContactInline,BeroepInline,GebeurtenisInline,BetalingInline]
+	inlines = [AdresInline,ContactInline,BeroepInline,GebeurtenisInline,PersoonfotoInline,BetalingInline]
 	list_display = ('achternaam', 'voornaam', 'rhetorica', 'ouderdom', 'wijziging')
 	list_display_links = ('voornaam', 'achternaam')
 	list_filter = ['wijziging','betaling__betalingsjaar']

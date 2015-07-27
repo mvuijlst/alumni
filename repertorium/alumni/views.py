@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from datetime import datetime
 
-from .models import Klas, Rhetorica, Persoon, Contact, Beroep, Adres, Betaling, Gebeurtenis, Klasfoto
+from .models import Klas, Rhetorica, Persoon, Contact, Beroep, Adres, Betaling, Gebeurtenis, Klasfoto, Persoonfoto
 
 @login_required
 def index(request):
@@ -62,6 +62,7 @@ def persoondetail(request, persoon_id):
 	adressen = Adres.objects.filter(persoon=persoon_id).order_by('-van', '-tot')
 	betalingen = Betaling.objects.filter(persoon=persoon_id).order_by('-betalingsjaar', '-datum')
 	gebeurtenissen = Gebeurtenis.objects.filter(persoon=persoon_id).order_by('-datum')
+	persoonfotos = Persoonfoto.objects.filter(persoon=persoon_id).order_by('-datum')
 	
 	context = {
 		'persoon': persoon,
@@ -69,7 +70,8 @@ def persoondetail(request, persoon_id):
 		'beroepen': beroepen,
 		'adressen': adressen,
 		'gebeurtenissen' : gebeurtenissen,
-		'betalingen': betalingen	
+		'betalingen': betalingen,
+		'persoonfotos': persoonfotos 
 	}
 	return render(request, 'alumni/detail.html', context)
 

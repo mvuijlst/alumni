@@ -87,6 +87,10 @@ a:hover {
 	vertical-align: super;
 }
 
+.persoonfoto {
+	float: right;
+}
+
 .voorbij {
 	color: #999;
 }
@@ -136,12 +140,12 @@ table.jaarnav td, table.jaarnav th {
 	padding: 5px;
 }
 
-.klasfoto a, .klasfoto a:hover {
+.klasfoto a, .klasfoto a:hover, .persoonfoto a, .persoonfoto a:hover {
 	background-color: #fffffa;
 	border: none;
 }
 
-.klasfoto img {
+.klasfoto img, .persoonfoto img {
 	padding: 5px;
 	border: 1px solid #ccc;
 }

@@ -1,10 +1,26 @@
 {% extends 'alumni/base.html' %}
 {% load humanize %}
+{% load thumbnail %}
 {% load app_filters %} 
 
 {% block title %}{{ persoon.voornaam }} {{ persoon.achternaam }}{% endblock %}
 
 {% block main %}
+
+{% if persoonfotos.count %}
+	<div class="persoonfoto">
+		{% for persoonfoto in persoonfotos %}
+			<a href="{{ persoonfoto.foto.url }}">
+				{% thumbnail persoonfoto.foto "200" as im %}
+					<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+				{% endthumbnail %}
+			</a>
+			{% if persoonfoto.legende %}
+				<div class="fotolegende">{{ persoonfoto.legende }}</div>
+			{% endif %}
+		{% endfor %}
+	</div>
+{% endif %}
 
 <h1>{{ persoon.voornaam }} {{ persoon.achternaam }}
 	{% if persoon.overleden or persoon.sterfdatum %}

@@ -169,6 +169,14 @@ class Klasfoto(models.Model):
     class Meta:
         verbose_name_plural = 'Klasfoto\'s'
 
+class Persoonfoto(models.Model):
+    persoon = models.ForeignKey(Persoon)
+    datum = models.DateField(null=True,blank=True)
+    foto = models.ImageField(upload_to='klasfoto')
+    legende = models.TextField(null=True,blank=True)
+    class Meta:
+        verbose_name_plural = 'Foto\'s'
+ 
 class Soortbetaling(models.Model):
     omschrijving = models.CharField(max_length=50)
     actief = models.BooleanField(default=True)
