@@ -74,8 +74,10 @@ class Persoon(models.Model):
             temp = '†' + str(self.sterfdatum.year)
             if self.geboortedatum:
                 return temp + ' (' + str(self.sterfdatum.year - self.geboortedatum.year - ((self.sterfdatum.month, self.sterfdatum.day) < (self.geboortedatum.month, self.geboortedatum.day))) + ' jaar)'
-            else:
+            elif self.rhetorica:
                 return temp + ' (ca. ' + str(self.sterfdatum.year - self.rhetorica.jaar + 18) + ' jaar)'
+            else:
+                return ''
         elif self.overleden:
             return '†'
         elif self.geboortedatum:
