@@ -120,7 +120,7 @@ def moetbetalen(request):
 			r.jaar < {0} and  
 			p.overleden=0 and
 			p.contacteren=1 and
-			(a.geldig=1 or a.id is null) and 
+			((a.geldig=1 or a.id is null) or 
 			(c.contacttype='email' or c.id is null) and
 			p.id not in (select persoon_id from alumni_betaling 
 		                 where betalingsjaar={0} or soortbetaling_id<>2)
@@ -161,7 +161,7 @@ def vroegerbetaald(request):
 			p.overleden=0 and
 			p.contacteren=1 and
 			((a.geldig=1 or a.id is null) or 
-			(c.contacttype='email' or c.id is null) and 
+			(c.contacttype='email' or c.id is null)) and 
 			p.id not in (select persoon_id from alumni_betaling 
 						 where betalingsjaar={0} or soortbetaling_id=2)
 		GROUP BY p.id
