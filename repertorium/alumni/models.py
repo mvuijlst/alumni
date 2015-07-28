@@ -28,7 +28,7 @@ class Rhetorica(models.Model):
         return str(self.jaar) + ' ' + self.richting
     class Meta:
         verbose_name_plural = 'Rhetorica\'s'
-
+            
 class Persoon(models.Model):
     voornaam = models.CharField(max_length=200)
     achternaam = models.CharField(max_length=200)
@@ -196,4 +196,26 @@ class Betaling(models.Model):
     datum = models.DateField(null=True,blank=True)
     class Meta:
         verbose_name_plural = "Betalingen"
-    
+
+class Soorthoedanigheid(models.Model):
+    omschrijving = models.CharField(max_length=50)
+    actief = models.BooleanField(default=True)
+    def __str__(self):
+        return self.omschrijving
+    class Meta:
+        verbose_name = "Hoedanigheid"
+        verbose_name_plural = "Hoedanigheden"
+
+class Hoedanigheid(models.Model):
+    persoon = models.ForeignKey(Persoon)
+    soorthoedanigheid = models.ForeignKey(Soorthoedanigheid)
+    opmerking = models.CharField(max_length=100,null=True,blank=True)
+    van = models.DateField(null=True,blank=True)
+    tot = models.DateField(null=True,blank=True)
+    geldig = models.BooleanField(default=True)
+    wijziging = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return self.soorthoedanigheid.omschrijving
+    class Meta:
+        verbose_name_plural = 'Hoedanigheden'
+  

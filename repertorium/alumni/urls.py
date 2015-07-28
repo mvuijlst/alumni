@@ -20,4 +20,6 @@ urlpatterns = [
     url(r'^rapport/moetbetalen$', views.moetbetalen, name='moetbetalen'),
     url(r'^rapport/vroegerbetaald$', views.vroegerbetaald, name='vroegerbetaald'),
     url(r'^rapport/ab$', views.moetABkrijgen, name='moetABkrijgen'),
+
+    url(r'^rapport/nietalumni$', views.nietalumni, name='nietalumni'),
 ]

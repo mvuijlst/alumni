@@ -1,0 +1,44 @@
+{% extends 'alumni/base.html' %}
+{% load humanize %}
+
+{% block title %}Niet-alumni{% endblock %}
+
+{% block main %}
+	
+	[loop over hoedanigheden]
+	
+	<ul class="alfabetlijst">
+		{% for ltr in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' %}
+			<li>
+				<a href="{% url 'az' ltr %}">{{ ltr }}</a>
+				{% if not forloop.last %}
+					|
+				{% endif %}
+			</li>
+		{% endfor %}
+	</ul>
+	
+	<h1>Niet-alumni</h1>
+	
+	{% regroup personen by hoedanigheid as persoon_lijst %}
+	{% for alumni in persoon_lijst %}
+		<h2>{{ alumni.grouper }}</h2>
+		<table>
+			<tr><th>Naam</th><th>Adres</th><th>Email</th></tr>
+			{% for persoon in alumni.list %}
+				<tr>
+					<td>
+						<a href="{% url 'detail' persoon.id %}">
+							{% if persoon.voornaam %}{{ persoon.voornaam }}{% endif %}
+							{{ persoon.familienaam }}
+						</a>
+					</td>
+					<td>{{ adres }}</td>
+					<td>{{ email }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% endfor %}
+
+	
+{% endblock %}

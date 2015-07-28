@@ -163,7 +163,7 @@ def vroegerbetaald(request):
 			(a.geldig=1 or a.id is null) and 
 			(c.contacttype='email' or c.id is null) and 
 			p.id not in (select persoon_id from alumni_betaling 
-						 where betalingsjaar=2015 or soortbetaling_id=2)
+						 where betalingsjaar={0} or soortbetaling_id=2)
 		GROUP BY p.id
 		ORDER BY r.jaar, r.richting, p.achternaam""".format(schooljaar,schooljaar-1,schooljaar-2,schooljaar-3))
 	
@@ -218,3 +218,18 @@ def moetABkrijgen(request):
 	}
 	
 	return render(request, 'alumni/adreslijst.html', context)
+
+@login_required
+def nietalumni(request):
+	
+	try:
+		personen = Persoon.objects.filter(rhetorica__exact=None
+			).order_by('achternaam', 'voornaam')
+	except Persoon.DoesNotExist:
+		raise Http404("Geen niet-alumni gevonden.")
+	
+	context = {
+		'personen': personen
+	}
+	
+	return render(request, 'alumni/nietalumni.html', context)
