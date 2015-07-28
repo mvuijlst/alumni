@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^rapport/vroegerbetaald/(?P<alle>[01])$', views.vroegerbetaald, name='vroegerbetaald'),
     url(r'^rapport/ab$', views.moetABkrijgen, name='moetABkrijgen'),
 
+    url(r'^rapport/geenadres$', views.geenadres, name='geenadres'),
     url(r'^rapport/nietalumni$', views.nietalumni, name='nietalumni'),
 ]

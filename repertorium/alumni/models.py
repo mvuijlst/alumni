@@ -30,7 +30,7 @@ class Rhetorica(models.Model):
         verbose_name_plural = 'Rhetorica\'s'
             
 class Persoon(models.Model):
-    voornaam = models.CharField(max_length=200)
+    voornaam = models.CharField(max_length=200,null=True,blank=True)
     achternaam = models.CharField(max_length=200)
     rhetorica = models.ForeignKey(Rhetorica,null=True,blank=True)
     

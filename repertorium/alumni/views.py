@@ -248,6 +248,35 @@ def moetABkrijgen(request):
 	return render(request, 'alumni/adreslijst.html', context)
 
 @login_required
+def geenadres(request):
+	personen = Persoon.objects.raw("""
+		SELECT p.id, p.voornaam, p.achternaam, r.jaar, r.richting, a.geldig, c.contactdata email, a.tot, a.van
+		FROM alumni_persoon p 
+			inner join alumni_rhetorica r on p.rhetorica_id=r.id
+			inner join alumni_betaling b on p.id=b.persoon_id
+			left outer join alumni_adres a on p.id=a.persoon_id
+			left outer join alumni_contact c on p.id=c.persoon_id
+		WHERE
+			p.overleden=0 and
+			p.contacteren=1 and
+			(a.geldig=0 or a.id is null) and 
+			(c.contacttype='email' or c.id is null)
+		GROUP BY p.id
+		ORDER BY a.tot desc, a.van, r.jaar, r.richting, p.achternaam""")
+	
+	context = {
+		'titel': 'Alumni zonder adres',
+		'personen': personen,
+		'uitleg': """<p>Lijst van mensen die </p>
+			<ol><li>niet overleden zijn</li>
+			<li>niet gezegd hebben dat ze niet meer willen gecontacteerd worden</li>
+			<li>en die geen (geldig) postadres hebben</li>
+		</ol>"""
+	}
+	
+	return render(request, 'alumni/adreslijst.html', context)
+	
+@login_required
 def nietalumni(request):
 	
 	try:
