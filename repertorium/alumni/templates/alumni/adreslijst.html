@@ -12,10 +12,10 @@
 	<table class="stripe topalign">
 		<tr><th>#</th><th>Naam</th><th>Rhetorica</th><th>Adres</th><th>email</th></tr>
 		{% for persoon in personen %}	
-			<tr class="{% cycle 'oneven' 'even' %}">
+			<tr class="{%if not persoon.rhetorica %}andere {% endif %}{% cycle 'oneven' 'even' %}">
 				<th>{{ forloop.counter }}</th>
 				<td>{{ persoon.voornaam }} {{ persoon.achternaam }}</td>
-				<td>{{ persoon.rhetorica }}</td>
+				<td>{%if persoon.rhetorica %}{{ persoon.jaar }} {% endif %}{{ persoon.richting }}</td>
 				<td>{%if persoon.adres %}{{ persoon.adres|linebreaksbr }}{% endif %}</td>
 				<td>{%if persoon.email %}{{ persoon.email }}{% endif %}</td>
 				<!--<td>[<a href="/admin/alumni/persoon/{{ persoon.id }}/">wijzig</a>]</td>-->

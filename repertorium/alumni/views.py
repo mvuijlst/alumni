@@ -160,7 +160,7 @@ def vroegerbetaald(request):
 			b.betalingsjaar in ({1},{2},{3}) and
 			p.overleden=0 and
 			p.contacteren=1 and
-			(a.geldig=1 or a.id is null) and 
+			((a.geldig=1 or a.id is null) or 
 			(c.contacttype='email' or c.id is null) and 
 			p.id not in (select persoon_id from alumni_betaling 
 						 where betalingsjaar={0} or soortbetaling_id=2)
@@ -190,7 +190,7 @@ def moetABkrijgen(request):
 		schooljaar = datetime.now().year
 	
 	personen = Persoon.objects.raw("""
-		SELECT p.id, p.voornaam, p.achternaam, r.jaar, r.richting, a.adres, c.contactdata email
+		SELECT p.id, p.voornaam, p.achternaam achternaam, r.jaar jaar, r.richting richting, a.adres, c.contactdata email
 		FROM alumni_persoon p 
 			inner join alumni_rhetorica r on p.rhetorica_id=r.id
 			left outer join alumni_betaling b on p.id=b.persoon_id
@@ -200,20 +200,37 @@ def moetABkrijgen(request):
 			(r.jaar = {0} or b.betalingsjaar={0} or b.soortbetaling_id=2) and
 			p.overleden=0 and
 			p.contacteren=1 and
-			(a.geldig=1 or a.id is null) and 
-			(c.contacttype='email' or c.id is null)
+			((a.geldig=1 or a.id is null) or 
+			(c.contacttype='email' or c.id is null))
 		GROUP BY p.id
-		ORDER BY r.jaar, r.richting, p.achternaam
+		
+		UNION
+		
+		SELECT p.id, p.voornaam, p.achternaam, null jaar, s.omschrijving richting, a.adres, c.contactdata email
+		FROM alumni_persoon p 
+			inner join alumni_hoedanigheid h on h.persoon_id=p.id
+			inner join alumni_soorthoedanigheid s on h.soorthoedanigheid_id = s.id
+			left outer join alumni_adres a on p.id=a.persoon_id
+			left outer join alumni_contact c on p.id=c.persoon_id
+		WHERE
+			p.overleden=0 and
+			p.contacteren=1 and
+			((a.geldig=1 or a.id is null) or 
+			(c.contacttype='email' or c.id is null))
+		GROUP BY p.id
+			
+		ORDER BY achternaam, jaar, richting 
+		
 		""".format(schooljaar))
 	
 	context = {
 		'personen': personen,
-		'titel': 'Moet AB krijgen',
+		'titel': 'Adressenlijst Allegro Barbara',
 		'uitleg': """ <p>Lijst van mensen die </p>
-			<ol><li>lid zijn, of vorig schooljaar afgestudeerd</li>
+			<ol><li>AB moeten krijgen, omdat ze <ul><li>dit jaar betalend lid zijn, of </li><li>vorig schooljaar afgestudeerd zijn, of</li><li>oud-leraar, raad van bestuur e.d. zijn</li></ul></li>
 				<li>niet overleden zijn</li>
 				<li>niet gezegd hebben dat ze niet meer willen gecontacteerd worden</li>
-				<li>en die een geldig adres hebben</li>
+				<li>en die een geldig postadres <strong>en/of</strong> een e-mailadres hebben></li>
 			</ol>"""
 	}
 	

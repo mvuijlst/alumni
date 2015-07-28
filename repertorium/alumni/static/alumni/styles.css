@@ -130,6 +130,10 @@ table.stripe tr.even {
 	background-color: #f0f0f0;
 }
 
+table.stripe tr.andere  {
+	font-style: italic;
+}
+
 table.topalign td, table.topalign th {
 	vertical-align: top;
 }
