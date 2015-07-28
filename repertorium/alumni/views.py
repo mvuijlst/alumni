@@ -121,7 +121,7 @@ def moetbetalen(request):
 			p.overleden=0 and
 			p.contacteren=1 and
 			((a.geldig=1 or a.id is null) or 
-			(c.contacttype='email' or c.id is null) and
+			(c.contacttype='email' or c.id is null)) and
 			p.id not in (select persoon_id from alumni_betaling 
 		                 where betalingsjaar={0} or soortbetaling_id<>2)
 		GROUP BY p.id
@@ -135,18 +135,28 @@ def moetbetalen(request):
 			<li>nog niet betaald hebben voor dit jaar</li>
 			<li>niet overleden zijn</li>
 			<li>niet gezegd hebben dat ze niet meer willen gecontacteerd worden</li>
+			<li>en die een geldig postadres <strong>en/of</strong> een e-mailadres hebben></li>
 		</ol>"""
 	}
 	
 	return render(request, 'alumni/adreslijst.html', context)
 
 @login_required
-def vroegerbetaald(request):
+def vroegerbetaald(request,alle):
 	
 	if datetime.now().month<7:
 		schooljaar = datetime.now().year-1
 	else:
 		schooljaar = datetime.now().year
+	
+	if int(alle) > 0:
+		zoekscope = 'is not null'
+		titel = 'Alle ex-leden'
+		wanneer = 'ooit lidgeld betaald hebben'
+	else:	
+		zoekscope = 'in (' + str(schooljaar-1) + ',' + str(schooljaar-2) + ',' + str(schooljaar-3) + ')'
+		titel = 'Recente ex-leden'
+		wanneer = 'lidgeld betaald hebben vorig jaar, of het jaar daarvoor, of het jaar daarvoor'
 		
 	personen = Persoon.objects.raw("""
 		SELECT p.id, p.voornaam, p.achternaam, r.jaar, r.richting, a.adres, c.contactdata email
@@ -157,7 +167,7 @@ def vroegerbetaald(request):
 			left outer join alumni_contact c on p.id=c.persoon_id
 		WHERE
 			r.jaar < {0} and 
-			b.betalingsjaar in ({1},{2},{3}) and
+			b.betalingsjaar {1} and
 			p.overleden=0 and
 			p.contacteren=1 and
 			((a.geldig=1 or a.id is null) or 
@@ -165,18 +175,19 @@ def vroegerbetaald(request):
 			p.id not in (select persoon_id from alumni_betaling 
 						 where betalingsjaar={0} or soortbetaling_id=2)
 		GROUP BY p.id
-		ORDER BY r.jaar, r.richting, p.achternaam""".format(schooljaar,schooljaar-1,schooljaar-2,schooljaar-3))
+		ORDER BY r.jaar, r.richting, p.achternaam""".format(schooljaar,zoekscope))
 	
 	context = {
-		'titel': 'Recente ex-leden',
+		'titel': titel,
 		'personen': personen,
 		'uitleg': """<p>Lijst van mensen die </p>
 			<ol><li>zouden moeten betalen (afgestudeerd meer dan een jaar geleden)</li>
 			<li>nog niet betaald hebben voor dit jaar</li>
 			<li>niet overleden zijn</li>
 			<li>niet gezegd hebben dat ze niet meer willen gecontacteerd worden</li>
-			<li>lidgeld betaald hebben vorig jaar, of het jaar daarvoor, of het jaar daarvoor</li>
-		</ol>"""
+			<li>{0}</li>
+			<li>en die een geldig postadres <strong>en/of</strong> een e-mailadres hebben></li>
+		</ol>""".format(wanneer)
 	}
 	
 	return render(request, 'alumni/adreslijst.html', context)

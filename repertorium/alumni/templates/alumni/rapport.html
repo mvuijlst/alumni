@@ -7,7 +7,8 @@
 	
 	<ol><li><a href="{% url 'moetABkrijgen' %}">Adressenlijst Allegro Barbaro</a></li>
 		<li><a href="{% url 'moetbetalen' %}">Mensen die nog zouden moeten betalen dit jaar</a></li>
-		<li><a href="{% url 'vroegerbetaald' %}">Recent betaald, maar niet dit jaar</a></li>
+		<li><a href="{% url 'vroegerbetaald' 0 %}">Recent betaald, maar niet dit jaar</a></li>
+		<li><a href="{% url 'vroegerbetaald' 1 %}"><em>Ooit</em> betaald, maar niet dit jaar</a></li>
 	</ol>
 	
 	<h2>Lijsten</h2>
