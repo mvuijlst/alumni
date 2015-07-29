@@ -96,7 +96,10 @@ class Persoon(models.Model):
             return ''
 
     def __str__(self):
-        return self.voornaam + ' ' + self.achternaam
+        if self.voornaam:
+            return self.voornaam + ' ' + self.achternaam
+        else:
+            return self.achternaam
     
     class Meta:
         verbose_name_plural = 'Personen'

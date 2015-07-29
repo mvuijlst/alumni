@@ -14,9 +14,9 @@
 		{% for persoon in personen %}	
 			<tr class="{%if not persoon.rhetorica %}andere {% endif %}{% cycle 'oneven' 'even' %}">
 				<th>{{ forloop.counter }}</th>
-				<td>{{ persoon.voornaam }} {{ persoon.achternaam }}</td>
+				<td>{%if persoon.voornaam %}{{ persoon.voornaam }} {% endif %}{{ persoon.achternaam }}</td>
 				<td>{%if persoon.rhetorica %}{{ persoon.jaar }} {% endif %}{{ persoon.richting }}</td>
-				<td>{%if persoon.adres %}{{ persoon.adres|linebreaksbr }}{{ persoon__adres__geldig }}{% endif %}</td>
+				<td>{%if persoon.adres %}{{ persoon.adres|linebreaksbr }}{% endif %}</td>
 				<td>{%if persoon.email %}{{ persoon.email }}{% endif %}</td>
 				<!--<td>[<a href="/admin/alumni/persoon/{{ persoon.id }}/">wijzig</a>]</td>-->
 			</tr>

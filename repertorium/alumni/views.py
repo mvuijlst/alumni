@@ -120,8 +120,8 @@ def moetbetalen(request):
 			r.jaar < {0} and  
 			p.overleden=0 and
 			p.contacteren=1 and
-			((a.geldig=1 or a.id is null) or 
-			(c.contacttype='email' or c.id is null)) and
+			a.geldig=1 and 
+			(c.contacttype='email' or c.id is null) and
 			p.id not in (select persoon_id from alumni_betaling 
 		                 where betalingsjaar={0} or soortbetaling_id<>2)
 		GROUP BY p.id
@@ -135,7 +135,7 @@ def moetbetalen(request):
 			<li>nog niet betaald hebben voor dit jaar</li>
 			<li>niet overleden zijn</li>
 			<li>niet gezegd hebben dat ze niet meer willen gecontacteerd worden</li>
-			<li>en die een geldig postadres <strong>en/of</strong> een e-mailadres hebben></li>
+			<li>en die een geldig postadres hebben</li>
 		</ol>"""
 	}
 	
@@ -170,8 +170,8 @@ def vroegerbetaald(request,alle):
 			b.betalingsjaar {1} and
 			p.overleden=0 and
 			p.contacteren=1 and
-			((a.geldig=1 or a.id is null) or 
-			(c.contacttype='email' or c.id is null)) and 
+			a.geldig=1 and 
+			(c.contacttype='email' or c.id is null) and 
 			p.id not in (select persoon_id from alumni_betaling 
 						 where betalingsjaar={0} or soortbetaling_id=2)
 		GROUP BY p.id
@@ -186,7 +186,7 @@ def vroegerbetaald(request,alle):
 			<li>niet overleden zijn</li>
 			<li>niet gezegd hebben dat ze niet meer willen gecontacteerd worden</li>
 			<li>{0}</li>
-			<li>en die een geldig postadres <strong>en/of</strong> een e-mailadres hebben></li>
+			<li>en die een geldig postadres hebben</li>
 		</ol>""".format(wanneer)
 	}
 	
@@ -211,8 +211,8 @@ def moetABkrijgen(request):
 			(r.jaar = {0} or b.betalingsjaar={0} or b.soortbetaling_id=2) and
 			p.overleden=0 and
 			p.contacteren=1 and
-			((a.geldig=1 or a.id is null) or 
-			(c.contacttype='email' or c.id is null))
+			a.geldig=1 and 
+			(c.contacttype='email' or c.id is null)
 		GROUP BY p.id
 		
 		UNION
@@ -226,8 +226,8 @@ def moetABkrijgen(request):
 		WHERE
 			p.overleden=0 and
 			p.contacteren=1 and
-			((a.geldig=1 or a.id is null) or 
-			(c.contacttype='email' or c.id is null))
+			a.geldig=1 and 
+			(c.contacttype='email' or c.id is null)
 		GROUP BY p.id
 			
 		ORDER BY achternaam, jaar, richting 
@@ -241,7 +241,7 @@ def moetABkrijgen(request):
 			<ol><li>AB moeten krijgen, omdat ze <ul><li>dit jaar betalend lid zijn, of </li><li>vorig schooljaar afgestudeerd zijn, of</li><li>oud-leraar, raad van bestuur e.d. zijn</li></ul></li>
 				<li>niet overleden zijn</li>
 				<li>niet gezegd hebben dat ze niet meer willen gecontacteerd worden</li>
-				<li>en die een geldig postadres <strong>en/of</strong> een e-mailadres hebben></li>
+				<li>en die een geldig postadres hebben</li>
 			</ol>"""
 	}
 	
@@ -254,15 +254,15 @@ def geenadres(request):
 		FROM alumni_persoon p 
 			inner join alumni_rhetorica r on p.rhetorica_id=r.id
 			inner join alumni_betaling b on p.id=b.persoon_id
-			left outer join alumni_adres a on p.id=a.persoon_id
+			inner join alumni_adres a on p.id=a.persoon_id
 			left outer join alumni_contact c on p.id=c.persoon_id
 		WHERE
 			p.overleden=0 and
 			p.contacteren=1 and
-			(a.geldig=0 or a.id is null) and 
+			a.geldig=0 and 
 			(c.contacttype='email' or c.id is null)
 		GROUP BY p.id
-		ORDER BY a.tot desc, a.van, r.jaar, r.richting, p.achternaam""")
+		ORDER BY  r.jaar, r.richting, p.achternaam""")
 	
 	context = {
 		'titel': 'Alumni zonder adres',
