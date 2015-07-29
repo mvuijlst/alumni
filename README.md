@@ -2,7 +2,7 @@
 
 Repertorium voor de alumnivereniging van het Sint-Barbaracollege in Gent. 
 
-Omdat het lastig werken is als vereniging als de ledenadministratie op één plaats gebeurt door één iemand, en er maar één persoon die (op een andere plaats, in een andere databank) het online repertorium kan aanpassen. 
+Omdat het lastig werken is als vereniging als de ledenadministratie op één plaats gebeurt door één iemand, en er maar één (andere) persoon is die (op een andere plaats, in een andere databank) het online repertorium kan aanpassen. 
 
 En dat het in de soep loopt als die twee mensen elk op hun eigen plaats wijzigingen doen, en dat die wijzigingen dan niet noodzakelijk overeenstemmen.
 

@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^rapport/ab$', views.moetABkrijgen, name='moetABkrijgen'),
 
     url(r'^rapport/geenadres$', views.geenadres, name='geenadres'),
+    url(r'^rapport/mailinglijst$', views.mailinglijst, name='mailinglijst'),
     url(r'^rapport/nietalumni$', views.nietalumni, name='nietalumni'),
 ]

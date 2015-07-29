@@ -14,10 +14,10 @@
 		{% for persoon in personen %}	
 			<tr class="{%if not persoon.rhetorica %}andere {% endif %}{% cycle 'oneven' 'even' %}">
 				<th>{{ forloop.counter }}</th>
-				<td><a href="{% url 'detail' persoon.id %}">{%if persoon.voornaam %}{{ persoon.voornaam }} {% endif %}{{ persoon.achternaam }}</a></td>
-				<td>{%if persoon.rhetorica %}{{ persoon.jaar }} {% endif %}{{ persoon.richting }}</td>
-				<td>{%if persoon.adres %}{{ persoon.adres|linebreaksbr }}{% endif %}</td>
-				<td>{%if persoon.email %}{{ persoon.email }}{% endif %}</td>
+				<td>{% if persoon.rhetorica %}<a href="{% url 'detail' persoon.id %}">{% endif %}{% if persoon.voornaam %}{{ persoon.voornaam }} {% endif %}{{ persoon.achternaam }}{% if persoon.rhetorica %}</a>{% endif %}</td>
+				<td>{% if persoon.rhetorica %}{{ persoon.jaar }} {% endif %}{{ persoon.richting }}</td>
+				<td>{% if persoon.adres %}{{ persoon.adres|linebreaksbr }}{% endif %}</td>
+				<td>{% if persoon.email %}{{ persoon.email }}{% endif %}</td>
 			</tr>
 		{% endfor %}
 	</table>

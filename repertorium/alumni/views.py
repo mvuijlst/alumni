@@ -309,6 +309,49 @@ def geenadres(request):
 	}
 	
 	return render(request, 'alumni/adreslijst.html', context)
+
+@login_required
+def mailinglijst(request):
+	personen = Persoon.objects.raw("""
+		SELECT p.id, p.voornaam, p.achternaam achternaam, r.jaar jaar, r.richting richting, null adres, c.contactdata email
+		FROM alumni_persoon p 
+				inner join alumni_contact c on p.id=c.persoon_id
+				inner join alumni_rhetorica r on p.rhetorica_id=r.id
+		WHERE
+			p.overleden=0 and
+			p.contacteren=1 and
+			c.contacttype='email'
+		GROUP BY p.id
+		
+		UNION
+		
+		SELECT p.id, p.voornaam, p.achternaam achternaam, null jaar, s.omschrijving richting, null adres, c.contactdata email
+		FROM alumni_persoon p 
+			inner join alumni_hoedanigheid h on h.persoon_id=p.id
+			inner join alumni_soorthoedanigheid s on h.soorthoedanigheid_id = s.id
+			left outer join alumni_contact c on p.id=c.persoon_id
+		WHERE
+			p.overleden=0 and
+			p.contacteren=1 and
+			c.contacttype='email' and 
+			p.id not in (select distinct p1.id from alumni_persoon p1 
+				inner join alumni_rhetorica r1 on p1.rhetorica_id=r1.id)
+		GROUP BY p.id
+		
+		ORDER BY jaar, richting, achternaam
+		""")
+		
+	context = {
+		'titel': 'Mailinglijst alumni',
+		'personen': personen,
+		'uitleg': """<p>Lijst van mensen die </p>
+			<ol><li>niet overleden zijn</li>
+			<li>niet gezegd hebben dat ze niet meer willen gecontacteerd worden</li>
+			<li>en die een e-mailadres hebben</li>
+		</ol>"""
+	}
+	
+	return render(request, 'alumni/adreslijst.html', context)
 	
 @login_required
 def nietalumni(request):
