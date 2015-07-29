@@ -298,13 +298,14 @@ def geenadres(request):
 		ORDER BY  r.jaar, r.richting, p.achternaam""")
 	
 	context = {
-		'titel': 'Alumni zonder adres',
+		'titel': 'Alumni zonder (geldig) adres',
 		'personen': personen,
 		'uitleg': """<p>Lijst van mensen die </p>
 			<ol><li>niet overleden zijn</li>
 			<li>niet gezegd hebben dat ze niet meer willen gecontacteerd worden</li>
 			<li>en die geen (geldig) postadres hebben</li>
-		</ol>"""
+		</ol>
+		<p>Tussen [vierkante haakjes] de datum van/tot van het laatst gekende ongeldige adres."""
 	}
 	
 	return render(request, 'alumni/adreslijst.html', context)
