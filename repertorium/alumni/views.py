@@ -250,17 +250,35 @@ def moetABkrijgen(request):
 @login_required
 def geenadres(request):
 	personen = Persoon.objects.raw("""
-		SELECT p.id, p.voornaam, p.achternaam, r.jaar, r.richting, a.geldig, c.contactdata email, a.tot, a.van
+		SELECT p.id, p.voornaam, p.achternaam, r.jaar, r.richting, c.contactdata email,  
+			if(length(a.adres)>0, 
+				concat(coalesce(a.adres,''), '\n[', coalesce(a.van,''),' - ',coalesce(a.tot,''), ']'), 
+				null) adres
 		FROM alumni_persoon p 
 			inner join alumni_rhetorica r on p.rhetorica_id=r.id
-			inner join alumni_betaling b on p.id=b.persoon_id
-			inner join alumni_adres a on p.id=a.persoon_id
 			left outer join alumni_contact c on p.id=c.persoon_id
+			left outer join 
+				(select a1.adres, a1.persoon_id, a1.geldig, a1.van, a1.tot
+                 from alumni_adres a1
+					inner join (
+    					select persoon_id, max(van) as recentsteongeldig
+    					from alumni_adres
+    					where geldig=0
+    					group by persoon_id
+   					) a2 on a1.persoon_id=a2.persoon_id and 
+                 			a1.van = recentsteongeldig
+                ) a on p.id=a.persoon_id
 		WHERE
 			p.overleden=0 and
-			p.contacteren=1 and
-			a.geldig=0 and 
-			(c.contacttype='email' or c.id is null)
+			p.contacteren=1  and
+			(a.geldig=0 or a.geldig is null) and 
+			(c.contacttype='email' or c.id is null) and
+			p.id not in (
+				select persoon_id
+				from alumni_adres
+				group by persoon_id
+				having sum(geldig)>0
+			)
 		GROUP BY p.id
 		ORDER BY  r.jaar, r.richting, p.achternaam""")
 	
