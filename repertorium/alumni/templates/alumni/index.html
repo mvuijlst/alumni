@@ -26,36 +26,88 @@
 		{% for gebeurtenis in gebeurtenissen %}
 			<h3>{{ gebeurtenis.grouper|capfirst }}</h3>
 		
-			<table class="personalia topalign">
-				{% for item in gebeurtenis.list %}			
-					<tr><th class="nobr">
-							{% if item.persoon.rhetorica %}
-								{{ item.persoon.rhetorica }}
-							{% endif %}
-						</th>
-						<td>{{ item.datum }}:
-							<a href="{% url 'detail' item.persoon_id %}">
-								{{ item.persoon.voornaam }}
-								{{ item.persoon.achternaam }}
-							</a> - {{ item.omschrijving}}
-						</td>
-					</tr>
-				{% endfor %}
-			</table>
+			{% if gebeurtenis.grouper == "overlijden" %}
+				{% if overleden %}
+					<table class="personalia topalign">
+						{% for persoon in overleden %}			
+							<tr><th class="nobr">
+									{% if persoon.rhetorica %}
+										{{ persoon.rhetorica }}
+									{% endif %}
+								</th>
+								<td><a href="{% url 'detail' persoon.id %}">
+										{{ persoon.voornaam }}
+										{{ persoon.achternaam }}</a>, 
+									op {{ persoon.sterfdatum }}
+								</td>
+							</tr>
+						{% endfor %}
+					</table>
+				{% endif %}
+			
+				<p>
+					{% for item in gebeurtenis.list %}			
+						{% ifchanged item.omschrijving %}
+							{{ item.omschrijving}}, op {{ item.datum }} 
+							<span class="onbelangrijk">[<a href="{% url 'detail' item.persoon_id %}">{{ item.persoon.voornaam }}
+								{{ item.persoon.achternaam }}</a>{% if item.persoon.rhetorica %}, {{ item.persoon.rhetorica }}{% endif %}]</span><br />
+						{% endifchanged %}
+					{% endfor %}
+				</p>
+
+			{% else %}
+			
+				<table class="personalia topalign">
+					{% for item in gebeurtenis.list %}			
+						<tr><th class="nobr">
+								{% if item.persoon.rhetorica %}
+									{{ item.persoon.rhetorica }}
+								{% endif %}
+							</th>
+							<td>{{ item.datum }}:
+								<a href="{% url 'detail' item.persoon_id %}">
+									{{ item.persoon.voornaam }}
+									{{ item.persoon.achternaam }}</a> 
+								- {{ item.omschrijving}}
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+				
+			{% endif %}
 		{% endfor %}
 		
 	{% else %}
 		<p>Geen recente personalia.</p>
 	{% endif %}	
-
+	
+	{% if adreswijzigingen %}
+		<h3>Adreswijzigingen</h3>
+		<table class="personalia topalign">
+			{% for adres in adreswijzigingen %}
+				<tr><th class="nobr">
+						{% if adres.persoon.rhetorica %}
+							{{ adres.persoon.rhetorica }}
+						{% endif %}
+					</th>
+					<td><a href="{% url 'detail' adres.persoon_id %}">
+							{{ adres.persoon.voornaam }}
+							{{ adres.persoon.achternaam }}</a>, {{ adres.adreskomma}} 
+							<span class="onbelangrijk">[sinds {{ adres.van }}]</span>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% endif %}
+		
+	
 	{% if wijzigingen and request.user|has_group:"beheer" %}
-		<h3>Recent gewijzigd</h3>
+		<h3>Recent gewijzigd in de database (beheerders)</h3>
 		<ul>
 		{% for persoon in wijzigingen %}
 			<li><a href="{% url 'detail' persoon.id %}">
 					{{ persoon.voornaam }}
-					{{ persoon.achternaam }}
-				</a>
+					{{ persoon.achternaam }}</a>
 				({{ persoon.wijziging|naturaltime }})
 			</li>
 		{% endfor %}

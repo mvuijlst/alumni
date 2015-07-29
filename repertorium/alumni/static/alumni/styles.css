@@ -218,3 +218,10 @@ dt {
 dd {
 	margin-bottom: 0.5em;
 }
+
+.onbelangrijk, .onbelangrijk a {
+	color: #999;
+}
+.onbelangrijk {
+	font-size: 0.8em;
+}

@@ -111,6 +111,8 @@ class Adres(models.Model):
     tot = models.DateField(null=True,blank=True)
     geldig = models.BooleanField(default=True)
     wijziging = models.DateTimeField(auto_now=True)
+    def adreskomma(self):
+        return self.adres.replace('\n',', ').replace(' ,',',').replace(',,',',')
     def __str__(self):
         return self.adres
     class Meta:

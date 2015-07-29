@@ -9,11 +9,24 @@ from .models import Klas, Rhetorica, Persoon, Contact, Beroep, Adres, Betaling, 
 @login_required
 def index(request):
 	wijzigingen = Persoon.objects.order_by('-wijziging')[:15]
-	personalia = Gebeurtenis.objects.filter(datum__gt=datetime.today()-timedelta(weeks=26)).order_by('gebeurtenistype','persoon__rhetorica__jaar')
+	personalia = Gebeurtenis.objects.filter(
+		datum__gt=datetime.today()-timedelta(weeks=26)
+		).order_by('gebeurtenistype','persoon__rhetorica__jaar')
+	overleden = Persoon.objects.filter(
+		sterfdatum__gt=datetime.today()-timedelta(weeks=26)
+		).order_by('rhetorica__jaar')
+	adreswijzigingen = Adres.objects.filter(
+		geldig__exact=True
+		).filter(persoon__overleden__exact=False
+		).filter(persoon__publiek__exact=True
+		).filter(van__gt=datetime.today()-timedelta(weeks=26)
+		).order_by('persoon__rhetorica__jaar')
 	
 	context = {
 		'wijzigingen': wijzigingen,
-		'personalia': personalia
+		'personalia': personalia,
+		'overleden': overleden,
+		'adreswijzigingen': adreswijzigingen
 	}
 	return render(request, 'alumni/index.html', context)
 
