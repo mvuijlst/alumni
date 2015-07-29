@@ -3,15 +3,19 @@ from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from datetime import datetime
+import operator
 
 from .models import Klas, Rhetorica, Persoon, Contact, Beroep, Adres, Betaling, Gebeurtenis, Klasfoto, Persoonfoto
 
 @login_required
 def index(request):
 	recent_modifications = Persoon.objects.order_by('-wijziging')[:15]
+	recent_geboren = Gebeurtenis.objects.filter(gebeurtenistype='geboorte').order_by('-datum')[:15]
+	gak = sorted(recent_geboren, key=operator.attrgetter('persoon.rhetorica.jaar'))
 	
 	context = {
 		'recent_modifications': recent_modifications,
+		'recent_geboren': gak
 	}
 	return render(request, 'alumni/index.html', context)
 

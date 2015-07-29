@@ -138,8 +138,17 @@ table.topalign td, table.topalign th {
 	vertical-align: top;
 }
 
+table.personalia td, table.personalia th {
+	padding-right: 5px;
+	text-align: left;
+}
+
 table.loginform td {
 	padding: 5px 10px 5px 0;
+}
+
+.nobr {
+	white-space: nowrap;
 }
 
 .error {

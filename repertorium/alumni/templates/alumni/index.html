@@ -33,5 +33,28 @@
 	{% else %}
 		<p>Geen recent gewijzigde personen.</p>
 	{% endif %}	
+	
+	<h2>Personalia</h2>
+	{% if recent_geboren %}
+		<h3>Geboortes</h3>
+		<table class="personalia topalign">
+		{% for gebeurtenis in recent_geboren %}
+			<tr><th class="nobr">
+					{% if gebeurtenis.persoon.rhetorica %}
+						{{ gebeurtenis.persoon.rhetorica }}
+					{% endif %}
+				</th>
+				<td>{{ gebeurtenis.datum }}:
+					<a href="{% url 'detail' gebeurtenis.persoon_id %}">
+						{{ gebeurtenis.persoon.voornaam }}
+						{{ gebeurtenis.persoon.achternaam }}
+					</a> - {{ gebeurtenis.omschrijving}}
+				</td>
+			</tr>
+		{% endfor %}
+		</table>
+	{% else %}
+		<p>Geen recente geboorten.</p>
+	{% endif %}	
 
 {% endblock %}
