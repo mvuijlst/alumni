@@ -7,150 +7,175 @@
 
 {% block main %}
 
-{% if persoonfotos.count %}
-	<div class="persoonfoto">
-		{% for persoonfoto in persoonfotos %}
-			<a href="{{ persoonfoto.foto.url }}" 
-						class="lytebox"
-						data-lyte-options="group:persoonfoto"
-						{% if persoonfoto.legende %}
-							data-description="{{ persoonfoto.legende }}"
-						{% endif %}
-						{% if persoonfoto.datum %}
-							data-title="{{ persoonfoto.datum }}"
-						{% endif %}
-						>
-				{% thumbnail persoonfoto.foto "200" as im %}
-					<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
-				{% endthumbnail %}
-			</a>
-			{% if persoonfoto.legende %}
-				<div class="fotolegende">{{ persoonfoto.legende }}</div>
-			{% endif %}
-			{% if persoonfoto.datum %}
-				<div class="datum">{{ persoonfoto.datum }}</div>
-			{% endif %}
-		{% endfor %}
-	</div>
-{% endif %}
+{% if persoon.publiek %}
 
-<h1>{{ persoon.voornaam }} {{ persoon.achternaam }}
-	{% if persoon.overleden or persoon.sterfdatum %}
-		&dagger;
+	{% if persoonfotos.count %}
+		<div class="persoonfoto">
+			{% for persoonfoto in persoonfotos %}
+				<a href="{{ persoonfoto.foto.url }}" 
+							class="lytebox"
+							data-lyte-options="group:persoonfoto"
+							{% if persoonfoto.legende %}
+								data-description="{{ persoonfoto.legende }}"
+							{% endif %}
+							{% if persoonfoto.datum %}
+								data-title="{{ persoonfoto.datum }}"
+							{% endif %}
+							>
+					{% thumbnail persoonfoto.foto "200" as im %}
+						<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+					{% endthumbnail %}
+				</a>
+				{% if persoonfoto.legende %}
+					<div class="fotolegende">{{ persoonfoto.legende }}</div>
+				{% endif %}
+				{% if persoonfoto.datum %}
+					<div class="datum">{{ persoonfoto.datum }}</div>
+				{% endif %}
+			{% endfor %}
+		</div>
 	{% endif %}
-	{% if request.user|has_group:"beheer" %}
-		<span class="editpersoon">[<a href="/admin/alumni/persoon/{{ persoon.id }}/">wijzig</a>]</span>
-	{% endif %}
-</h1>
 
-<p>Rethorica: 
-	<a href="{% url 'klaslijst' persoon.rhetorica.klas.id %}">
-		{{ persoon.rhetorica.jaar }} {{ persoon.rhetorica.richting }}</a>
-	{% if persoon.rhetorica.klas.titularis %}
-		({{ persoon.rhetorica.klas.titularis }})
-	{% endif %}
-</p>
-
-{% if persoon.leeftijd or persoon.sterfdatum or persoon.gestorven %}
-	<p>
-		{% if persoon.geboortedatum %}
-			° {% if persoon.geboorteplaats %}{{ persoon.geboorteplaats }}, {% endif %}
-			{{ persoon.geboortedatum }}
-			{% if persoon.gestorven or persoon.sterfdatum %}<br />{% endif %}
+	<h1>{{ persoon.voornaam }} {{ persoon.achternaam }}
+		{% if persoon.overleden or persoon.sterfdatum %}
+			&dagger;
 		{% endif %}
-		{% if persoon.sterfdatum %}
-			&dagger; {% if persoon.sterfplaats %}{{ persoon.sterfplaats }}, {% endif %}
-			{{ persoon.sterfdatum }}
+		{% if request.user|has_group:"beheer" %}
+			<span class="editpersoon">[<a href="/admin/alumni/persoon/{{ persoon.id }}/">wijzig</a>]</span>
 		{% endif %}
-		{% if persoon.leeftijd %}
-			({{ persoon.leeftijd }} jaar)
+	</h1>
+
+	<p>Rethorica: 
+		<a href="{% url 'klaslijst' persoon.rhetorica.klas.id %}">
+			{{ persoon.rhetorica.jaar }} {{ persoon.rhetorica.richting }}</a>
+		{% if persoon.rhetorica.klas.titularis %}
+			({{ persoon.rhetorica.klas.titularis }})
 		{% endif %}
 	</p>
-{% endif %}
 
-{% if gebeurtenissen.count > 0 %}
-	<h3>Personalia</h3>
-	<ul>{% for gebeurtenis in gebeurtenissen %}
-			<li>{{ gebeurtenis.gebeurtenistype|title }}{% if gebeurtenis.datum %}
-					({{ gebeurtenis.datum }}){% endif %}: 
-					{{ gebeurtenis.omschrijving }}</li>
-		{% endfor %}
-	</ul>
-{% endif %}
+	{% if persoon.leeftijd or persoon.sterfdatum or persoon.gestorven %}
+		<p>
+			{% if persoon.geboortedatum %}
+				° {% if persoon.geboorteplaats %}{{ persoon.geboorteplaats }}, {% endif %}
+				{{ persoon.geboortedatum }}
+				{% if persoon.gestorven or persoon.sterfdatum %}<br />{% endif %}
+			{% endif %}
+			{% if persoon.sterfdatum %}
+				&dagger; {% if persoon.sterfplaats %}{{ persoon.sterfplaats }}, {% endif %}
+				{{ persoon.sterfdatum }}
+			{% endif %}
+			{% if persoon.leeftijd %}
+				({{ persoon.leeftijd }} jaar)
+			{% endif %}
+		</p>
+	{% endif %}
 
-{% if beroepen.count > 0 %}
-	<h3>Beroepsinformatie</h3>
-	<ul>
-		{% for beroep in beroepen %}
-			<li{% if beroep.featured %} class="featured"{% endif %}>
-				{% if beroep.van and beroep.tot %}
-					{{ beroep.van.year }} - {{ beroep.tot.year }}: 
-				{% elif beroep.van %}
-					{% if persoon.gestorven or persoon.sterfdatum %} 
-						vanaf 
-					{% else %}
-						sinds
-					{% endif %}
-					{{ beroep.van.year }}: 
-				{% elif beroep.tot %} 
-					tot {{ beroep.tot.year }}:  
-				{% endif %}
-				{{ beroep.beroepsgegevens }}
-			</li>
-		{% endfor %}
-	</ul>
-{% endif %}
+	{% if gebeurtenissen.count > 0 %}
+		<h3>Personalia</h3>
+		<ul>{% for gebeurtenis in gebeurtenissen %}
+				<li>{{ gebeurtenis.gebeurtenistype|title }}{% if gebeurtenis.datum %}
+						({{ gebeurtenis.datum }}){% endif %}: 
+						{{ gebeurtenis.omschrijving }}</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
 
-{% if contacten.count > 0  %}
-	<h3>Contactinformatie</h3>
-	<ul>{% for contact in contacten %}
-			<li>
-				{% if contact.contacttype = "gsm" %}
-					GSM {{ contact.contactdata }}
-				{% elif contact.contacttype = "email" %}
-					<a href="mailto:{{ contact.contactdata }}">{{ contact.contactdata }}</a>
-				{% elif contact.contacttype = "linkedin" %}
-					<a href="{{ contact.contactdata }}">LinkedIn</a>
-				{% elif contact.contacttype = "twitter" %}
-					<a href="http://twitter.com/{{ contact.contactdata }}">@{{ contact.contactdata }}</a>
-				{% elif contact.contacttype = "website" %}
-					<a href="{{ contact.contactdata }}">{{ contact.contactdata }}</a>
-				{% elif contact.contacttype = "telefoon" %}
-					Tel. {{ contact.contactdata }}
-				{% else %}
-					{{ contact.contacttype }}: {{ contact.contactdata }}
-				{% endif %}
-				{% if contact.opmerking %}
-					({{ contact.opmerking }})
-				{% endif %}
-			</li>
-		{% endfor %}
-	</ul>
-{% endif %}
-
-{% if adressen.count > 0 %}
-	<h3>Adresgegevens</h3>
-	<ul>
-		{% for adres in adressen %}
-			<li{% if adres.tot or not adres.geldig %} class="voorbij"{% endif %}>
-				{{ adres.adres|linebreaksbr }} 
-				<span class="addresinfo">
-					{% if adres.van and adres.tot %}
-						({{ adres.van.year }} - {{ adres.tot.year }}) 
-					{% elif adres.van %}
+	{% if beroepen.count > 0 %}
+		<h3>Beroepsinformatie</h3>
+		<ul>
+			{% for beroep in beroepen %}
+				<li{% if beroep.featured %} class="featured"{% endif %}>
+					{% if beroep.van and beroep.tot %}
+						{{ beroep.van.year }} - {{ beroep.tot.year }}: 
+					{% elif beroep.van %}
 						{% if persoon.gestorven or persoon.sterfdatum %} 
-							(vanaf 
+							vanaf 
 						{% else %}
-							(sinds 
+							sinds
 						{% endif %}
-						{{ adres.van.year }}{% if not adres.tot %}){% endif %}
-					{% elif adres.tot %} 
-						{% if not adres.van %}({% endif %}tot {{ adres.tot.year }})
+						{{ beroep.van.year }}: 
+					{% elif beroep.tot %} 
+						tot {{ beroep.tot.year }}:  
 					{% endif %}
-				</span>	
-			</li>
-		{% endfor %}
-	</ul>
+					{{ beroep.beroepsgegevens }}
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+
+	{% if contacten.count > 0  %}
+		<h3>Contactinformatie</h3>
+		<ul>{% for contact in contacten %}
+				<li>
+					{% if contact.contacttype = "gsm" %}
+						GSM {{ contact.contactdata }}
+					{% elif contact.contacttype = "email" %}
+						<a href="mailto:{{ contact.contactdata }}">{{ contact.contactdata }}</a>
+					{% elif contact.contacttype = "linkedin" %}
+						<a href="{{ contact.contactdata }}">LinkedIn</a>
+					{% elif contact.contacttype = "twitter" %}
+						<a href="http://twitter.com/{{ contact.contactdata }}">@{{ contact.contactdata }}</a>
+					{% elif contact.contacttype = "website" %}
+						<a href="{{ contact.contactdata }}">{{ contact.contactdata }}</a>
+					{% elif contact.contacttype = "telefoon" %}
+						Tel. {{ contact.contactdata }}
+					{% else %}
+						{{ contact.contacttype }}: {{ contact.contactdata }}
+					{% endif %}
+					{% if contact.opmerking %}
+						({{ contact.opmerking }})
+					{% endif %}
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+
+	{% if adressen.count > 0 %}
+		<h3>Adresgegevens</h3>
+		<ul>
+			{% for adres in adressen %}
+				<li{% if adres.tot or not adres.geldig %} class="voorbij"{% endif %}>
+					{{ adres.adres|linebreaksbr }} 
+					<span class="addresinfo">
+						{% if adres.van and adres.tot %}
+							({{ adres.van.year }} - {{ adres.tot.year }}) 
+						{% elif adres.van %}
+							{% if persoon.gestorven or persoon.sterfdatum %} 
+								(vanaf 
+							{% else %}
+								(sinds 
+							{% endif %}
+							{{ adres.van.year }}{% if not adres.tot %}){% endif %}
+						{% elif adres.tot %} 
+							{% if not adres.van %}({% endif %}tot {{ adres.tot.year }})
+						{% endif %}
+					</span>	
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+
+{% else %}
+
+	<h1>{{ persoon.voornaam }} {{ persoon.achternaam|make_list|first }}.
+		{% if persoon.overleden or persoon.sterfdatum %}
+			&dagger;
+		{% endif %}
+		{% if request.user|has_group:"beheer" %}
+			<span class="editpersoon">[<a href="/admin/alumni/persoon/{{ persoon.id }}/">wijzig</a>]</span>
+		{% endif %}
+	</h1>
+
+	<p>Rethorica: 
+		<a href="{% url 'klaslijst' persoon.rhetorica.klas.id %}">
+			{{ persoon.rhetorica.jaar }} {{ persoon.rhetorica.richting }}</a>
+		{% if persoon.rhetorica.klas.titularis %}
+			({{ persoon.rhetorica.klas.titularis }})
+		{% endif %}
+	</p>
+	
+	<p><em>[gegevens privé]</em></p>
+
 {% endif %}
 
 {% if betalingen.count > 0 %}

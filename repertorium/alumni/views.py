@@ -11,9 +11,11 @@ def index(request):
 	wijzigingen = Persoon.objects.order_by('-wijziging')[:15]
 	personalia = Gebeurtenis.objects.filter(
 		datum__gt=datetime.today()-timedelta(weeks=26)
+		).filter(persoon__publiek__exact=True
 		).order_by('gebeurtenistype','persoon__rhetorica__jaar')
 	overleden = Persoon.objects.filter(
 		sterfdatum__gt=datetime.today()-timedelta(weeks=26)
+		).filter(publiek__exact=True
 		).order_by('rhetorica__jaar')
 	adreswijzigingen = Adres.objects.filter(
 		geldig__exact=True
@@ -101,6 +103,7 @@ def az(request, letter):
 	try:
 		personen = Persoon.objects.filter(achternaam__startswith=letter
 			).exclude(rhetorica__exact=None
+			).filter(publiek__exact=True
 			).extra(select={'anaam': """replace(replace(lower(achternaam),'ù','u'),'ú','u')"""}
 			).order_by('anaam', 'voornaam')
 	except Persoon.DoesNotExist:

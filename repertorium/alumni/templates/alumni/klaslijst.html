@@ -54,22 +54,23 @@
 		{% endif %}
 		<ol class="klaslijst">
 			{% for leerling in persoon.list %}
-				<li><a href="{% url 'detail' leerling.id %}">{{ leerling.voornaam }} {{ leerling.achternaam }}</a>
-					{% if leerling.publiek %}
-					{% if leerling.overleden or leerling.sterfdatum %} 
-						&dagger; {% if leerling.sterfplaats %}{{ leerling.sterfplaats }}, {% endif %} {% if leerling.sterfdatum %}{{ leerling.sterfdatum }}{% endif %}
-						{% if leerling.leeftijd %}({{ leerling.leeftijd }} jaar){% endif %}
-					{% endif %}
-					{% if leerling.klasvertegenwoordiger %} 
-						<span class="klasvertegenwoordiger">[klasafgevaardigde]</span>
-					{% endif %}
-					{% for adres in adressen %}
-						{% if adres.persoon.id = leerling.id %}
-							<br />{{ adres.adres|linebreaksbr }}
+				<li>{% if leerling.publiek %}
+						<a href="{% url 'detail' leerling.id %}">{{ leerling.voornaam }} {{ leerling.achternaam }}</a>
+						{% if leerling.overleden or leerling.sterfdatum %} 
+							&dagger; {% if leerling.sterfplaats %}{{ leerling.sterfplaats }}, {% endif %} {% if leerling.sterfdatum %}{{ leerling.sterfdatum }}{% endif %}
+							{% if leerling.leeftijd %}({{ leerling.leeftijd }} jaar){% endif %}
 						{% endif %}
-					{% endfor %}
+						{% if leerling.klasvertegenwoordiger %} 
+							<span class="klasvertegenwoordiger">[klasafgevaardigde]</span>
+						{% endif %}
+						{% for adres in adressen %}
+							{% if adres.persoon.id = leerling.id %}
+								<br />{{ adres.adres|linebreaksbr }}
+							{% endif %}
+						{% endfor %}
 					{% else %}
-						[wil niet gepubliceerd worden, het kieken]
+						{{ leerling.voornaam }} {{ leerling.achternaam|make_list|first }}.
+						<br /><em>[gegevens privé]</em>
 					{% endif %}
 				</li>
 			{% endfor %}
