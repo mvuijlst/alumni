@@ -55,6 +55,7 @@
 		<ol class="klaslijst">
 			{% for leerling in persoon.list %}
 				<li><a href="{% url 'detail' leerling.id %}">{{ leerling.voornaam }} {{ leerling.achternaam }}</a>
+					{% if leerling.publiek %}
 					{% if leerling.overleden or leerling.sterfdatum %} 
 						&dagger; {% if leerling.sterfplaats %}{{ leerling.sterfplaats }}, {% endif %} {% if leerling.sterfdatum %}{{ leerling.sterfdatum }}{% endif %}
 						{% if leerling.leeftijd %}({{ leerling.leeftijd }} jaar){% endif %}
@@ -67,6 +68,9 @@
 							<br />{{ adres.adres|linebreaksbr }}
 						{% endif %}
 					{% endfor %}
+					{% else %}
+						[wil niet gepubliceerd worden, het kieken]
+					{% endif %}
 				</li>
 			{% endfor %}
 		</ol>
