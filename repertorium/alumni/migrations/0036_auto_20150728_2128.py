@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterModelOptions(
-            name='soorthoedanigheid',
+            name='hoedanigheidstype',
             options={'verbose_name_plural': 'Hoedanigheden', 'verbose_name': 'Hoedanigheid'},
         ),
         migrations.AlterField(

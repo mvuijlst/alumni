@@ -191,7 +191,7 @@
 			{% for betaling in betalingen %}
 				<tr class="{% cycle 'oneven' 'even' %}">
 					<td>{% if betaling.datum %}{{ betaling.datum }}{% else %}--{% endif %}</td>
-					<td>{% if betaling.soortbetaling %}{{ betaling.soortbetaling }}{% else %}--{% endif %}</td>
+					<td>{% if betaling.betalingstype %}{{ betaling.betalingstype }}{% else %}--{% endif %}</td>
 					<td>{% if betaling.bedrag %}{{ betaling.bedrag }}{% else %}--{% endif %}</td>
 					<td>{% if betaling.betalingsjaar %}{{ betaling.betalingsjaar }}{% else %}--{% endif %}</td>
 					<td>{% if betaling.opmerking %}{{ betaling.opmerking }}{% else %}--{% endif %}</td>

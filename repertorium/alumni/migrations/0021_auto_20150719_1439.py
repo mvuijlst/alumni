@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Soortbetaling',
+            name='Betalingstype',
             fields=[
                 ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
                 ('omschrijving', models.CharField(max_length=50)),
@@ -53,7 +53,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='betaling',
-            name='soortbetaling',
-            field=models.ForeignKey(to='alumni.Soortbetaling'),
+            name='betalingstype',
+            field=models.ForeignKey(to='alumni.Betalingstype'),
         ),
     ]

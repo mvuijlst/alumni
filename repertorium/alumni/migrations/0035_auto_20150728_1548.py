@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='Soorthoedanigheid',
+            name='Hoedanigheidstype',
             fields=[
                 ('id', models.AutoField(auto_created=True, verbose_name='ID', serialize=False, primary_key=True)),
                 ('omschrijving', models.CharField(max_length=50)),
@@ -62,7 +62,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='hoedanigheid',
-            name='soorthoedanigheid',
-            field=models.ForeignKey(to='alumni.Soorthoedanigheid'),
+            name='hoedanigheidstype',
+            field=models.ForeignKey(to='alumni.Hoedanigheidstype'),
         ),
     ]

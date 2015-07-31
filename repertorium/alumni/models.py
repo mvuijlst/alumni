@@ -184,17 +184,15 @@ class Persoonfoto(models.Model):
     class Meta:
         verbose_name_plural = 'Foto\'s'
  
-class Soortbetaling(models.Model):
+class Betalingstype(models.Model):
     omschrijving = models.CharField(max_length=50)
     actief = models.BooleanField(default=True)
     def __str__(self):
         return self.omschrijving
-    class Meta:
-        verbose_name_plural = "Soorten betaling"
 
 class Betaling(models.Model):
     persoon = models.ForeignKey(Persoon)
-    soortbetaling = models.ForeignKey(Soortbetaling)
+    betalingstype = models.ForeignKey(Betalingstype)
     betalingsjaar = models.IntegerField(default=ditjaar, null=True,blank=True)
     bedrag = models.IntegerField(null=True,blank=True)
     opmerking = models.CharField(max_length=200,null=True,blank=True)
@@ -202,7 +200,7 @@ class Betaling(models.Model):
     class Meta:
         verbose_name_plural = "Betalingen"
 
-class Soorthoedanigheid(models.Model):
+class Hoedanigheidstype(models.Model):
     omschrijving = models.CharField(max_length=50)
     actief = models.BooleanField(default=True)
     def __str__(self):
@@ -213,14 +211,14 @@ class Soorthoedanigheid(models.Model):
 
 class Hoedanigheid(models.Model):
     persoon = models.ForeignKey(Persoon)
-    soorthoedanigheid = models.ForeignKey(Soorthoedanigheid)
+    hoedanigheidstype = models.ForeignKey(Hoedanigheidstype)
     opmerking = models.CharField(max_length=100,null=True,blank=True)
     van = models.DateField(null=True,blank=True)
     tot = models.DateField(null=True,blank=True)
     geldig = models.BooleanField(default=True)
     wijziging = models.DateTimeField(auto_now=True)
     def __str__(self):
-        return self.soorthoedanigheid.omschrijving
+        return self.hoedanigheidstype.omschrijving
     class Meta:
         verbose_name_plural = 'Hoedanigheden'
   

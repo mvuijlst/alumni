@@ -56,12 +56,14 @@ def klaslijst(request, klas_id):
 		raise Http404("Klas niet gevonden.")
 	personen = Persoon.objects.filter(rhetorica__klas=klas_id).order_by('rhetorica__richting', 'achternaam', 'voornaam')
 	adressen = Adres.objects.filter(persoon__rhetorica__klas_id=klas_id).filter(persoon__overleden=0).filter(geldig=1)
+	contacts = Contact.objects.filter(persoon__rhetorica__klas_id=klas_id).filter(persoon__overleden=0).filter(geldig=1)
 	klasfotos = Klasfoto.objects.filter(klas=klas_id).order_by('datum')
 	aantal_klassen = Rhetorica.objects.filter(klas=klas_id).count()
 	context = {
 		'klas': klas,
 		'personen': personen,
 		'adressen' : adressen,
+		'contacts' : contacts,
 		'klasfotos': klasfotos,
 		'aantal_klassen': aantal_klassen
 	}
@@ -141,7 +143,7 @@ def moetbetalen(request):
 			a.geldig=1 and 
 			(c.contacttype='email' or c.id is null) and
 			p.id not in (select persoon_id from alumni_betaling 
-		                 where betalingsjaar={0} or soortbetaling_id<>2)
+		                 where betalingsjaar={0} or betalingstype_id<>2)
 		GROUP BY p.id
 		ORDER BY r.jaar, r.richting, p.achternaam""".format(schooljaar))
 
@@ -191,7 +193,7 @@ def vroegerbetaald(request,alle):
 			a.geldig=1 and 
 			(c.contacttype='email' or c.id is null) and 
 			p.id not in (select persoon_id from alumni_betaling 
-						 where betalingsjaar={0} or soortbetaling_id=2)
+						 where betalingsjaar={0} or betalingstype_id=2)
 		GROUP BY p.id
 		ORDER BY r.jaar, r.richting, p.achternaam""".format(schooljaar,zoekscope))
 	
@@ -226,7 +228,7 @@ def moetABkrijgen(request):
 			left outer join alumni_adres a on p.id=a.persoon_id
 			left outer join alumni_contact c on p.id=c.persoon_id
 		WHERE
-			(r.jaar = {0} or b.betalingsjaar={0} or b.soortbetaling_id=2) and
+			(r.jaar = {0} or b.betalingsjaar={0} or b.betalingstype_id=2) and
 			p.overleden=0 and
 			p.contacteren=1 and
 			a.geldig=1 and 
@@ -238,7 +240,7 @@ def moetABkrijgen(request):
 		SELECT p.id, p.voornaam, p.achternaam, null jaar, s.omschrijving richting, a.adres, c.contactdata email
 		FROM alumni_persoon p 
 			inner join alumni_hoedanigheid h on h.persoon_id=p.id
-			inner join alumni_soorthoedanigheid s on h.soorthoedanigheid_id = s.id
+			inner join alumni_hoedanigheidstype s on h.hoedanigheidstype_id = s.id
 			left outer join alumni_adres a on p.id=a.persoon_id
 			left outer join alumni_contact c on p.id=c.persoon_id
 		WHERE
@@ -331,7 +333,7 @@ def mailinglijst(request):
 		SELECT p.id, p.voornaam, p.achternaam achternaam, null jaar, s.omschrijving richting, null adres, c.contactdata email
 		FROM alumni_persoon p 
 			inner join alumni_hoedanigheid h on h.persoon_id=p.id
-			inner join alumni_soorthoedanigheid s on h.soorthoedanigheid_id = s.id
+			inner join alumni_hoedanigheidstype s on h.hoedanigheidstype_id = s.id
 			left outer join alumni_contact c on p.id=c.persoon_id
 		WHERE
 			p.overleden=0 and
