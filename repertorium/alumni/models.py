@@ -118,6 +118,13 @@ class Adres(models.Model):
     class Meta:
         verbose_name_plural = 'Adressen'
 
+class Contacttype(models.Model):
+    naam = models.CharField(max_length=50)
+    template = models.CharField(max_length=200)
+    actief = models.BooleanField(default=True)
+    def __str__(self):
+        return self.naam
+
 class Contact(models.Model):
     persoon = models.ForeignKey(Persoon)
     CONTACT_TELEFOON = 'telefoon'

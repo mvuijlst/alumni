@@ -139,7 +139,7 @@ SUIT_CONFIG = {
     # 'MENU_EXCLUDE': ('auth.group',),
     'MENU': (
         'sites',
-        {'app': 'alumni', 'models': ('persoon', 'klas', 'betalingstype', 'hoedanigheidstype')},
+        {'app': 'alumni', 'models': ('persoon', 'klas', 'betalingstype', 'contacttype', 'hoedanigheidstype')},
         {'app': 'auth', 'icon':'icon-lock', 'models': ('user', 'group')},
         {'label': 'Settings', 'icon':'icon-cog', 'models': ('auth.user', 'auth.group')},
     ),
