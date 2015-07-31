@@ -103,6 +103,7 @@ class Persoon(models.Model):
     
     class Meta:
         verbose_name_plural = 'Personen'
+        ordering = ['-wijziging']
 
 class Adres(models.Model):
     persoon = models.ForeignKey(Persoon)
