@@ -118,23 +118,18 @@ class Adres(models.Model):
     class Meta:
         verbose_name_plural = 'Adressen'
 
-class Contacttype(models.Model):
+class Contactmiddel(models.Model):
     naam = models.CharField(max_length=50)
     template = models.CharField(max_length=200)
     actief = models.BooleanField(default=True)
     def __str__(self):
         return self.naam
+    class Meta:
+        verbose_name_plural = 'Contactmiddelen'
 
 class Contact(models.Model):
     persoon = models.ForeignKey(Persoon)
-    CONTACT_TELEFOON = 'telefoon'
-    CONTACT_EMAIL = 'email'
-    CONTACT_GSM = 'gsm'
-    CONTACT_WEBSITE = 'website'
-    CONTACT_LINKEDIN = 'linkedin'
-    CONTACT_TWITTER = 'twitter'
-    CONTACTEN = {(CONTACT_GSM, 'GSM'), (CONTACT_EMAIL, 'E-mail'), (CONTACT_TELEFOON, 'Telefoon'), (CONTACT_WEBSITE, 'Website'), (CONTACT_LINKEDIN, 'LinkedIn'), (CONTACT_TWITTER, 'Twitter')}
-    contacttype = models.CharField(max_length=10, choices=CONTACTEN, default=CONTACT_GSM)
+    contactmiddel = models.ForeignKey(Contactmiddel)
     contactdata = models.CharField(max_length=200)
     opmerking = models.CharField(max_length=100,null=True,blank=True)
     van = models.DateField(null=True,blank=True)
@@ -142,7 +137,7 @@ class Contact(models.Model):
     geldig = models.BooleanField(default=True)
     wijziging = models.DateTimeField(auto_now=True)
     def __str__(self):
-        return self.contacttype + ' ' + self.contactdata
+        return self.contactmiddel.naam + ' ' + self.contactdata
     class Meta:
         verbose_name_plural = 'Contactmiddelen'
 

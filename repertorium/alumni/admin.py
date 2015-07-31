@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import Persoon, Rhetorica, Adres, Contact, Beroep
-from .models import Klas, Klasfoto, Persoonfoto, Betaling, Betalingstype, Gebeurtenis, Hoedanigheid, Hoedanigheidstype, Contacttype
+from .models import Klas, Klasfoto, Persoonfoto, Betaling, Betalingstype, Gebeurtenis, Hoedanigheid, Hoedanigheidstype, Contactmiddel
 
 class AdresInline(admin.TabularInline):
 	model = Adres
@@ -107,7 +107,7 @@ class HoedanigheidstypeAdmin(admin.ModelAdmin):
 	
 admin.site.register(Hoedanigheidstype, HoedanigheidstypeAdmin)
 
-class ContacttypeAdmin(admin.ModelAdmin):
+class ContactmiddelAdmin(admin.ModelAdmin):
 	fieldsets = [
 		(None,
 			{'fields':
@@ -117,4 +117,4 @@ class ContacttypeAdmin(admin.ModelAdmin):
 	]
 	list_display = ('naam', 'template', 'actief')
 	
-admin.site.register(Contacttype, ContacttypeAdmin)
+admin.site.register(Contactmiddel, ContactmiddelAdmin)

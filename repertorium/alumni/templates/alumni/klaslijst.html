@@ -1,6 +1,7 @@
 {% extends 'alumni/base.html' %}
 {% load humanize %}
 {% load thumbnail %}
+{% load formatcontact %}
 
 {% block title %}{{ klas.jaar }} {{ klas.klasnaam }}{% endblock %}
 
@@ -68,6 +69,13 @@
 								<br />{{ adres.adres|linebreaksbr }}
 							{% endif %}
 						{% endfor %}
+						{% if leerling.overleden and leerling.sterfdatum and contacten.count > 0  %}
+							{% for contact in contacten %}
+								{% if contact.persoon.id = leerling.id %}
+									<br />{{ contact.contactmiddel.template|formatcontact:contact.contactdata|safe }}
+								{% endif %}
+							{% endfor %}
+						{% endif %}
 					{% else %}
 						{{ leerling.voornaam }} {{ leerling.achternaam|make_list|first }}.
 						<br /><em>[gegevens privé]</em>

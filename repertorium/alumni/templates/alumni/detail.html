@@ -2,6 +2,7 @@
 {% load humanize %}
 {% load thumbnail %}
 {% load app_filters %} 
+{% load formatcontact %} 
 
 {% block title %}{{ persoon.voornaam }} {{ persoon.achternaam }}{% endblock %}
 
@@ -103,25 +104,11 @@
 		</ul>
 	{% endif %}
 
-	{% if contacten.count > 0  %}
+	{% if contacten.count > 0  %}		
 		<h3>Contactinformatie</h3>
 		<ul>{% for contact in contacten %}
 				<li>
-					{% if contact.contacttype = "gsm" %}
-						GSM {{ contact.contactdata }}
-					{% elif contact.contacttype = "email" %}
-						<a href="mailto:{{ contact.contactdata }}">{{ contact.contactdata }}</a>
-					{% elif contact.contacttype = "linkedin" %}
-						<a href="{{ contact.contactdata }}">LinkedIn</a>
-					{% elif contact.contacttype = "twitter" %}
-						<a href="http://twitter.com/{{ contact.contactdata }}">@{{ contact.contactdata }}</a>
-					{% elif contact.contacttype = "website" %}
-						<a href="{{ contact.contactdata }}">{{ contact.contactdata }}</a>
-					{% elif contact.contacttype = "telefoon" %}
-						Tel. {{ contact.contactdata }}
-					{% else %}
-						{{ contact.contacttype }}: {{ contact.contactdata }}
-					{% endif %}
+					{{ contact.contactmiddel.template|formatcontact:contact.contactdata|safe }}
 					{% if contact.opmerking %}
 						({{ contact.opmerking }})
 					{% endif %}
@@ -166,7 +153,7 @@
 		{% endif %}
 	</h1>
 
-	<p>Rethorica: 
+	<p>Rhetorica: 
 		<a href="{% url 'klaslijst' persoon.rhetorica.klas.id %}">
 			{{ persoon.rhetorica.jaar }} {{ persoon.rhetorica.richting }}</a>
 		{% if persoon.rhetorica.klas.titularis %}

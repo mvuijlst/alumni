@@ -56,14 +56,14 @@ def klaslijst(request, klas_id):
 		raise Http404("Klas niet gevonden.")
 	personen = Persoon.objects.filter(rhetorica__klas=klas_id).order_by('rhetorica__richting', 'achternaam', 'voornaam')
 	adressen = Adres.objects.filter(persoon__rhetorica__klas_id=klas_id).filter(persoon__overleden=0).filter(geldig=1)
-	contacts = Contact.objects.filter(persoon__rhetorica__klas_id=klas_id).filter(persoon__overleden=0).filter(geldig=1)
+	contacten = Contact.objects.filter(persoon__rhetorica__klas_id=klas_id).filter(persoon__overleden=0).filter(geldig=1).filter(contactmiddel__naam__exact="E-mail")
 	klasfotos = Klasfoto.objects.filter(klas=klas_id).order_by('datum')
 	aantal_klassen = Rhetorica.objects.filter(klas=klas_id).count()
 	context = {
 		'klas': klas,
 		'personen': personen,
 		'adressen' : adressen,
-		'contacts' : contacts,
+		'contacten' : contacten,
 		'klasfotos': klasfotos,
 		'aantal_klassen': aantal_klassen
 	}
@@ -76,7 +76,7 @@ def persoondetail(request, persoon_id):
 	except Persoon.DoesNotExist:
 		raise Http404("Persoon niet gevonden.")
 	
-	contacten = Contact.objects.filter(persoon=persoon_id).filter(geldig=True).order_by('contacttype', '-van', '-tot')
+	contacten = Contact.objects.filter(persoon=persoon_id).filter(geldig=True).order_by('contactmiddel__naam', '-van', '-tot')
 	beroepen = Beroep.objects.filter(persoon=persoon_id).order_by('-featured', '-van', '-tot')
 	adressen = Adres.objects.filter(persoon=persoon_id).order_by('-van', '-tot')
 	betalingen = Betaling.objects.filter(persoon=persoon_id).order_by('-betalingsjaar', '-datum')
