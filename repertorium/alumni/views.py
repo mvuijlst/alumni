@@ -5,6 +5,8 @@ from django.db.models import Q
 from datetime import datetime, timedelta
 
 from .models import Klas, Rhetorica, Persoon, Contact, Beroep, Adres, Betaling, Gebeurtenis, Klasfoto, Persoonfoto
+from .excelstuff import XLSklaslijst 
+
 
 @login_required
 def index(request):
@@ -49,25 +51,36 @@ def decennium(request,decennium):
 	return render(request, 'alumni/decennium.html',context)
 
 @login_required
-def klaslijst(request, klas_id):
+def klaslijst(request, formaat, klas_id):
 	try:
 		klas = Klas.objects.get(pk=klas_id)
 	except Klas.DoesNotExist:
 		raise Http404("Klas niet gevonden.")
-	personen = Persoon.objects.filter(rhetorica__klas=klas_id).order_by('rhetorica__richting', 'achternaam', 'voornaam')
-	adressen = Adres.objects.filter(persoon__rhetorica__klas_id=klas_id).filter(persoon__overleden=0).filter(geldig=1)
-	contacten = Contact.objects.filter(persoon__rhetorica__klas_id=klas_id).filter(persoon__overleden=0).filter(geldig=1).filter(contactmiddel__naam__exact="E-mail")
-	klasfotos = Klasfoto.objects.filter(klas=klas_id).order_by('datum')
-	aantal_klassen = Rhetorica.objects.filter(klas=klas_id).count()
-	context = {
-		'klas': klas,
-		'personen': personen,
-		'adressen' : adressen,
-		'contacten' : contacten,
-		'klasfotos': klasfotos,
-		'aantal_klassen': aantal_klassen
-	}
-	return render(request, 'alumni/klaslijst.html', context)
+	
+	if formaat == "w":
+		personen = Persoon.objects.filter(rhetorica__klas=klas_id).order_by('rhetorica__richting', 'achternaam', 'voornaam')
+		adressen = Adres.objects.filter(persoon__rhetorica__klas_id=klas_id).filter(persoon__overleden=0).filter(geldig=1)
+		contacten = Contact.objects.filter(persoon__rhetorica__klas_id=klas_id).filter(persoon__overleden=0).filter(geldig=1).filter(contactmiddel__naam__exact="E-mail")
+		klasfotos = Klasfoto.objects.filter(klas=klas_id).order_by('datum')
+		aantal_klassen = Rhetorica.objects.filter(klas=klas_id).count()
+		context = {
+			'klas': klas,
+			'personen': personen,
+			'adressen' : adressen,
+			'contacten' : contacten,
+			'klasfotos': klasfotos,
+			'aantal_klassen': aantal_klassen
+		}
+		
+		return render(request, 'alumni/klaslijst.html', context)
+	
+	else:
+		response = HttpResponse(content_type='application/vnd.ms-excel')
+		response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
+		xlsx_data = XLSklaslijst(klas_id)
+		response.write(xlsx_data)
+		return response
+
 
 @login_required
 def persoondetail(request, persoon_id):

@@ -7,7 +7,10 @@
 
 {% block main %}
 	
-	<h1>{{ klas.jaar }} {{ klas.klasnaam }}</h1>
+	<h1>
+		{{ klas.jaar }} {{ klas.klasnaam }}
+		<span class="download"><a href="{% url 'klaslijst' 'x' klas.id %}">Download Excel</a></span>
+	</h1>
 	{% if klas.titularis %}
 		<h2>{{ klas.titularis }}</h2>
 	{% endif %}
@@ -84,5 +87,7 @@
 			{% endfor %}
 		</ol>
 	{% endfor %}
+	
+	
 
 {% endblock %}

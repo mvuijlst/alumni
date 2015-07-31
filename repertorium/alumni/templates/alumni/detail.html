@@ -47,7 +47,7 @@
 	</h1>
 
 	<p>Rethorica: 
-		<a href="{% url 'klaslijst' persoon.rhetorica.klas.id %}">
+		<a href="{% url 'klaslijst' 'w' persoon.rhetorica.klas.id %}">
 			{{ persoon.rhetorica.jaar }} {{ persoon.rhetorica.richting }}</a>
 		{% if persoon.rhetorica.klas.titularis %}
 			({{ persoon.rhetorica.klas.titularis }})
@@ -154,7 +154,7 @@
 	</h1>
 
 	<p>Rhetorica: 
-		<a href="{% url 'klaslijst' persoon.rhetorica.klas.id %}">
+		<a href="{% url 'klaslijst' 'w' persoon.rhetorica.klas.id %}">
 			{{ persoon.rhetorica.jaar }} {{ persoon.rhetorica.richting }}</a>
 		{% if persoon.rhetorica.klas.titularis %}
 			({{ persoon.rhetorica.klas.titularis }})

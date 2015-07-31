@@ -225,3 +225,14 @@ dd {
 .onbelangrijk {
 	font-size: 0.8em;
 }
+
+h1 .download {
+	display: none;
+}
+
+h1:hover .download {
+	font-family: 'Roboto', sans-serif;
+	display: inline;
+	font-size: small;
+	line-height: 0;
+}

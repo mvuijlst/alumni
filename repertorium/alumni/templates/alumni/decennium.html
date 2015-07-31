@@ -12,7 +12,7 @@
 		<h2>{{ klasjaar.grouper }}</h2>
 		<ul>
 			{% for klas in klasjaar.list %}
-				<li><a href="{% url 'klaslijst' klas.id %}">
+				<li><a href="{% url 'klaslijst' 'w' klas.id %}">
 						{{ klas.jaar }} {{ klas.klasnaam }}</a>
 					{% if klas.titularis %} ({{ klas.titularis }}){% endif %}
 				</li>
