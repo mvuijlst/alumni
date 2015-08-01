@@ -109,7 +109,7 @@ def XLSklaslijst(klas_id):
                         emailbreedte=len(e.contactdata)
        
         else:
-            worksheet_s.write_string(rij, 0, "†"+persoon.achternaam, overleden)
+            worksheet_s.write_string(rij, 0, persoon.achternaam+"†", overleden)
             worksheet_s.write_string(rij, 1, persoon.voornaam, overleden)
            
         if len(persoon.achternaam)>naambreedte: 
