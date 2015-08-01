@@ -17,11 +17,11 @@ urlpatterns = [
     url(r'^info$', views.info, name='info'),
     # rapporten
     url(r'^rapport$', views.rapport, name='rapport'),
-    url(r'^rapport/moetbetalen$', views.moetbetalen, name='moetbetalen'),
-    url(r'^rapport/vroegerbetaald/(?P<alle>[01])$', views.vroegerbetaald, name='vroegerbetaald'),
-    url(r'^rapport/ab$', views.moetABkrijgen, name='moetABkrijgen'),
+    url(r'^rapport/(?P<formaat>[wx])/moetbetalen$', views.moetbetalen, name='moetbetalen'),
+    url(r'^rapport/(?P<formaat>[wx])/vroegerbetaald/(?P<alle>[01])$', views.vroegerbetaald, name='vroegerbetaald'),
+    url(r'^rapport/(?P<formaat>[wx])/ab$', views.moetABkrijgen, name='moetABkrijgen'),
 
-    url(r'^rapport/geenadres$', views.geenadres, name='geenadres'),
-    url(r'^rapport/mailinglijst$', views.mailinglijst, name='mailinglijst'),
-    url(r'^rapport/nietalumni$', views.nietalumni, name='nietalumni'),
+    url(r'^rapport/(?P<formaat>[wx])/geenadres$', views.geenadres, name='geenadres'),
+    url(r'^rapport/(?P<formaat>[wx])/mailinglijst$', views.mailinglijst, name='mailinglijst'),
+    url(r'^rapport/(?P<formaat>[wx])/nietalumni$', views.nietalumni, name='nietalumni'),
 ]

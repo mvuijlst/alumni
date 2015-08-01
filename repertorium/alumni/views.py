@@ -5,8 +5,7 @@ from django.db.models import Q
 from datetime import datetime, timedelta
 
 from .models import Klas, Rhetorica, Persoon, Contact, Beroep, Adres, Betaling, Gebeurtenis, Klasfoto, Persoonfoto
-from .excelstuff import XLSklaslijst 
-
+from .excelstuff import XLSklaslijst, XLSadreslijst
 
 @login_required
 def index(request):
@@ -136,7 +135,7 @@ def rapport(request):
 	return render(request, 'alumni/rapport.html')
 	
 @login_required
-def moetbetalen(request):
+def moetbetalen(request, formaat):
 	
 	if datetime.now().month<7:
 		schooljaar = datetime.now().year-1
@@ -172,10 +171,17 @@ def moetbetalen(request):
 		</ol>"""
 	}
 	
-	return render(request, 'alumni/adreslijst.html', context)
+	if formaat == "w":
+		return render(request, 'alumni/adreslijst.html', context)
+	else:
+		response = HttpResponse(content_type='application/vnd.ms-excel')
+		response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
+		xlsx_data = XLSadreslijst(context)
+		response.write(xlsx_data)
+		return response
 
 @login_required
-def vroegerbetaald(request,alle):
+def vroegerbetaald(request, formaat, alle):
 	
 	if datetime.now().month<7:
 		schooljaar = datetime.now().year-1
@@ -223,10 +229,17 @@ def vroegerbetaald(request,alle):
 		</ol>""".format(wanneer)
 	}
 	
-	return render(request, 'alumni/adreslijst.html', context)
+	if formaat == "w":
+		return render(request, 'alumni/adreslijst.html', context)
+	else:
+		response = HttpResponse(content_type='application/vnd.ms-excel')
+		response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
+		xlsx_data = XLSadreslijst(context)
+		response.write(xlsx_data)
+		return response
 	
 @login_required
-def moetABkrijgen(request):
+def moetABkrijgen(request, formaat):
 	
 	if datetime.now().month<7:
 		schooljaar = datetime.now().year-1
@@ -278,10 +291,17 @@ def moetABkrijgen(request):
 			</ol>"""
 	}
 	
-	return render(request, 'alumni/adreslijst.html', context)
+	if formaat == "w":
+		return render(request, 'alumni/adreslijst.html', context)
+	else:
+		response = HttpResponse(content_type='application/vnd.ms-excel')
+		response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
+		xlsx_data = XLSadreslijst(context)
+		response.write(xlsx_data)
+		return response
 
 @login_required
-def geenadres(request):
+def geenadres(request, formaat):
 	personen = Persoon.objects.raw("""
 		SELECT p.id, p.voornaam, p.achternaam, r.jaar, r.richting, c.contactdata email,  
 			if(length(a.adres)>0, 
@@ -326,10 +346,17 @@ def geenadres(request):
 		<p>Tussen [vierkante haakjes] de datum van/tot van het laatst gekende ongeldige adres."""
 	}
 	
-	return render(request, 'alumni/adreslijst.html', context)
+	if formaat == "w":
+		return render(request, 'alumni/adreslijst.html', context)
+	else:
+		response = HttpResponse(content_type='application/vnd.ms-excel')
+		response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
+		xlsx_data = XLSadreslijst(context)
+		response.write(xlsx_data)
+		return response
 
 @login_required
-def mailinglijst(request):
+def mailinglijst(request, formaat):
 	personen = Persoon.objects.raw("""
 		SELECT p.id, p.voornaam, p.achternaam achternaam, r.jaar jaar, r.richting richting, null adres, c.contactdata email
 		FROM alumni_persoon p 
@@ -369,10 +396,17 @@ def mailinglijst(request):
 		</ol>"""
 	}
 	
-	return render(request, 'alumni/adreslijst.html', context)
+	if formaat == "w":
+		return render(request, 'alumni/adreslijst.html', context)
+	else:
+		response = HttpResponse(content_type='application/vnd.ms-excel')
+		response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
+		xlsx_data = XLSadreslijst(context)
+		response.write(xlsx_data)
+		return response
 	
 @login_required
-def nietalumni(request):
+def nietalumni(request, formaat):
 	
 	try:
 		personen = Persoon.objects.filter(rhetorica__exact=None
@@ -384,4 +418,11 @@ def nietalumni(request):
 		'personen': personen
 	}
 	
-	return render(request, 'alumni/nietalumni.html', context)
+	if formaat == "w":
+		return render(request, 'alumni/adreslijst.html', context)
+	else:
+		response = HttpResponse(content_type='application/vnd.ms-excel')
+		response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
+		xlsx_data = XLSadreslijst(context)
+		response.write(xlsx_data)
+		return response

@@ -5,17 +5,39 @@
 {% block main %}
 	<h1>Rapporten</h1>
 	
-	<ol><li><a href="{% url 'moetABkrijgen' %}">Adressenlijst Allegro Barbaro</a></li>
-		<li><a href="{% url 'moetbetalen' %}">Mensen die nog zouden moeten betalen dit jaar</a></li>
-		<li><a href="{% url 'vroegerbetaald' 0 %}">Recent betaald, maar niet dit jaar</a></li>
-		<li><a href="{% url 'vroegerbetaald' 1 %}"><em>Ooit</em> betaald, maar niet dit jaar</a></li>
-	</ol>
+	<table class="stripe">
+		<tr><td>Adressenlijst Allegro Barbaro</td>
+			<td><a href="{% url 'moetABkrijgen' 'w' %}">web</a></td>
+			<td><a href="{% url 'moetABkrijgen' 'x' %}">excel</a></td>
+		</tr>
+		<tr><td>Mensen die nog zouden moeten betalen dit jaar</td>
+			<td><a href="{% url 'moetbetalen' 'w' %}">web</a></td>
+			<td><a href="{% url 'moetbetalen' 'x' %}">excel</a></td>
+		</tr>
+		<tr><td>Recent betaald, maar niet dit jaar</td>
+			<td><a href="{% url 'vroegerbetaald' 'w' 0 %}">web</a></td>
+			<td><a href="{% url 'vroegerbetaald' 'x' 0 %}">excel</a></td>
+		</tr>
+		<tr><td><em>Ooit</em> betaald, maar niet dit jaar</td>
+			<td><a href="{% url 'vroegerbetaald' 'w' 1 %}">web</a></td>
+			<td><a href="{% url 'vroegerbetaald' 'x' 1 %}">excel</a></td>
+		</tr>
+	</table>
 	
 	<h2>Lijsten</h2>
-	<ul>
-		<li><a href="{% url 'geenadres' %}">Geen adresgegevens</a></li>
-		<li><a href="{% url 'mailinglijst' %}">Mailinglijst</a></li>
-		<li><a href="{% url 'nietalumni' %}">Niet-alumni</a></li>
-	</ul>
+	<table class="stripe">
+		<tr><td>Geen adresgegevens</td>
+			<td><a href="{% url 'geenadres' 'w' %}">web</a></td>
+			<td><a href="{% url 'geenadres' 'x' %}">excel</a></td>
+		</tr>
+		<tr><td>Mailinglijst</td>
+			<td><a href="{% url 'mailinglijst' 'w' %}">web</a></td>
+			<td><a href="{% url 'mailinglijst' 'x' %}">excel</a></td>
+		</tr>
+		<tr><td>Niet-alumni</td>
+			<td><a href="{% url 'nietalumni' 'w' %}">web</a></td>
+			<td><a href="{% url 'nietalumni' 'x' %}">excel</a></td>
+		</tr>
+	</table>
 
 {% endblock %}
