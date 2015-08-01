@@ -77,6 +77,7 @@ WSGI_APPLICATION = 'repertorium.wsgi.application'
 
 LOGIN_URL='/login'
 LOGIN_REDIRECT_URL = '/repertorium'
+LOGOUT_URL='/logout'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases

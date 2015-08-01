@@ -1,6 +1,7 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 from django.db.models import Q
 from datetime import datetime, timedelta
 
@@ -35,7 +36,7 @@ def index(request):
 
 def info(request):
 	return render(request, 'alumni/info.html')
-
+	
 @login_required
 def decennium(request,decennium):
 	dec=int(decennium[:3])

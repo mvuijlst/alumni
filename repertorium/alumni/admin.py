@@ -41,7 +41,7 @@ class PersoonAdmin(admin.ModelAdmin):
 		),
 		('Repertorium',
 			{'fields':
-				['oudid', 'publiek', 'contacteren', 'opmerkingen'],
+				['user', 'oudid', 'publiek', 'contacteren', 'opmerkingen'],
 				'classes': ['collapse']
 			}
 		),

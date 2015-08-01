@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 from sorl.thumbnail import ImageField
 
@@ -54,6 +55,8 @@ class Persoon(models.Model):
     publiek = models.BooleanField('mag online verschijnen?', default=True)
     contacteren = models.BooleanField('mag gecontacteerd worden?', default=True)
     opmerkingen = models.TextField(null=True,blank=True)
+    
+    user = models.ForeignKey(User,null=True,blank=True)
     
     wijziging = models.DateTimeField(auto_now=True)
     

@@ -40,9 +40,9 @@
                         | <a href="{% url 'rapport' %}">rapporten</a>
                     {% endif %}
                 {% endfor %}
-                | <a href="/logout?next=/repertorium/info">logout</a>
+                | <a href="{% url 'logout' %}?next=/repertorium/info">logout</a>
             {% else %}
-                | <a href="/login">login</a>
+                | <a href="{% url 'login' %}">login</a>
             {% endif %}
         </p>
     </div>
