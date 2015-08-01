@@ -49,6 +49,7 @@ class Persoon(models.Model):
     geboorteplaats = models.CharField(max_length=200,null=True,blank=True)
     sterfdatum = models.DateField(null=True,blank=True)
     sterfplaats = models.CharField(max_length=200,null=True,blank=True)
+    wikipedia = models.CharField(max_length=300,null=True,blank=True)
     
     oudid = models.IntegerField('tnr_oudleerling uit oude db', null=True,blank=True)
     klasvertegenwoordiger = models.BooleanField(default=False)

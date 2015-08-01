@@ -236,3 +236,20 @@ h1:hover .download {
 	font-size: small;
 	line-height: 0;
 }
+
+.wikipedia {
+	background-color: #69f;
+    color: #fff;
+    padding: 5px 7px;
+    font-size: 0.4em;
+    vertical-align: middle;
+    border-radius: 2em;	
+}
+
+.wikipedia:hover {
+	color: #000;
+}
+
+.wikipedia:hover span:after {
+	content: "ikipedia";
+}

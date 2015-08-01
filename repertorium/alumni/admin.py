@@ -49,7 +49,8 @@ class PersoonAdmin(admin.ModelAdmin):
 			{'fields': 
 				['geslacht', 'overleden', 
 					'geboortedatum', 'geboorteplaats', 
-					'sterfdatum', 'sterfplaats'], 
+					'sterfdatum', 'sterfplaats', 
+					'wikipedia'], 
 				'classes': ['collapse']
 			}
 		),

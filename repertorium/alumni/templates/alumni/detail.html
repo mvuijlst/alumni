@@ -41,6 +41,9 @@
 		{% if persoon.overleden or persoon.sterfdatum %}
 			&dagger;
 		{% endif %}
+		{% if persoon.wikipedia %}
+			<a class="wikipedia" href="{{ persoon.wikipedia }}" title="{{ persoon.voornaam }} {{ persoon.achternaam }} op Wikipedia"><span>W</span></a>
+		{% endif %}
 		{% if request.user|has_group:"beheer" %}
 			<span class="editpersoon">[<a href="/admin/alumni/persoon/{{ persoon.id }}/">wijzig</a>]</span>
 		{% endif %}
