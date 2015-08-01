@@ -180,6 +180,7 @@ def XLSadreslijst(context):
     emailbreedte = 3
     
     teller = 0
+    adresteller = 0
     for persoon in personen:
         teller = teller + 1
         
@@ -201,7 +202,9 @@ def XLSadreslijst(context):
         if len(rhet)>rhetbreedte: 
                 rhetbreedte=len(rhet)
                 
-        worksheet_s.write_string(teller+4, 3, persoon.adres, cell_adres)
+        if persoon.adres:
+            adresteller = adresteller + 1
+            worksheet_s.write_string(teller+4, 3, persoon.adres, cell_adres)
         
         if persoon.email:
             worksheet_s.write_string(teller+4, 4, persoon.email, cell)
@@ -211,7 +214,10 @@ def XLSadreslijst(context):
     worksheet_s.set_column('A:A', naambreedte+2)
     worksheet_s.set_column('B:B', voornaambreedte+2)
     worksheet_s.set_column('C:C', rhetbreedte+2)
-    worksheet_s.set_column('D:D', 35)
+    if adresteller>0:
+        worksheet_s.set_column('D:D', 35)
+    else:
+        worksheet_s.set_column('D:D', 0)
     worksheet_s.set_column('E:E', emailbreedte+2)
     
     workbook.close()
