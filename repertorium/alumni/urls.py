@@ -24,4 +24,7 @@ urlpatterns = [
     url(r'^rapport/(?P<formaat>[wx])/geenadres$', views.geenadres, name='geenadres'),
     url(r'^rapport/(?P<formaat>[wx])/mailinglijst$', views.mailinglijst, name='mailinglijst'),
     url(r'^rapport/(?P<formaat>[wx])/nietalumni$', views.nietalumni, name='nietalumni'),
+    
+    url(r'^rapport/fotomuur$', views.fotomuur, name='fotomuur'),
+    url(r'^rapport/wikipedia$', views.wikipedia, name='wikipedia'),
 ]

@@ -1,0 +1,20 @@
+{% extends 'alumni/base.html' %}
+{% load thumbnail %}
+
+{% block title %}Foto's! {% endblock %}
+
+{% block main %}
+	
+<section id="photos">
+	{% for foto in fotos %}
+		{% thumbnail foto.foto "100" as im %}
+			<a href="{% url 'detail' foto.persoon_id %}"><img src="{{ im.url }}" 
+				width="{{ im.width }}" 
+				height="{{ im.height }}"
+				title="{{ foto.persoon.voornaam }} {{ foto.persoon.achternaam }} ({{ foto.persoon.rhetorica.jaar }} {{ foto.persoon.rhetorica.richting }})"
+				alt="{{ foto.persoon.voornaam }} {{ foto.persoon.achternaam }}"></a>
+		{% endthumbnail %}
+	{% endfor %}
+</section>	
+	
+{% endblock %}

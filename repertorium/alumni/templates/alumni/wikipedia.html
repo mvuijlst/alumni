@@ -1,0 +1,30 @@
+{% extends 'alumni/base.html' %}
+{% load thumbnail %}
+
+{% block title %}Wikipedia! {% endblock %}
+
+{% block main %}
+
+<h1>Alumni op Wikipedia</h1>
+
+<p>Because why not?</p>
+	
+<table class="stripe">
+	<tr><th>Naam</th><th>Rhet.</th><th>°</th><th>&dagger;</th></tr>
+	{% for persoon in personen %}
+		<tr>
+			<td><a href="{% url 'detail' persoon.id %}">
+					{{ persoon.voornaam }} {{ persoon.achternaam }}
+				</a>
+			</td>
+			<td><a href="{% url 'klaslijst' 'w' persoon.rhetorica.klas.id %}">
+					{{ persoon.rhetorica.jaar }} {{ persoon.rhetorica.richting }}
+				</a>
+			</td>
+			<td>{% if persoon.geboortedatum %}{{ persoon.geboortedatum }}{% endif %}</td>
+			<td>{% if persoon.sterfdatum %}{{ persoon.sterfdatum }}{% endif %}</td>
+		</tr>
+	{% endfor %}
+</table>	
+	
+{% endblock %}

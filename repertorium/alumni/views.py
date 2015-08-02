@@ -427,3 +427,20 @@ def nietalumni(request, formaat):
 		xlsx_data = XLSadreslijst(context)
 		response.write(xlsx_data)
 		return response
+
+@login_required
+def fotomuur(request):
+	fotos=Persoonfoto.objects.order_by('?')
+	
+	context = { 
+		'fotos': fotos 
+	}
+	return render(request, 'alumni/fotomuur.html', context)
+	
+def wikipedia(request):
+	personen=Persoon.objects.filter(wikipedia__contains='http').order_by('geboortedatum')
+	
+	context = { 
+		'personen': personen 
+	}
+	return render(request, 'alumni/wikipedia.html', context)
