@@ -162,6 +162,7 @@ def moetbetalen(request, formaat):
 
 	context = {
 		'titel': 'Moeten betalen',
+		'velden': ['#', 'Naam', 'Rhetorica', 'Adres', 'E-mail'],
 		'personen': personen,
 		'uitleg': """<p>Lijst van mensen die </p>
 			<ol><li>zouden moeten betalen (afgestudeerd meer dan een jaar geleden)</li>
@@ -282,8 +283,9 @@ def moetABkrijgen(request, formaat):
 		""".format(schooljaar))
 	
 	context = {
-		'personen': personen,
 		'titel': 'Adressenlijst Allegro Barbara',
+		'personen': personen,
+		'velden': ['#', 'Naam', 'Rhetorica', 'Adres', 'E-mail'],
 		'uitleg': """ <p>Lijst van mensen die </p>
 			<ol><li>AB moeten krijgen, omdat ze <ul><li>dit jaar betalend lid zijn, of </li><li>vorig schooljaar afgestudeerd zijn, of</li><li>oud-leraar, raad van bestuur e.d. zijn</li></ul></li>
 				<li>niet overleden zijn</li>
@@ -339,6 +341,7 @@ def geenadres(request, formaat):
 	context = {
 		'titel': 'Alumni zonder (geldig) adres',
 		'personen': personen,
+		'velden': ['#', 'Naam', 'Rhetorica', '[Laatst gekende] adres', 'E-mail'],
 		'uitleg': """<p>Lijst van mensen die </p>
 			<ol><li>niet overleden zijn</li>
 			<li>niet gezegd hebben dat ze niet meer willen gecontacteerd worden</li>
@@ -390,6 +393,7 @@ def mailinglijst(request, formaat):
 	context = {
 		'titel': 'Mailinglijst alumni',
 		'personen': personen,
+		'velden': ['#', 'Naam', 'Rhetorica', '', 'E-mail'],
 		'uitleg': """<p>Lijst van mensen die </p>
 			<ol><li>niet overleden zijn</li>
 			<li>niet gezegd hebben dat ze niet meer willen gecontacteerd worden</li>
@@ -405,7 +409,43 @@ def mailinglijst(request, formaat):
 		xlsx_data = XLSadreslijst(context)
 		response.write(xlsx_data)
 		return response
+
+@login_required
+def linkedin(request, formaat):
+	personen = Persoon.objects.raw("""
+		SELECT p.id, p.voornaam, p.achternaam achternaam, r.jaar jaar, r.richting richting, null adres, c.contactdata email
+		FROM alumni_persoon p 
+				inner join alumni_contact c on p.id=c.persoon_id
+				inner join alumni_rhetorica r on p.rhetorica_id=r.id
+		WHERE
+			p.overleden=0 and
+			p.contacteren=1 and
+			c.contactmiddel_id=5
+		GROUP BY p.id
+		
+		ORDER BY jaar, richting, achternaam
+		""")
+		
+	context = {
+		'titel': 'Alumni op LinkedIn',
+		'personen': personen,
+		'velden': ['#', 'Naam', 'Rhetorica', '', 'LinkedIn'],
+		'uitleg': """<p>Lijst van mensen die </p>
+			<ol><li>niet overleden zijn</li>
+			<li>niet gezegd hebben dat ze niet meer willen gecontacteerd worden</li>
+			<li>en waaran we de LinkedIn-account hebben</li>
+		</ol>"""
+	}
 	
+	if formaat == "w":
+		return render(request, 'alumni/adreslijst.html', context)
+	else:
+		response = HttpResponse(content_type='application/vnd.ms-excel')
+		response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
+		xlsx_data = XLSadreslijst(context)
+		response.write(xlsx_data)
+		return response
+			
 @login_required
 def nietalumni(request, formaat):
 	

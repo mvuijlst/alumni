@@ -10,7 +10,10 @@
 	{{ uitleg|safe }}
 	
 	<table class="stripe topalign">
-		<tr><th>#</th><th>Naam</th><th>Rhetorica</th><th>Adres</th><th>email</th></tr>
+		<tr>{% for veld in velden %}
+				<th>{{ veld }}</th>
+			{% endfor %}
+		</tr>
 		{% for persoon in personen %}	
 			<tr class="{%if not persoon.rhetorica %}andere {% endif %}{% cycle 'oneven' 'even' %}">
 				<th>{{ forloop.counter }}</th>
