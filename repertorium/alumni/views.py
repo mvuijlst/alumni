@@ -154,7 +154,7 @@ def moetbetalen(request, formaat):
 			p.overleden=0 and
 			p.contacteren=1 and
 			a.geldig=1 and 
-			(c.contacttype='email' or c.id is null) and
+			(c.contactmiddel_id=2 or c.id is null) and
 			p.id not in (select persoon_id from alumni_betaling 
 		                 where betalingsjaar={0} or betalingstype_id<>2)
 		GROUP BY p.id
@@ -211,7 +211,7 @@ def vroegerbetaald(request, formaat, alle):
 			p.overleden=0 and
 			p.contacteren=1 and
 			a.geldig=1 and 
-			(c.contacttype='email' or c.id is null) and 
+			(c.contactmiddel_id=2 or c.id is null) and 
 			p.id not in (select persoon_id from alumni_betaling 
 						 where betalingsjaar={0} or betalingstype_id=2)
 		GROUP BY p.id
@@ -259,7 +259,7 @@ def moetABkrijgen(request, formaat):
 			p.overleden=0 and
 			p.contacteren=1 and
 			a.geldig=1 and 
-			(c.contacttype='email' or c.id is null)
+			(c.contactmiddel_id=2 or c.id is null)
 		GROUP BY p.id
 		
 		UNION
@@ -274,7 +274,7 @@ def moetABkrijgen(request, formaat):
 			p.overleden=0 and
 			p.contacteren=1 and
 			a.geldig=1 and 
-			(c.contacttype='email' or c.id is null)
+			(c.contactmiddel_id=2 or c.id is null)
 		GROUP BY p.id
 			
 		ORDER BY achternaam, jaar, richting 
@@ -326,7 +326,7 @@ def geenadres(request, formaat):
 			p.overleden=0 and
 			p.contacteren=1  and
 			(a.geldig=0 or a.geldig is null) and 
-			(c.contacttype='email' or c.id is null) and
+			(c.contactmiddel_id=2 or c.id is null) and
 			p.id not in (
 				select persoon_id
 				from alumni_adres
@@ -366,7 +366,7 @@ def mailinglijst(request, formaat):
 		WHERE
 			p.overleden=0 and
 			p.contacteren=1 and
-			c.contacttype='email'
+			c.contactmiddel_id=2
 		GROUP BY p.id
 		
 		UNION
@@ -379,7 +379,7 @@ def mailinglijst(request, formaat):
 		WHERE
 			p.overleden=0 and
 			p.contacteren=1 and
-			c.contacttype='email' and 
+			c.contactmiddel_id=2 and 
 			p.id not in (select distinct p1.id from alumni_persoon p1 
 				inner join alumni_rhetorica r1 on p1.rhetorica_id=r1.id)
 		GROUP BY p.id
