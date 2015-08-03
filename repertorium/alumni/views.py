@@ -433,7 +433,7 @@ def linkedin(request, formaat):
 		'uitleg': """<p>Lijst van mensen die </p>
 			<ol><li>niet overleden zijn</li>
 			<li>niet gezegd hebben dat ze niet meer willen gecontacteerd worden</li>
-			<li>en waaran we de LinkedIn-account hebben</li>
+			<li>en waarvan we de LinkedIn-account hebben</li>
 		</ol>"""
 	}
 	
