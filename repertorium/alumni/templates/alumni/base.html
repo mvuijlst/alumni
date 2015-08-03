@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 {% load staticfiles %}
+{% load app_filters %} 
 
 <html><head>
     <script type="text/javascript">
@@ -34,12 +35,10 @@
             | <a href="{% url 'info' %}">over ons</a>
             {% if user.is_authenticated %}
                 | <a href="{% url 'az' 'A' %}">alumni A-Z</a>
-                {% for group in user.groups.all %}
-                    {% if group.name == 'beheer' %}
-                        | <a href="/admin">admin</a>
-                        | <a href="{% url 'rapport' %}">rapporten</a>
-                    {% endif %}
-                {% endfor %}
+                {% if request.user|has_group:"beheer" %}
+                    | <a href="/admin">admin</a>
+                    | <a href="{% url 'rapport' %}">rapporten</a>
+                {% endif %}
                 | <a href="{% url 'logout' %}?next=/repertorium/info">logout</a>
             {% else %}
                 | <a href="{% url 'login' %}">login</a>
