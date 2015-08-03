@@ -272,3 +272,14 @@ h1:hover .download {
   width: 100% !important;
   height: auto !important;
 }
+
+.linkedin, .twitter {
+	border: none;
+	padding-left: 18px;
+}
+.linkedin, .twitter {
+	background: transparent url('in.png') no-repeat center left;
+}
+.twitter {
+	background: transparent url('twitter.png') no-repeat center left;
+}
