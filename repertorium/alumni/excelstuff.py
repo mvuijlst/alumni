@@ -10,7 +10,7 @@ def XLSklaslijst(klas_id):
     
     output = io.BytesIO()
     workbook = xlsxwriter.Workbook(output)
-    worksheet_s = workbook.add_worksheet("Klaslijst")
+    worksheet = workbook.add_worksheet("Klaslijst")
     
     # excel styles
     title = workbook.add_format({
@@ -59,35 +59,35 @@ def XLSklaslijst(klas_id):
     contacten = Contact.objects.filter(persoon__rhetorica__klas_id=klas_id).filter(persoon__overleden=0).filter(geldig=1).filter(contactmiddel__naam__exact="E-mail")
         
         
-    worksheet_s.merge_range('A1:D1',  u"{0} {1}".format(str(klas.jaar), klas.klasnaam), title)
+    worksheet.merge_range('A1:D1',  u"{0} {1}".format(str(klas.jaar), klas.klasnaam), title)
     rij = 3
 
     if klas.titularis:
-        worksheet_s.merge_range('A2:D2', u"{0}".format(klas.titularis), subtitle)
+        worksheet.merge_range('A2:D2', u"{0}".format(klas.titularis), subtitle)
         rij = 4
     
     aantal_klassen = Rhetorica.objects.filter(klas=klas_id).count()
     
     if aantal_klassen>1:
-        worksheet_s.write_string(rij, 4, 'Rhet.', header)
+        worksheet.write_string(rij, 4, 'Rhet.', header)
     
-    worksheet_s.write_string(rij, 0, 'Naam', header)
-    naambreedte = 3
-    worksheet_s.write_string(rij, 1, 'Voornaam', header)
+    worksheet.write_string(rij, 0, 'Voornaam', header)
     voornaambreedte = 3
-    worksheet_s.write_string(rij, 2, 'Adres', header)
-    worksheet_s.write_string(rij, 3, 'E-mail', header)
+    worksheet.write_string(rij, 1, 'Naam', header)
+    naambreedte = 3
+    worksheet.write_string(rij, 2, 'Adres', header)
+    worksheet.write_string(rij, 3, 'E-mail', header)
     emailbreedte = 3
     
     for persoon in personen:
         rij = rij + 1
         
         if aantal_klassen>1:
-            worksheet_s.write_string(rij, 4, persoon.rhetorica.richting, cell)
+            worksheet.write_string(rij, 4, persoon.rhetorica.richting, cell)
         
         if not persoon.overleden:
-            worksheet_s.write_string(rij, 0, persoon.achternaam, cell)
-            worksheet_s.write_string(rij, 1, persoon.voornaam, cell)
+            worksheet.write_string(rij, 0, persoon.voornaam, cell)
+            worksheet.write_string(rij, 1, persoon.achternaam, cell)
         
             adres = Adres.objects.filter(persoon_id=persoon.id).order_by('-van')[:1]
         
@@ -98,19 +98,19 @@ def XLSklaslijst(klas_id):
                     else:
                         stijl = cell_adres_ongeldig
 
-                    worksheet_s.write_string(rij, 2, a.adres, stijl)
+                    worksheet.write_string(rij, 2, a.adres, stijl)
             
             email = Contact.objects.filter(persoon_id=persoon.id).filter(geldig=1).filter(contactmiddel__naam__exact='E-mail')[:1]
         
             if email.count():
                 for e in email:
-                    worksheet_s.write_string(rij, 3, e.contactdata, cell)
+                    worksheet.write_string(rij, 3, e.contactdata, cell)
                     if len(e.contactdata)>emailbreedte: 
                         emailbreedte=len(e.contactdata)
        
         else:
-            worksheet_s.write_string(rij, 0, persoon.achternaam+"†", overleden)
-            worksheet_s.write_string(rij, 1, persoon.voornaam, overleden)
+            worksheet.write_string(rij, 0, persoon.voornaam, overleden)
+            worksheet.write_string(rij, 1, persoon.achternaam+"†", overleden)
            
         if len(persoon.achternaam)>naambreedte: 
             naambreedte=len(persoon.achternaam)
@@ -118,10 +118,10 @@ def XLSklaslijst(klas_id):
             voornaambreedte=len(persoon.voornaam)
         
         
-    worksheet_s.set_column('A:A', naambreedte+2)
-    worksheet_s.set_column('B:B', voornaambreedte+2)
-    worksheet_s.set_column('C:C', 35)
-    worksheet_s.set_column('D:D', emailbreedte+2)
+    worksheet.set_column('A:A', voornaambreedte+2)
+    worksheet.set_column('B:B', naambreedte+2)
+    worksheet.set_column('C:C', 35)
+    worksheet.set_column('D:D', emailbreedte+2)
 
     workbook.close()
     xlsx_data = output.getvalue()
@@ -131,7 +131,7 @@ def XLSadreslijst(context):
     
     output = io.BytesIO()
     workbook = xlsxwriter.Workbook(output)
-    worksheet_s = workbook.add_worksheet("Adreslijst")
+    worksheet = workbook.add_worksheet("Adreslijst")
     
     # excel styles
     title = workbook.add_format({
@@ -166,59 +166,61 @@ def XLSadreslijst(context):
     personen = context['personen']
     titel = context['titel']
     
-    worksheet_s.merge_range('A1:F1', u"{0}".format(titel), title)
-    worksheet_s.merge_range('A2:F2', u"Adreslijst aangemaakt op {0}".format(datetime.now().strftime('%d/%m/%Y')) , subtitle)
+    worksheet.merge_range('A1:F1', u"{0}".format(titel), title)
+    worksheet.merge_range('A2:F2', u"Adreslijst aangemaakt op {0}".format(datetime.now().strftime('%d/%m/%Y')) , subtitle)
     
-    worksheet_s.write_string(4, 0, 'Naam', header)
-    naambreedte = 3
-    worksheet_s.write_string(4, 1, 'Voornaam', header)
+    worksheet.write_string(4, 0, 'Voornaam', header)
     voornaambreedte = 3
-    worksheet_s.write_string(4, 2, 'Rhet.', header)
+    worksheet.write_string(4, 1, 'Naam', header)
+    naambreedte = 3
+    worksheet.write_string(4, 2, 'Rhet.', header)
     rhetbreedte = 3
-    worksheet_s.write_string(4, 3, 'Adres', header)
-    worksheet_s.write_string(4, 4, 'E-mail', header)
+    worksheet.write_string(4, 3, 'Adres', header)
+    worksheet.write_string(4, 4, 'E-mail', header)
     emailbreedte = 3
     
     teller = 0
     adresteller = 0
     for persoon in personen:
         teller = teller + 1
-        
-        if persoon.achternaam:
-            worksheet_s.write_string(teller+4, 0, persoon.achternaam, cell)
-            if len(persoon.achternaam)>naambreedte: 
-                naambreedte=len(persoon.achternaam)
                 
         if persoon.voornaam:
-            worksheet_s.write_string(teller+4, 1, persoon.voornaam, cell)
+            worksheet.write_string(teller+4, 0, persoon.voornaam, cell)
             if len(persoon.voornaam)>voornaambreedte: 
                 voornaambreedte=len(persoon.voornaam)
+        
+        if persoon.achternaam:
+            worksheet.write_string(teller+4, 1, persoon.achternaam, cell)
+            if len(persoon.achternaam)>naambreedte: 
+                naambreedte=len(persoon.achternaam)
                 
         if persoon.jaar:
             rhet = str(persoon.jaar) + " " + persoon.richting
         else:
             rhet = persoon.richting
-        worksheet_s.write_string(teller+4, 2, rhet, cell)
+        worksheet.write_string(teller+4, 2, rhet, cell)
         if len(rhet)>rhetbreedte: 
                 rhetbreedte=len(rhet)
                 
         if persoon.adres:
             adresteller = adresteller + 1
-            worksheet_s.write_string(teller+4, 3, persoon.adres, cell_adres)
+            worksheet.write_string(teller+4, 3, persoon.adres, cell_adres)
         
         if persoon.email:
-            worksheet_s.write_string(teller+4, 4, persoon.email, cell)
+            worksheet.write_string(teller+4, 4, persoon.email, cell)
             if len(persoon.email)>emailbreedte:
                 emailbreedte=len(persoon.email)            
         
-    worksheet_s.set_column('A:A', naambreedte+2)
-    worksheet_s.set_column('B:B', voornaambreedte+2)
-    worksheet_s.set_column('C:C', rhetbreedte+2)
+    worksheet.set_column('A:A', voornaambreedte+2)
+    worksheet.set_column('B:B', naambreedte+2)
+    worksheet.set_column('C:C', rhetbreedte+2)
     if adresteller>0:
-        worksheet_s.set_column('D:D', 35)
+        worksheet.set_column('D:D', 35)
     else:
-        worksheet_s.set_column('D:D', 0)
-    worksheet_s.set_column('E:E', emailbreedte+2)
+        worksheet.set_column('D:D', 0)
+    worksheet.set_column('E:E', emailbreedte+2)
+    
+    worksheet.autofilter(4,0,teller+4,4)
     
     workbook.close()
     xlsx_data = output.getvalue()
