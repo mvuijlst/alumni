@@ -9,7 +9,7 @@
 	
 	<h1>
 		{{ klas.jaar }} {{ klas.klasnaam }}
-		<span class="download"><a href="{% url 'klaslijst' 'x' klas.id %}">Download Excel</a></span>
+		<span class="download"><a href="{% url 'klaslijst' 'x' klas.id %}">Download klaslijst</a></span>
 	</h1>
 	{% if klas.titularis %}
 		<h2>{{ klas.titularis }}</h2>
