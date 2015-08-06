@@ -273,13 +273,16 @@ h1:hover .download {
   height: auto !important;
 }
 
-.linkedin, .twitter {
+.linkedin, .twitter, .facebook {
 	border: none;
 	padding-left: 18px;
 }
-.linkedin, .twitter {
+.linkedin {
 	background: transparent url('in.png') no-repeat center left;
 }
 .twitter {
 	background: transparent url('twitter.png') no-repeat center left;
+}
+.facebook {
+	background: transparent url('fb.png') no-repeat center left;
 }

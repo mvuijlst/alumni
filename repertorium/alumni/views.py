@@ -89,7 +89,7 @@ def persoondetail(request, persoon_id):
 	except Persoon.DoesNotExist:
 		raise Http404("Persoon niet gevonden.")
 	
-	contacten = Contact.objects.filter(persoon=persoon_id).filter(geldig=True).order_by('contactmiddel__naam', '-van', '-tot')
+	contacten = Contact.objects.filter(persoon=persoon_id).filter(geldig=True).order_by('contactmiddel__id', '-van', '-tot')
 	beroepen = Beroep.objects.filter(persoon=persoon_id).order_by('-featured', '-van', '-tot')
 	adressen = Adres.objects.filter(persoon=persoon_id).order_by('-van', '-tot')
 	betalingen = Betaling.objects.filter(persoon=persoon_id).order_by('-betalingsjaar', '-datum')
