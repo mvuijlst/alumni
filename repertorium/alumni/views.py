@@ -275,7 +275,10 @@ def moetABkrijgen(request, formaat):
 			p.overleden=0 and
 			p.contacteren=1 and
 			a.geldig=1 and 
-			(c.contactmiddel_id=2 or c.id is null)
+			(c.contactmiddel_id=2 or c.id is null) and 
+			p.id not in (select p1.id from alumni_persoon p1 
+								join alumni_rhetorica r1 on
+								p1.rhetorica_id=r1.id) 
 		GROUP BY p.id
 			
 		ORDER BY achternaam, jaar, richting 
