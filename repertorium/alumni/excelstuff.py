@@ -42,6 +42,12 @@ def XLSklaslijst(klas_id):
         'italic': True,
         'color': '#777777'
     })
+    opmerking = workbook.add_format({
+        'font_size': 10,
+        'align': 'left',
+        'valign': 'top',
+        'color': '#777777'
+    })
     cell_adres = workbook.add_format({
         'align': 'left',
         'valign': 'top',
@@ -65,6 +71,9 @@ def XLSklaslijst(klas_id):
     if klas.titularis:
         worksheet.merge_range('A2:D2', u"{0}".format(klas.titularis), subtitle)
         rij = 4
+    
+    datuminfo = 'Gegenereerd: ' + datetime.now().strftime('%d/%m/%Y %H:%M:%S')
+    worksheet.write_string(rij-2, 0, datuminfo, opmerking)
     
     aantal_klassen = Rhetorica.objects.filter(klas=klas_id).count()
     
@@ -162,13 +171,19 @@ def XLSadreslijst(context):
         'valign': 'top',
         'text_wrap': True
     })
+    opmerking = workbook.add_format({
+        'font_size': 10,
+        'align': 'left',
+        'valign': 'top',
+        'color': '#777777'
+    })
         
     personen = context['personen']
     titel = context['titel']
     
     worksheet.merge_range('A1:F1', u"{0}".format(titel), title)
-    worksheet.merge_range('A2:F2', u"Adreslijst aangemaakt op {0}".format(datetime.now().strftime('%d/%m/%Y')) , subtitle)
-    
+    worksheet.merge_range('A2:F2', u"Adreslijst aangemaakt op {0}".format(datetime.now().strftime('%d/%m/%Y')) , opmerking)
+     
     worksheet.write_string(4, 0, 'Voornaam', header)
     voornaambreedte = 3
     worksheet.write_string(4, 1, 'Naam', header)

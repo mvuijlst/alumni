@@ -12,11 +12,11 @@ from .excelstuff import XLSklaslijst, XLSadreslijst
 def index(request):
 	wijzigingen = Persoon.objects.order_by('-wijziging')[:15]
 	personalia = Gebeurtenis.objects.filter(
-		datum__gt=datetime.today()-timedelta(weeks=26)
+		datum__gt=datetime.today()-timedelta(weeks=30)
 		).filter(persoon__publiek__exact=True
 		).order_by('gebeurtenistype','persoon__rhetorica__jaar')
 	overleden = Persoon.objects.filter(
-		sterfdatum__gt=datetime.today()-timedelta(weeks=26)
+		sterfdatum__gt=datetime.today()-timedelta(weeks=30)
 		).filter(publiek__exact=True
 		).order_by('rhetorica__jaar')
 	adreswijzigingen = Adres.objects.filter(
