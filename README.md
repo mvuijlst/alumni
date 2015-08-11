@@ -14,9 +14,9 @@ Deze lijst wordt enerzijds door de alumnivereniging gebruikt voor ledenwerking (
 
 ## Structuur
 
-Een **leerling** studeert af in een **rhetorica** (een bepaalde richting in een bepaald jaar), bvb. `2011 GRLA`, de richting Grieks-Latijn in het jaar 2011.
+Een **leerling** studeert af in een **retorica** (een bepaalde richting in een bepaald jaar), bvb. `2011 GRLA`, de richting Grieks-Latijn in het jaar 2011.
 
-Een **klas** kan uit meerdere rhetorica's bestaan, bvb. `2011 GRLA-LAMT`.
+Een **klas** kan uit meerdere retorica's bestaan, bvb. `2011 GRLA-LAMT`.
 
 Een leerling:
 * heeft mogelijk een geboorteplaats en -datum, en overlijdensplaats en -datum
