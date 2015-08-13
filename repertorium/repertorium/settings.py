@@ -24,9 +24,9 @@ MEDIA_URL = '/media/'
 SECRET_KEY = 'c^35y+j6(8qz4h9f0vc3ln1@w)^fvsxz%#(58!6fhe*&!-q57('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', '.sint-barbara.be']
 
 # Application definition
 
