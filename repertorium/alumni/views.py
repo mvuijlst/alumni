@@ -156,7 +156,7 @@ def moetbetalen(request, formaat):
 			a.geldig=1 and 
 			(c.contactmiddel_id=2 or c.id is null) and
 			p.id not in (select persoon_id from alumni_betaling 
-		                 where betalingsjaar={0} or betalingstype_id<>2)
+		                 where betalingsjaar={0} or betalingstype_id=2)
 		GROUP BY p.id
 		ORDER BY r.jaar, r.richting, p.achternaam""".format(schooljaar))
 
