@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
-from django.utils.html import escape
-from django.core.urlresolvers import reverse, NoReverseMatch
+from django.utils.html import format_html
+from django.urls import reverse, NoReverseMatch
 from django.contrib.auth.models import User
 
 from .models import Persoon, Rhetorica, Adres, Contact, Beroep
@@ -153,7 +153,7 @@ class UserFilter(FilterBase):
     def lookups(self, request, model_admin):
         return tuple((u.id, u.username)
             for u in User.objects.filter(pk__in =
-                LogEntry.objects.values_list('user_id').distinct())
+                LogEntry.objects.values_list('user_id', flat=True).distinct())
         )
 
 class AdminFilter(UserFilter):
@@ -173,7 +173,7 @@ class LogEntryAdmin(admin.ModelAdmin):
 
     date_hierarchy = 'action_time'
 
-    readonly_fields = LogEntry._meta.get_all_field_names()
+    readonly_fields = [field.name for field in LogEntry._meta.fields]
 
     list_filter = [
         UserFilter,
@@ -209,19 +209,17 @@ class LogEntryAdmin(admin.ModelAdmin):
 
     def object_link(self, obj):
         ct = obj.content_type
-        repr_ = escape(obj.object_repr)
         try:
             href = reverse('admin:%s_%s_change' % (ct.app_label, ct.model), args=[obj.object_id])
-            link = u'<a href="%s">%s</a>' % (href, repr_)
+            link = format_html('<a href="{}">{}</a>', href, obj.object_repr)
         except NoReverseMatch:
-            link = repr_
-        return link if obj.action_flag != DELETION else repr_
-    object_link.allow_tags = True
+            link = obj.object_repr
+        return link if obj.action_flag != DELETION else obj.object_repr
     object_link.admin_order_field = 'object_repr'
     object_link.short_description = u'object'
 
-    def queryset(self, request):
-        return super(LogEntryAdmin, self).queryset(request) \
+    def get_queryset(self, request):
+        return super(LogEntryAdmin, self).get_queryset(request) \
             .prefetch_related('content_type')
 
     def action_description(self, obj):

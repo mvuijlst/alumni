@@ -41,6 +41,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='persoonfoto',
             name='persoon',
-            field=models.ForeignKey(to='alumni.Persoon'),
+            field=models.ForeignKey(on_delete=models.CASCADE, to='alumni.Persoon'),
         ),
     ]

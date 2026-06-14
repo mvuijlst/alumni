@@ -4,8 +4,6 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
-from sorl.thumbnail import ImageField
-
 def ditjaar():
     return datetime.now().year
     
@@ -22,7 +20,7 @@ class Klas(models.Model):
         verbose_name_plural = 'Klassen'
 
 class Rhetorica(models.Model):
-    klas = models.ForeignKey(Klas,null=True,blank=True)
+    klas = models.ForeignKey(Klas, on_delete=models.CASCADE, null=True, blank=True)
     jaar = models.SmallIntegerField(default=ditjaar)
     richting = models.CharField(max_length=16)
     def __str__(self):
@@ -33,14 +31,19 @@ class Rhetorica(models.Model):
 class Persoon(models.Model):
     voornaam = models.CharField(max_length=200,null=True,blank=True)
     achternaam = models.CharField(max_length=200)
-    rhetorica = models.ForeignKey(Rhetorica,null=True,blank=True)
+    rhetorica = models.ForeignKey(Rhetorica, on_delete=models.CASCADE, null=True, blank=True)
     
     # geslachten
     GESLACHT_MAN = 'M'
     GESLACHT_VROUW = 'V'
     GESLACHT_ANDER = 'A'
     GESLACHT_ONBEKEND = '?'
-    GESLACHTEN = {(GESLACHT_MAN, 'man'), (GESLACHT_VROUW, 'vrouw'), (GESLACHT_ANDER, 'ander'), (GESLACHT_ONBEKEND, 'onbekend')}
+    GESLACHTEN = (
+        (GESLACHT_ONBEKEND, 'onbekend'),
+        (GESLACHT_ANDER, 'ander'),
+        (GESLACHT_MAN, 'man'),
+        (GESLACHT_VROUW, 'vrouw'),
+    )
     geslacht = models.CharField(max_length=1, choices=GESLACHTEN, default=GESLACHT_MAN)    
     
     #overige personalia
@@ -57,7 +60,7 @@ class Persoon(models.Model):
     contacteren = models.BooleanField('mag gecontacteerd worden?', default=True)
     opmerkingen = models.TextField(null=True,blank=True)
     
-    user = models.ForeignKey(User,null=True,blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     
     wijziging = models.DateTimeField(auto_now=True)
     
@@ -110,7 +113,7 @@ class Persoon(models.Model):
         ordering = ['-wijziging']
 
 class Adres(models.Model):
-    persoon = models.ForeignKey(Persoon)
+    persoon = models.ForeignKey(Persoon, on_delete=models.CASCADE)
     adres = models.TextField()
     van = models.DateField(null=True,blank=True)
     tot = models.DateField(null=True,blank=True)
@@ -133,8 +136,8 @@ class Contactmiddel(models.Model):
         verbose_name_plural = 'Contactmiddelen'
 
 class Contact(models.Model):
-    persoon = models.ForeignKey(Persoon)
-    contactmiddel = models.ForeignKey(Contactmiddel)
+    persoon = models.ForeignKey(Persoon, on_delete=models.CASCADE)
+    contactmiddel = models.ForeignKey(Contactmiddel, on_delete=models.CASCADE)
     contactdata = models.CharField(max_length=200)
     opmerking = models.CharField(max_length=100,null=True,blank=True)
     van = models.DateField(null=True,blank=True)
@@ -147,13 +150,17 @@ class Contact(models.Model):
         verbose_name_plural = 'Contactmiddelen'
 
 class Gebeurtenis(models.Model):
-    persoon = models.ForeignKey(Persoon)
+    persoon = models.ForeignKey(Persoon, on_delete=models.CASCADE)
     GEBEURTENIS_GEBOORTE = 'geboorte'
     GEBEURTENIS_HUWELIJK = 'huwelijk'
     GEBEURTENIS_OVERLIJDEN = 'overlijden'
     GEBEURTENIS_OVERIGE = 'overige'
-    GEBEURTENISTYPES = {(GEBEURTENIS_GEBOORTE, 'Geboorte'), (GEBEURTENIS_HUWELIJK, 'Huwelijk'), 
-        (GEBEURTENIS_OVERLIJDEN, 'Overlijden'), (GEBEURTENIS_OVERIGE, 'Overige')}
+    GEBEURTENISTYPES = (
+        (GEBEURTENIS_HUWELIJK, 'Huwelijk'),
+        (GEBEURTENIS_OVERLIJDEN, 'Overlijden'),
+        (GEBEURTENIS_OVERIGE, 'Overige'),
+        (GEBEURTENIS_GEBOORTE, 'Geboorte'),
+    )
     gebeurtenistype = models.CharField(max_length=10, choices=GEBEURTENISTYPES, default=GEBEURTENIS_GEBOORTE)
     datum = models.DateField(null=True,blank=True)
     omschrijving = models.TextField()
@@ -164,7 +171,7 @@ class Gebeurtenis(models.Model):
         verbose_name_plural = 'Gebeurtenissen'
 
 class Beroep(models.Model):
-    persoon = models.ForeignKey(Persoon)
+    persoon = models.ForeignKey(Persoon, on_delete=models.CASCADE)
     beroepsgegevens = models.CharField(max_length=500)
     van = models.DateField(null=True,blank=True)
     tot = models.DateField(null=True,blank=True)
@@ -176,7 +183,7 @@ class Beroep(models.Model):
         verbose_name_plural = 'Beroepen'
 
 class Klasfoto(models.Model):
-    klas = models.ForeignKey(Klas)
+    klas = models.ForeignKey(Klas, on_delete=models.CASCADE)
     datum = models.DateField(null=True,blank=True)
     foto = models.ImageField(upload_to='klasfoto')
     legende = models.TextField(null=True,blank=True)
@@ -184,7 +191,7 @@ class Klasfoto(models.Model):
         verbose_name_plural = 'Klasfoto\'s'
 
 class Persoonfoto(models.Model):
-    persoon = models.ForeignKey(Persoon)
+    persoon = models.ForeignKey(Persoon, on_delete=models.CASCADE)
     datum = models.DateField(null=True,blank=True)
     foto = models.ImageField(upload_to='klasfoto')
     legende = models.TextField(null=True,blank=True)
@@ -198,8 +205,8 @@ class Betalingstype(models.Model):
         return self.omschrijving
 
 class Betaling(models.Model):
-    persoon = models.ForeignKey(Persoon)
-    betalingstype = models.ForeignKey(Betalingstype)
+    persoon = models.ForeignKey(Persoon, on_delete=models.CASCADE)
+    betalingstype = models.ForeignKey(Betalingstype, on_delete=models.CASCADE)
     betalingsjaar = models.IntegerField(default=ditjaar, null=True,blank=True)
     bedrag = models.IntegerField(null=True,blank=True)
     opmerking = models.CharField(max_length=200,null=True,blank=True)
@@ -217,8 +224,8 @@ class Hoedanigheidstype(models.Model):
         verbose_name_plural = "Hoedanigheden"
 
 class Hoedanigheid(models.Model):
-    persoon = models.ForeignKey(Persoon)
-    hoedanigheidstype = models.ForeignKey(Hoedanigheidstype)
+    persoon = models.ForeignKey(Persoon, on_delete=models.CASCADE)
+    hoedanigheidstype = models.ForeignKey(Hoedanigheidstype, on_delete=models.CASCADE)
     opmerking = models.CharField(max_length=100,null=True,blank=True)
     van = models.DateField(null=True,blank=True)
     tot = models.DateField(null=True,blank=True)

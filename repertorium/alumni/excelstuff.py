@@ -1,7 +1,6 @@
 import io
 import xlsxwriter
 
-from django.utils.translation import ugettext
 from datetime import datetime
 
 from .models import Klas, Persoon, Adres, Contact, Rhetorica

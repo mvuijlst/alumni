@@ -49,11 +49,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='betaling',
             name='persoon',
-            field=models.ForeignKey(to='alumni.Persoon'),
+            field=models.ForeignKey(on_delete=models.CASCADE, to='alumni.Persoon'),
         ),
         migrations.AddField(
             model_name='betaling',
             name='betalingstype',
-            field=models.ForeignKey(to='alumni.Betalingstype'),
+            field=models.ForeignKey(on_delete=models.CASCADE, to='alumni.Betalingstype'),
         ),
     ]

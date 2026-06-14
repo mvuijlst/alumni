@@ -221,3 +221,18 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 *.pyc
+
+# Local Django database
+db.sqlite3
+
+# Local virtual environment
+venv/
+
+# Local credentials and admin scraper output
+.env
+repertorium/exports/
+
+
+# Various
+export_admin*.py
+import_admin*.py

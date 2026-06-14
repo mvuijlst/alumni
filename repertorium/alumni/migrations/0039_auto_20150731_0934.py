@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='contact',
             name='contactmiddel',
-            field=models.ForeignKey(default=1, to='alumni.Contactmiddel'),
+            field=models.ForeignKey(on_delete=models.CASCADE, default=1, to='alumni.Contactmiddel'),
             preserve_default=False,
         ),
         migrations.AlterField(

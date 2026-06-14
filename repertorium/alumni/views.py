@@ -8,6 +8,31 @@ from datetime import datetime, timedelta
 from .models import Klas, Rhetorica, Persoon, Contact, Beroep, Adres, Betaling, Gebeurtenis, Klasfoto, Persoonfoto
 from .excelstuff import XLSklaslijst, XLSadreslijst
 
+def eeuw_label(eeuw):
+	return str(eeuw) + ('ste' if eeuw >= 20 else 'de') + ' eeuw'
+
+def jaarnavigatie():
+	jaren = Klas.objects.order_by('jaar').values_list('jaar', flat=True).distinct()
+	decennia = set((jaar // 10) * 10 for jaar in jaren)
+
+	if not decennia:
+		return []
+
+	eerste_eeuw = min(decennia) // 100
+	laatste_eeuw = max(decennia) // 100
+	navigatie = []
+
+	for eeuw in range(eerste_eeuw, laatste_eeuw + 1):
+		navigatie.append({
+			'label': eeuw_label(eeuw + 1),
+			'decennia': [
+				decennium if decennium in decennia else None
+				for decennium in range(eeuw * 100, eeuw * 100 + 100, 10)
+			]
+		})
+
+	return navigatie
+
 @login_required
 def index(request):
 	wijzigingen = Persoon.objects.order_by('-wijziging')[:15]
@@ -30,7 +55,8 @@ def index(request):
 		'wijzigingen': wijzigingen,
 		'personalia': personalia,
 		'overleden': overleden,
-		'adreswijzigingen': adreswijzigingen
+		'adreswijzigingen': adreswijzigingen,
+		'jaarnav': jaarnavigatie()
 	}
 	return render(request, 'alumni/index.html', context)
 

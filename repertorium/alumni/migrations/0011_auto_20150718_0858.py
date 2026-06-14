@@ -48,7 +48,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
                 ('foto', models.ImageField(upload_to='klasfoto')),
-                ('klas', models.ForeignKey(to='alumni.Klas')),
+                ('klas', models.ForeignKey(on_delete=models.CASCADE, to='alumni.Klas')),
             ],
         ),
         migrations.RemoveField(
@@ -82,11 +82,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='contact',
             name='persoon',
-            field=models.ForeignKey(to='alumni.Persoon'),
+            field=models.ForeignKey(on_delete=models.CASCADE, to='alumni.Persoon'),
         ),
         migrations.AddField(
             model_name='rhetorica',
             name='klas',
-            field=models.ForeignKey(blank=True, to='alumni.Klas', null=True),
+            field=models.ForeignKey(on_delete=models.CASCADE, blank=True, to='alumni.Klas', null=True),
         ),
     ]

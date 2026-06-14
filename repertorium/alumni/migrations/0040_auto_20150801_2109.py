@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='persoon',
             name='user',
-            field=models.ForeignKey(to=settings.AUTH_USER_MODEL, blank=True, null=True),
+            field=models.ForeignKey(on_delete=models.CASCADE, to=settings.AUTH_USER_MODEL, blank=True, null=True),
         ),
         migrations.AlterField(
             model_name='gebeurtenis',

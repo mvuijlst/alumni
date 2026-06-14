@@ -58,11 +58,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='hoedanigheid',
             name='persoon',
-            field=models.ForeignKey(to='alumni.Persoon'),
+            field=models.ForeignKey(on_delete=models.CASCADE, to='alumni.Persoon'),
         ),
         migrations.AddField(
             model_name='hoedanigheid',
             name='hoedanigheidstype',
-            field=models.ForeignKey(to='alumni.Hoedanigheidstype'),
+            field=models.ForeignKey(on_delete=models.CASCADE, to='alumni.Hoedanigheidstype'),
         ),
     ]

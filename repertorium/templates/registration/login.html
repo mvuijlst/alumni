@@ -9,7 +9,7 @@
 <p class="error">Gebruiker onbekend of fout wachtwoord, sorry.</p>
 {% endif %}
 
-<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+<form method="post" action="{% url 'login' %}">
 {% csrf_token %}
 <table class="loginform">
 <tr>

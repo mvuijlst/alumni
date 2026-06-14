@@ -17,7 +17,7 @@
 	
 	{% if klasfotos.count %}
 		{% for klasfoto in klasfotos %}
-			{% if klasfoto.datum.year = klas.jaar %}
+			{% if klasfoto.datum.year == klas.jaar %}
 				<div class="klasfoto">
 					<a href="{{ klasfoto.foto.url }}" 
 						class="lytebox"
@@ -68,13 +68,13 @@
 							<span class="klasvertegenwoordiger">[klasafgevaardigde]</span>
 						{% endif %}
 						{% for adres in adressen %}
-							{% if adres.persoon.id = leerling.id %}
+							{% if adres.persoon.id == leerling.id %}
 								<br />{{ adres.adres|linebreaksbr }}
 							{% endif %}
 						{% endfor %}
 						{% if leerling.overleden and leerling.sterfdatum and contacten.count > 0  %}
 							{% for contact in contacten %}
-								{% if contact.persoon.id = leerling.id %}
+								{% if contact.persoon.id == leerling.id %}
 									<br />{{ contact.contactmiddel.template|formatcontact:contact.contactdata|safe }}
 								{% endif %}
 							{% endfor %}

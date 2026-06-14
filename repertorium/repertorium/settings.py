@@ -24,14 +24,13 @@ MEDIA_URL = '/media/'
 SECRET_KEY = 'c^35y+j6(8qz4h9f0vc3ln1@w)^fvsxz%#(58!6fhe*&!-q57('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.sint-barbara.be']
+ALLOWED_HOSTS = ['127.0.0.1', '.sint-barbara.be', 'localhost']
 
 # Application definition
 
 INSTALLED_APPS = (
-    'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,15 +43,14 @@ INSTALLED_APPS = (
     'alumni',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
 )
 
 ROOT_URLCONF = 'repertorium.urls'
@@ -84,12 +82,8 @@ LOGOUT_URL='/logout'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sbc',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -113,12 +107,7 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
-# For Django Suit admin
-from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
-
-TEMPLATE_CONTEXT_PROCESSORS = TCP + (
-    'django.core.context_processors.request',
-)
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 SUIT_CONFIG = {
     # header
@@ -148,4 +137,3 @@ SUIT_CONFIG = {
     # misc
     'LIST_PER_PAGE': 15
 }
-

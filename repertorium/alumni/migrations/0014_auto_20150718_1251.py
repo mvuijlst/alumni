@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='beroep',
             name='persoon',
-            field=models.ForeignKey(default=1, to='alumni.Persoon'),
+            field=models.ForeignKey(on_delete=models.CASCADE, default=1, to='alumni.Persoon'),
             preserve_default=False,
         ),
         migrations.AlterField(
